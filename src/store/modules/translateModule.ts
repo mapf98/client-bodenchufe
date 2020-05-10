@@ -1,13 +1,12 @@
 import Vue from "vue";
-
-import userService from "../../services/userService";
+import translateService from "../../services/translateService";
 
 export default {
   namespaced: true,
   // -----------------------------------------------------------------
   state: {
     // Aqui van los atributos
-    users: [],
+    languagesTexts: [],
   },
   // -----------------------------------------------------------------
   getters: {
@@ -17,8 +16,8 @@ export default {
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
-    setAllUsers(state: {}, users: []) {
-      Vue.set(state, "users", users);
+    setLanguageTexts(state: {}, languagesTexts: []) {
+      Vue.set(state, "languagesTexts", languagesTexts);
     },
   },
   // -----------------------------------------------------------------
@@ -26,11 +25,12 @@ export default {
     // create: (context, bankData) => {
     //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
     // },
-    getAllUsers: async (context: any) => {
-      console.log(typeof context);
-      await userService.getAllUsers().then((response: any) => {
-        context.commit("setAllUsers", response.data);
-      });
+    getTranslate: async (context: any, payload: any) => {
+      await translateService
+        .getTranslate(payload.lang)
+        .then((response: any) => {
+          context.commit("setLanguageTexts", response.data.terms);
+        });
     },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
@@ -40,12 +40,3 @@ export default {
     // },
   },
 };
-
-//Ejemplo de obtener datos:
-// beforeCreate() {
-//   this.$store.dispatch("banks/read");
-// }
-
-// get banks() {
-//   return this.$store.state.banks;
-// }

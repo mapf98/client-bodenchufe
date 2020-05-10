@@ -2,34 +2,15 @@
   <v-container fluid>
     <v-row>
       <v-col class="d-flex justify-center">
-        <v-btn
-          class="ma-2"
-          tile
-          outlined
-          color="success"
-          x-large
+        <v-select
+          :items="items"
+          v-model="language"
           :loading="loading"
-          @click="getAllUsers"
-        >
-          GET Users
-        </v-btn>
+          label="Idioma"
+        ></v-select>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="d-flex flex-wrap justify-center">
-        <v-card
-          v-for="user in users"
-          :key="user.user_id"
-          color="#385F73"
-          dark
-          min-width="500"
-          class="ma-5"
-          transition="slide-y-transition"
-        >
-          <v-card-title class="headline text-center">{{
-            user.user_email
-          }}</v-card-title>
-        </v-card>
+      <v-col class="d-flex justify-center">
+        <p>{{ welcome }}</p>
       </v-col>
     </v-row>
   </v-container>
@@ -38,20 +19,41 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class Home extends Vue {
+  welcome = "";
   loading = false;
+  items = ["en-us", "es-ve"];
+  language = "en-us";
 
-  getAllUsers() {
-    this.loading = true;
-    this.$store.dispatch("users/getAllUsers").then(() => {
-      this.loading = false;
+  @Watch("language")
+  selectLanguage() {
+    this.getTranslate();
+  }
+
+  created() {
+    this.getTranslate();
+  }
+
+  translate() {
+    const translate = this.$store.state.translate.languagesTexts;
+    translate.forEach((term: any) => {
+      if (term.termName == "welcome") {
+        this.welcome = term.termTranslation;
+      }
     });
   }
 
-  get users() {
-    return this.$store.state.users.users;
+  getTranslate() {
+    this.loading = true;
+    this.$store
+      .dispatch("translate/getTranslate", { lang: this.language })
+      .then(() => {
+        this.translate();
+        this.loading = false;
+      });
   }
 }
 </script>
