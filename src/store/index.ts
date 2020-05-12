@@ -2,12 +2,12 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 //Aqui se importan los modulos
-import users from "./modules/userModule";
+import translate from "./modules/translateModule";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-    users,
+    translate,
   },
 });
