@@ -1,18 +1,17 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="black white--text" >
     <v-row>
-      <v-col class="d-flex justify-center">
-        <v-btn
-          class="ma-2"
-          tile
-          outlined
-          color="success"
-          x-large
+      <v-col class="d-flex justify-center white--text">
+        <v-select
+          dark
+          color="white"
+          :items="items"
+          v-model="language"
           :loading="loading"
           @click="getAllUsers"
         >
           GET Users
-        </v-btn>
+        </v-select>
       </v-col>
     </v-row>
     <v-row>
