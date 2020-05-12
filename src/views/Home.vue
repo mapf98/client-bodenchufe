@@ -3,6 +3,8 @@
     <v-row>
       <v-col class="d-flex justify-center">
         <v-select
+          dark
+          color="white"
           :items="items"
           v-model="language"
           :loading="loading"
