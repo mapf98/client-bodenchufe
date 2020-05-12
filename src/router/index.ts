@@ -12,11 +12,19 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Dashboard",
     component: Dashboard,
+    meta: {
+      requiresAuth: false,
+      hideBasicComponents: false
+    }
   },
   {
     path: "/login",
     name: "Login",
     component: Login,
+    meta: {
+      requiresAuth: false,
+      hideBasicComponents: true
+    }
   },
 ];
 

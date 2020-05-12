@@ -1,38 +1,25 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col class="d-flex justify-center">
-        <v-btn
-          class="ma-2"
-          tile
-          outlined
-          color="success"
-          x-large
-          :loading="loading"
-          @click="getAllUsers"
-        >
-          GET Users
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col class="d-flex flex-wrap justify-center">
-        <v-card
-          v-for="user in users"
-          :key="user.user_id"
-          color="#385F73"
-          dark
-          min-width="500"
-          class="ma-5"
-          transition="slide-y-transition"
-        >
-          <v-card-title class="headline text-center">{{
-            user.user_email
-          }}</v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-menu offset-y>
+    <template v-slot:activator="{ on }">
+      <v-btn
+        color="indigo"
+        dark
+        v-on="on"
+      >
+        <v-icon class="mr-4">mdi-translate</v-icon>
+        {{language}}
+      </v-btn>
+    </template>
+    <v-list>
+      <v-list-item
+        v-for="(item) in items"
+        :key="item.value"
+        @click="selectLanguage(item.value)"
+      >
+        <v-list-item-title>{{ item.text }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-menu>
 </template>
 
 <script lang="ts">
@@ -40,18 +27,25 @@ import Vue from "vue";
 import Component from "vue-class-component";
 
 @Component({})
-export default class Home extends Vue {
-  loading = false;
+export default class Internationalization extends Vue {
+  items = [
+    { text: "English US", value: "en-us" },
+    { text: "Spanish VE", value: "es-ve" },
+  ];
+  language = "en-us";
 
-  getAllUsers() {
-    this.loading = true;
-    this.$store.dispatch("users/getAllUsers").then(() => {
-      this.loading = false;
-    });
+  selectLanguage(language: string) {
+    this.language = language;
+    this.getTranslate();
   }
 
-  get users() {
-    return this.$store.state.users.users;
+  created() {
+    this.getTranslate();
+  }
+
+  getTranslate() {
+    this.$store
+      .dispatch("internationalization/getTranslate", { lang: this.language });
   }
 }
 </script>
