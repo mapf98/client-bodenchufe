@@ -25,7 +25,11 @@ import { Watch } from "vue-property-decorator";
 export default class Home extends Vue {
   welcome = "";
   loading = false;
-  items = ["en-us", "es-ve"];
+  items = [
+    { text: "English US", value: "en-us" },
+    { text: "Spanish VE", value: "es-ve" },
+  ];
+
   language = "en-us";
 
   @Watch("language")
