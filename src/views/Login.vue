@@ -26,7 +26,7 @@ import Component from "vue-class-component";
 export default class Home extends Vue {
   loading = false;
 
-  login(){
+  login() {
     this.$router.push("/");
   }
 }

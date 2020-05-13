@@ -14,8 +14,8 @@ const routes: Array<RouteConfig> = [
     component: Dashboard,
     meta: {
       requiresAuth: false,
-      hideBasicComponents: false
-    }
+      hideBasicComponents: false,
+    },
   },
   {
     path: "/login",
@@ -23,8 +23,8 @@ const routes: Array<RouteConfig> = [
     component: Login,
     meta: {
       requiresAuth: false,
-      hideBasicComponents: true
-    }
+      hideBasicComponents: true,
+    },
   },
 ];
 
@@ -35,7 +35,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  to.matched.some(route => {
+  to.matched.some((route) => {
     if (route.meta.requiresAuth) {
       const yourToken: any = localStorage.getItem("token");
       if (jwt.isExpired(yourToken)) {

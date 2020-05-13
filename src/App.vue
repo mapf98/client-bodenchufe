@@ -1,11 +1,14 @@
 <template>
   <v-app>
-    <MobileSidebar v-bind:open-side-menu="drawer"/>
-    <Navbar v-if="!$route.meta.hideBasicComponents" @openSideMenu="openSideMenu"/>
+    <MobileSidebar v-bind:open-side-menu="drawer" />
+    <Navbar
+      v-if="!$route.meta.hideBasicComponents"
+      @openSideMenu="openSideMenu"
+    />
     <v-content>
       <router-view></router-view>
     </v-content>
-    <Footer v-if="!$route.meta.hideBasicComponents"/>
+    <Footer v-if="!$route.meta.hideBasicComponents" />
   </v-app>
 </template>
 
@@ -20,17 +23,17 @@ import MobileSidebar from "../src/components/MobileSidebar.vue";
   components: {
     Navbar,
     Footer,
-    MobileSidebar
-  }
+    MobileSidebar,
+  },
 })
 export default class App extends Vue {
   draw = false;
 
-  openSideMenu(){
+  openSideMenu() {
     this.draw = !this.draw;
   }
 
-  get drawer(){
+  get drawer() {
     return this.draw;
   }
 }

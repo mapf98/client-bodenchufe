@@ -1,18 +1,14 @@
 <template>
   <v-menu offset-y>
     <template v-slot:activator="{ on }">
-      <v-btn
-        color="indigo"
-        dark
-        v-on="on"
-      >
+      <v-btn color="indigo" dark v-on="on">
         <v-icon class="mr-4">mdi-translate</v-icon>
-        {{language}}
+        {{ language }}
       </v-btn>
     </template>
     <v-list>
       <v-list-item
-        v-for="(item) in items"
+        v-for="item in items"
         :key="item.value"
         @click="selectLanguage(item.value)"
       >
@@ -44,8 +40,9 @@ export default class Internationalization extends Vue {
   }
 
   getTranslate() {
-    this.$store
-      .dispatch("internationalization/getTranslate", { lang: this.language });
+    this.$store.dispatch("internationalization/getTranslate", {
+      lang: this.language,
+    });
   }
 }
 </script>
