@@ -1,52 +1,63 @@
 <template>
-  <v-app-bar app>
-    <v-row class="hidden-md-and-up">
-      <v-col class="d-flex justify-start">
-        <v-img src="../assets/logoBodenchufe.png" max-width="170"></v-img>
+  <v-navigation-drawer
+    v-model="readyOpen"
+    absolute
+    temporary
+  >
+    <v-row>
+      <v-col class="d-flex justify-center mt-4 align-center">
+        <p class="mb-0 mr-3 headline">{{navbarNavigation}}</p>
+        <v-icon color="black">
+          mdi-navigation
+        </v-icon>
       </v-col>
     </v-row>
-    <v-app-bar-nav-icon class="hidden-md-and-up" @click="openSideMenu"></v-app-bar-nav-icon>
-
-    <v-row class="d-md-flex align-center hidden-sm-and-down">
-      <v-col class="mr-8">
-        <v-img src="../assets/logoBodenchufe.png" max-width="200"></v-img>
-      </v-col>
-      <v-col cols="3">
-        <SearchBox />
-      </v-col>
-      <v-col class="d-flex justify-start">
-        <v-btn small color="amber darken-4" outlined>{{navbarCategories}}</v-btn>
-      </v-col>
-      <v-col class="d-flex justify-end">
-        <v-btn text small color="indigo" @click="goToLogin">{{navbarLogin}}</v-btn>
-      </v-col>
+    <v-row class="mt-6">
       <v-col class="d-flex justify-center">
-        <v-btn text small color="indigo">{{navbarSingUp}}</v-btn>
+        <v-btn large color="amber darken-4" outlined min-width="200">{{navbarCategories}}</v-btn>
       </v-col>
+    </v-row>
+    <v-row class="mt-4">
+      <v-col class="d-flex justify-center">
+        <v-btn large color="indigo" outlined @click="goToLogin" min-width="200">{{navbarLogin}}</v-btn>
+      </v-col>
+    </v-row>
+    <v-row class="mt-4">
+      <v-col class="d-flex justify-center">
+        <v-btn large color="indigo" outlined min-width="200">{{navbarSingUp}}</v-btn>
+      </v-col>
+    </v-row>
+    <v-row class="mt-12">
       <v-col class="d-flex justify-center">
         <Internationalization />
       </v-col>
     </v-row>
-  </v-app-bar>
+  </v-navigation-drawer>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
-import SearchBox from "../components/SearchBox.vue";
+import { Watch, Prop } from "vue-property-decorator";
 import Internationalization from "../components/Internationalization.vue";
 
 @Component({
-  components: {
-    SearchBox,
+  components:{
     Internationalization
   }
 })
-export default class Navbar extends Vue {
+export default class MobileSidebar extends Vue {
+  @Prop() openSideMenu!: boolean; 
+  readyOpen = false;
   navbarCategories = "Categories";
   navbarLogin = "Log In";
   navbarSingUp = "Sing Up";
+  navbarNavigation = "Navigation";
+
+  @Watch("openSideMenu")
+  drawer(){
+    this.readyOpen = !this.readyOpen;
+  }
 
   goToLogin(){
     this.$router.push("/Login");
@@ -67,7 +78,11 @@ export default class Navbar extends Vue {
         case "navbarSingUp": { 
             this.navbarSingUp = term.termTranslation;
             break; 
-        }  
+        }
+        case "navbarNavigation": { 
+            this.navbarNavigation = term.termTranslation;
+            break; 
+        }    
         default: { 
             break; 
         } 
@@ -78,11 +93,6 @@ export default class Navbar extends Vue {
   get translator(){
     return this.$store.state.internationalization.languagesTexts;
   };
-
-  openSideMenu(){
-    this.$emit('openSideMenu');
-  }
-
 }
 </script>
 
