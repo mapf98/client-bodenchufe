@@ -1,10 +1,17 @@
 <template>
   <v-app-bar app>
-    <v-row class="d-flex align-center">
-      <v-col >
+    <v-row class="hidden-md-and-up">
+      <v-col class="d-flex justify-start">
+        <v-img src="../assets/logoBodenchufe.png" max-width="170"></v-img>
+      </v-col>
+    </v-row>
+    <v-app-bar-nav-icon class="hidden-md-and-up" @click="openSideMenu"></v-app-bar-nav-icon>
+
+    <v-row class="d-md-flex align-center hidden-sm-and-down">
+      <v-col class="mr-8">
         <v-img src="../assets/logoBodenchufe.png" max-width="200"></v-img>
       </v-col>
-      <v-col cols="4">
+      <v-col cols="3">
         <SearchBox />
       </v-col>
       <v-col class="d-flex justify-start">
@@ -13,10 +20,10 @@
       <v-col class="d-flex justify-end">
         <v-btn text small color="indigo" @click="goToLogin">{{navbarLogin}}</v-btn>
       </v-col>
-      <v-col class="d-flex justify-end">
+      <v-col class="d-flex justify-center">
         <v-btn text small color="indigo">{{navbarSingUp}}</v-btn>
       </v-col>
-      <v-col class="d-flex justify-end">
+      <v-col class="d-flex justify-center">
         <Internationalization />
       </v-col>
     </v-row>
@@ -71,6 +78,10 @@ export default class Navbar extends Vue {
   get translator(){
     return this.$store.state.internationalization.languagesTexts;
   };
+
+  openSideMenu(){
+    this.$emit('openSideMenu');
+  }
 
 }
 </script>
