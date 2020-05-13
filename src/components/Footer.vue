@@ -1,23 +1,22 @@
 <template>
-  <v-footer app class="amber accent-4">
+  <v-footer app class="indigo">
     <v-row class="d-flex align-center">
-      <v-col>
-        <v-icon class="mr-8 pointer" color="black" @click="openInstagram"> 
+      <v-col class="d-flex justify-center">
+        <v-icon class="mr-8 pointer" color="white" @click="openInstagram"> 
           mdi-instagram
         </v-icon> 
-        <v-icon class="mr-8 pointer" color="black" @click="openTwitter">
+        <v-icon class="mr-8 pointer" color="white" @click="openTwitter">
           mdi-twitter
         </v-icon>
-        <v-icon class="mr-8 pointer" color="black" @click="openBTC">
+        <v-icon class="mr-8 pointer" color="white" @click="openBTC">
           mdi-bitcoin
         </v-icon>
-        <v-icon class="pointer" color="black" @click="openETH">
+        <v-icon class="pointer" color="white" @click="openETH">
           mdi-ethereum
         </v-icon>
       </v-col>
-      <v-col class="d-flex justify-end">
+      <v-col class="d-flex justify-center">
         <v-btn
-          :loading="loading3"
           color="blue-grey"
           class="ma-2 white--text"
           @click="openGitHub"
