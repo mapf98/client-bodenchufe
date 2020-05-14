@@ -65,7 +65,6 @@ export default class Navbar extends Vue {
 
   @Watch("translator")
   translate() {
-    console.log(this.$store.state.internationalization.languagesTexts);
     this.translator.forEach((term: any) => {
       switch (term.termName) {
         case "navbarCategories": {
