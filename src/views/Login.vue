@@ -8,9 +8,13 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col cols="12" md="5">
+    <v-row cols="d-flex">
+      <v-col md="6">
         <NotFederatedLogIn />
+      </v-col>
+      <v-col md="6">
+        <b>O Inicia sesion a traves de:</b>
+        <GoogleFederatedLogIn />
       </v-col>
     </v-row>
 
@@ -26,10 +30,12 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import NotFederatedLogIn from "../components/NotFederatedLogIn.vue";
+import GoogleFederatedLogIn from "../components/GoogleFederatedLogin.vue";
 
 @Component({
   components: {
     NotFederatedLogIn,
+    GoogleFederatedLogIn,
   },
 })
 export default class Home extends Vue {
