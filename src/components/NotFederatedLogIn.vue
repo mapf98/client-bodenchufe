@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-card-text v-if="errors.length">
-          <b>Please correct the following error(s):</b>
+          <b>{{ nflMessageError }}</b>
           <ul>
             <li v-for="error in errors" :key="error.id">{{ error }}</li>
           </ul>
@@ -35,6 +35,8 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Watch } from "vue-property-decorator";
+import Internationalization from "../components/Internationalization.vue";
 
 @Component({})
 export default class NotFederatedLogin extends Vue {
@@ -49,6 +51,7 @@ export default class NotFederatedLogin extends Vue {
   nflInvalidMailOrAccount = "Mail or Account incorrect";
   nflUserBlocked = "User blocked";
   nflMailNotRegistered = "Mail not registered";
+  nflMessageError = "Please correct the following error(s):";
 
   notFederatedLogIn(e: Event) {
     e.preventDefault();
@@ -89,6 +92,45 @@ export default class NotFederatedLogin extends Vue {
           }
         });
     }
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "nflEmailRequired": {
+          this.nflEmailRequired = term.translation;
+          break;
+        }
+        case "nflPasswordRequired": {
+          this.nflPasswordRequired = term.translation;
+          break;
+        }
+        case "nflInvalidMailOrAccount": {
+          this.nflInvalidMailOrAccount = term.translation;
+          break;
+        }
+        case "nflUserBlocked": {
+          this.nflUserBlocked = term.translation;
+          break;
+        }
+        case "nflMailNotRegistered": {
+          this.nflMailNotRegistered = term.translation;
+          break;
+        }
+        case "nflMessageError": {
+          this.nflMessageError = term.translation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.state.internationalization.languagesTexts;
   }
 
   get getStatus() {
