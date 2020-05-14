@@ -7,4 +7,7 @@ export default {
   GoogleFederatedLogIn(user: any) {
     return API_URL.post(`/authentication/login`, user);
   },
+  FacebookFederatedLogIn(user: any) {
+    return API_URL.post(`/authentication/login`, user);
+  },
 };

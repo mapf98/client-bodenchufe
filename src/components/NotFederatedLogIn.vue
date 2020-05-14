@@ -2,14 +2,6 @@
   <v-form @submit="notFederatedLogIn">
     <v-container>
       <v-row>
-        <v-card-text v-if="errors.length">
-          <b>{{ nflMessageError }}</b>
-          <ul>
-            <li v-for="error in errors" :key="error.id">{{ error }}</li>
-          </ul>
-        </v-card-text>
-      </v-row>
-      <v-row>
         <v-text-field
           v-model="user.userEmail"
           :label="nflUser"
@@ -23,6 +15,14 @@
           required
           type="password"
         ></v-text-field>
+      </v-row>
+      <v-row>
+        <v-card-text v-if="errors.length">
+          <b>{{ nflMessageError }}</b>
+          <ul>
+            <li v-for="error in errors" :key="error.id">{{ error }}</li>
+          </ul>
+        </v-card-text>
       </v-row>
 
       <v-row justify="center">

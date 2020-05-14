@@ -15,6 +15,7 @@
       <v-col md="6">
         <b>O Inicia sesion a traves de:</b>
         <GoogleFederatedLogIn />
+        <FacebookFederatedLogIn />
       </v-col>
     </v-row>
 
@@ -31,11 +32,13 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import NotFederatedLogIn from "../components/NotFederatedLogIn.vue";
 import GoogleFederatedLogIn from "../components/GoogleFederatedLogin.vue";
+import FacebookFederatedLogIn from "../components/FacebookFederatedLogin.vue";
 
 @Component({
   components: {
     NotFederatedLogIn,
     GoogleFederatedLogIn,
+    FacebookFederatedLogIn,
   },
 })
 export default class Home extends Vue {
