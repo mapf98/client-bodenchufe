@@ -12,7 +12,7 @@ export default {
   // -----------------------------------------------------------------
   getters: {
     // getters and computed props
-    //collection: (state: any) => state.users,
+    getLanguageTexts: (state: any) => state.languagesTexts,
   },
   // -----------------------------------------------------------------
   mutations: {
