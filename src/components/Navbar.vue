@@ -59,6 +59,10 @@ export default class Navbar extends Vue {
     this.$router.push("/Login");
   }
 
+  mounted() {
+    this.translate();
+  }
+
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
