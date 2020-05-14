@@ -7,12 +7,13 @@ export default {
   state: {
     // Aqui van los atributos
     languagesTexts: [],
-    preferredLanguage: "en-us"
+    preferredLanguage: "en-us",
   },
   // -----------------------------------------------------------------
   getters: {
     // getters and computed props
     getLanguageTexts: (state: any) => state.languagesTexts,
+    getPreferredLanguage: (state: any) => state.preferredLanguage,
   },
   // -----------------------------------------------------------------
   mutations: {
