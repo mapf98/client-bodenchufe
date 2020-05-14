@@ -99,27 +99,27 @@ export default class NotFederatedLogin extends Vue {
     this.translator.forEach((term: any) => {
       switch (term.termName) {
         case "nflEmailRequired": {
-          this.nflEmailRequired = term.translation;
+          this.nflEmailRequired = term.termTranslation;
           break;
         }
         case "nflPasswordRequired": {
-          this.nflPasswordRequired = term.translation;
+          this.nflPasswordRequired = term.termTranslation;
           break;
         }
         case "nflInvalidMailOrAccount": {
-          this.nflInvalidMailOrAccount = term.translation;
+          this.nflInvalidMailOrAccount = term.termTranslation;
           break;
         }
         case "nflUserBlocked": {
-          this.nflUserBlocked = term.translation;
+          this.nflUserBlocked = term.termTranslation;
           break;
         }
         case "nflMailNotRegistered": {
-          this.nflMailNotRegistered = term.translation;
+          this.nflMailNotRegistered = term.termTranslation;
           break;
         }
         case "nflMessageError": {
-          this.nflMessageError = term.translation;
+          this.nflMessageError = term.termTranslation;
           break;
         }
         default: {
