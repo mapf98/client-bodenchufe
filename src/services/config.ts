@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const API_URL = axios.create({
-  baseURL: "http://localhost:3000/bodenchufe/api",
+  baseURL: process.env.VUE_APP_API_URL,
   withCredentials: false, // This is the default
   headers: {
     Accept: "application/json",

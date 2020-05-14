@@ -21,6 +21,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class Internationalization extends Vue {
@@ -28,14 +29,10 @@ export default class Internationalization extends Vue {
     { text: "English US", value: "en-us" },
     { text: "Spanish VE", value: "es-ve" },
   ];
-  language = "en-us";
+  language = "";
 
   selectLanguage(language: string) {
     this.language = language;
-    this.getTranslate();
-  }
-
-  created() {
     this.getTranslate();
   }
 
@@ -43,6 +40,21 @@ export default class Internationalization extends Vue {
     this.$store.dispatch("internationalization/getTranslate", {
       lang: this.language,
     });
+  }
+
+  mounted() {
+    this.language = this.$store.getters[
+      "internationalization/getPreferredLanguage"
+    ];
+  }
+
+  @Watch("preferredLanguage")
+  translate() {
+    this.language = this.preferredLanguage;
+  }
+
+  get preferredLanguage() {
+    return this.$store.getters["internationalization/getPreferredLanguage"];
   }
 }
 </script>
