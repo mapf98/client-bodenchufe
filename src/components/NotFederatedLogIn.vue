@@ -93,6 +93,10 @@ export default class NotFederatedLogin extends Vue {
     }
   }
 
+  mounted() {
+    this.translate();
+  }
+
   @Watch("translator")
   translate() {
     console.log("test", this.translator);
@@ -130,6 +134,7 @@ export default class NotFederatedLogin extends Vue {
   }
 
   get translator() {
+    console.log(this.$store.state.internationalization.languagesTexts);
     return this.$store.state.internationalization.languagesTexts;
   }
 
