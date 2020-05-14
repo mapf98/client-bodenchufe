@@ -43,18 +43,14 @@ export default class NotFederatedLogin extends Vue {
     userPassword: "",
   };
   errors: string[] = [];
-  status = {
-    validated: false,
-    blocked: false,
-    registered: false,
-  };
+  nflEmailRequired = "Email required";
 
   notFederatedLogIn(e: Event) {
     e.preventDefault();
     this.errors.splice(0);
 
     if (!this.user.userEmail) {
-      this.errors.push("Email required");
+      this.errors.push(this.nflEmailRequired);
     }
 
     if (!this.user.userPassword) {
@@ -65,25 +61,24 @@ export default class NotFederatedLogin extends Vue {
       this.$store
         .dispatch("logIn/notFederatedLogIn", { user: this.user })
         .then((res: any) => {
-          this.status = this.getStatus;
           if (
-            this.status.validated == false &&
-            this.status.blocked == false &&
-            this.status.registered == true
+            this.getStatus.validated == false &&
+            this.getStatus.blocked == false &&
+            this.getStatus.registered == true
           ) {
             this.errors.push("Mail or Account incorrect");
           }
           if (
-            this.status.validated == false &&
-            this.status.blocked == true &&
-            this.status.registered == true
+            this.getStatus.validated == false &&
+            this.getStatus.blocked == true &&
+            this.getStatus.registered == true
           ) {
             this.errors.push("User blocked");
           }
           if (
-            this.status.validated == false &&
-            this.status.blocked == false &&
-            this.status.registered == false
+            this.getStatus.validated == false &&
+            this.getStatus.blocked == false &&
+            this.getStatus.registered == false
           ) {
             this.errors.push("Mail not registered");
           }
@@ -92,7 +87,7 @@ export default class NotFederatedLogin extends Vue {
   }
 
   get getStatus() {
-    return this.$store.state.logIn.status;
+    return this.$store.getters["logIn/getLoginStatus"];
   }
 }
 </script>

@@ -1,5 +1,5 @@
 import Vue from "vue";
-import logInService from "../../services/logInService"
+import logInService from "../../services/logInService";
 
 export default {
   namespaced: true,
@@ -7,12 +7,13 @@ export default {
   state: {
     // Aqui van los atributos
     user: {},
-    status: {}
+    status: {},
   },
   // -----------------------------------------------------------------
   getters: {
     // getters and computed props
-    //collection: (state: any) => state.users,
+    getLoginUserData: (state: any) => state.user,
+    getLoginStatus: (state: any) => state.status,
   },
   // -----------------------------------------------------------------
   mutations: {
@@ -20,9 +21,9 @@ export default {
     setUser(state: {}, user: any) {
       Vue.set(state, "user", user);
     },
-    setStatus(state: {}, status: any){
+    setStatus(state: {}, status: any) {
       Vue.set(state, "status", status);
-    }
+    },
   },
   // -----------------------------------------------------------------
   actions: {
@@ -34,20 +35,35 @@ export default {
         .notFederatedLogIn(payload.user)
         .then((response: any) => {
           console.log(response);
-          if (response.data.validated == true){
+          if (response.data.validated == true) {
             localStorage.setItem("token", response.data.token);
             context.commit("setUser", response.data.user[0]);
-            context.commit("setStatus", {validado: true, bloqueado:false, registered:true})
-          }      
-          if (response.data.validated == false){
-            context.commit("setStatus", {validated: false, blocked:false, registered:true}); //combinacion de correo y password incorrecto
-            if (response.data.blocked == true){
-
-              context.commit("setStatus", {validated: false, blocked:true, registered:true}); //usuario bloqueado
+            context.commit("setStatus", {
+              validado: true,
+              bloqueado: false,
+              registered: true,
+            });
+          }
+          if (response.data.validated == false) {
+            context.commit("setStatus", {
+              validated: false,
+              blocked: false,
+              registered: true,
+            }); //combinacion de correo y password incorrecto
+            if (response.data.blocked == true) {
+              context.commit("setStatus", {
+                validated: false,
+                blocked: true,
+                registered: true,
+              }); //usuario bloqueado
             }
           }
-          if (response.data.registered == false){
-            context.commit("setStatus", {validated: false, blocked:false, registered:false}); //correo no registrado
+          if (response.data.registered == false) {
+            context.commit("setStatus", {
+              validated: false,
+              blocked: false,
+              registered: false,
+            }); //correo no registrado
           }
         });
     },
