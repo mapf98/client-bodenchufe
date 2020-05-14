@@ -42,8 +42,13 @@ export default class NotFederatedLogin extends Vue {
     userEmail: "",
     userPassword: "",
   };
+
   errors: string[] = [];
   nflEmailRequired = "Email required";
+  nflPasswordRequired = "Password required";
+  nflInvalidMailOrAccount = "Mail or Account incorrect";
+  nflUserBlocked = "User blocked";
+  nflMailNotRegistered = "Mail not registered";
 
   notFederatedLogIn(e: Event) {
     e.preventDefault();
@@ -54,7 +59,7 @@ export default class NotFederatedLogin extends Vue {
     }
 
     if (!this.user.userPassword) {
-      this.errors.push("Password required");
+      this.errors.push(this.nflPasswordRequired);
     }
 
     if (this.errors.length == 0) {
@@ -66,21 +71,21 @@ export default class NotFederatedLogin extends Vue {
             this.getStatus.blocked == false &&
             this.getStatus.registered == true
           ) {
-            this.errors.push("Mail or Account incorrect");
+            this.errors.push(this.nflInvalidMailOrAccount);
           }
           if (
             this.getStatus.validated == false &&
             this.getStatus.blocked == true &&
             this.getStatus.registered == true
           ) {
-            this.errors.push("User blocked");
+            this.errors.push(this.nflUserBlocked);
           }
           if (
             this.getStatus.validated == false &&
             this.getStatus.blocked == false &&
             this.getStatus.registered == false
           ) {
-            this.errors.push("Mail not registered");
+            this.errors.push(this.nflMailNotRegistered);
           }
         });
     }

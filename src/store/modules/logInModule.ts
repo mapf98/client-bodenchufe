@@ -34,7 +34,6 @@ export default {
       await logInService
         .notFederatedLogIn(payload.user)
         .then((response: any) => {
-          console.log(response);
           if (response.data.validated == true) {
             localStorage.setItem("token", response.data.token);
             context.commit("setUser", response.data.user[0]);
