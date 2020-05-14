@@ -7,7 +7,7 @@ export default {
   state: {
     // Aqui van los atributos
     user: {},
-    status: {},
+    status: {}
   },
   // -----------------------------------------------------------------
   getters: {
@@ -21,7 +21,6 @@ export default {
       Vue.set(state, "user", user);
     },
     setStatus(state: {}, status: any){
-      console.log(status);
       Vue.set(state, "status", status);
     }
   },
@@ -35,18 +34,18 @@ export default {
         .notFederatedLogIn(payload.user)
         .then((response: any) => {
           console.log(response);
-          // if (response.data.validated == true){
-          //   localStorage.setItem("token", response.data.token);
-          //   context.commit("setUser", response.data.user[0]);
-          //   context.commit("setStatus", {validated: true, blocked:false, registered:true})
-          // }      
-          // if (response.data.validated == false){
-          //   context.commit("setStatus", {validated: false, blocked:false, registered:true}); //combinacion de correo y password incorrecto
-          //   if (response.data.blocked == true){
+          if (response.data.validated == true){
+            localStorage.setItem("token", response.data.token);
+            context.commit("setUser", response.data.user[0]);
+            context.commit("setStatus", {validado: true, bloqueado:false, registered:true})
+          }      
+          if (response.data.validated == false){
+            context.commit("setStatus", {validated: false, blocked:false, registered:true}); //combinacion de correo y password incorrecto
+            if (response.data.blocked == true){
 
-          //     context.commit("setStatus", {validated: false, blocked:true, registered:true}); //usuario bloqueado
-          //   }
-          // }
+              context.commit("setStatus", {validated: false, blocked:true, registered:true}); //usuario bloqueado
+            }
+          }
           if (response.data.registered == false){
             context.commit("setStatus", {validated: false, blocked:false, registered:false}); //correo no registrado
           }

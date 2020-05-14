@@ -11,14 +11,14 @@
       </v-row>
       <v-row>
         <v-text-field
-          v-model="user.user_email"
+          v-model="user.userEmail"
           label="Email"
           required
         ></v-text-field>
       </v-row>
       <v-row>
         <v-text-field
-          v-model="user.user_password"
+          v-model="user.userPassword"
           label="Password"
           required
           type="password"
@@ -39,23 +39,25 @@ import Component from "vue-class-component";
 @Component({})
 export default class NotFederatedLogin extends Vue {
   user = {
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    user_email: "",
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    user_password: "",
+    userEmail: "",
+    userPassword: "",
   };
   errors: string[] = [];
-  status = "";
+  status = {
+    validated: false,
+    blocked: false,
+    registered: false,
+  };
 
   notFederatedLogIn(e: Event) {
     e.preventDefault();
     this.errors.splice(0);
 
-    if (!this.user.user_email) {
+    if (!this.user.userEmail) {
       this.errors.push("Email required");
     }
 
-    if (!this.user.user_password) {
+    if (!this.user.userPassword) {
       this.errors.push("Password required");
     }
 
@@ -63,8 +65,28 @@ export default class NotFederatedLogin extends Vue {
       this.$store
         .dispatch("logIn/notFederatedLogIn", { user: this.user })
         .then((res: any) => {
-          console.log(this.$store.state.logIn.user);
-          console.log(this.$store.state.logIn.status);
+          this.status = this.getStatus;
+          if (
+            this.status.validated == false &&
+            this.status.blocked == false &&
+            this.status.registered == true
+          ) {
+            this.errors.push("Mail or Account incorrect");
+          }
+          if (
+            this.status.validated == false &&
+            this.status.blocked == true &&
+            this.status.registered == true
+          ) {
+            this.errors.push("User blocked");
+          }
+          if (
+            this.status.validated == false &&
+            this.status.blocked == false &&
+            this.status.registered == false
+          ) {
+            this.errors.push("Mail not registered");
+          }
         });
     }
   }
