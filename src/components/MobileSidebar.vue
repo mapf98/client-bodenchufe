@@ -98,7 +98,7 @@ export default class MobileSidebar extends Vue {
   }
 
   get translator() {
-    return this.$store.state.internationalization.languagesTexts;
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>
