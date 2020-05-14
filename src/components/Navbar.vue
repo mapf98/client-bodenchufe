@@ -59,8 +59,13 @@ export default class Navbar extends Vue {
     this.$router.push("/Login");
   }
 
+  mounted() {
+    this.translate();
+  }
+
   @Watch("translator")
   translate() {
+    console.log(this.$store.state.internationalization.languagesTexts);
     this.translator.forEach((term: any) => {
       switch (term.termName) {
         case "navbarCategories": {
