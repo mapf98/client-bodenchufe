@@ -16,7 +16,7 @@
 
     <v-row>
       <v-col class="d-flex justify-center">
-        <v-btn>Registrarse</v-btn>
+        <v-btn color="indigo" class="white--text">Registrarse</v-btn>
       </v-col>
     </v-row>
   </v-container>

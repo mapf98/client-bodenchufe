@@ -12,21 +12,21 @@
       <v-row>
         <v-text-field
           v-model="user.userEmail"
-          label="Email"
+          :label="nflUser"
           required
         ></v-text-field>
       </v-row>
       <v-row>
         <v-text-field
           v-model="user.userPassword"
-          label="Password"
+          :label="nflPassword"
           required
           type="password"
         ></v-text-field>
       </v-row>
 
       <v-row justify="center">
-        <v-btn type="submit">LogIn</v-btn>
+        <v-btn type="submit" class="white--text" color="indigo">LogIn</v-btn>
       </v-row>
     </v-container>
   </v-form>
@@ -51,6 +51,8 @@ export default class NotFederatedLogin extends Vue {
   nflUserBlocked = "User blocked";
   nflMailNotRegistered = "Mail not registered";
   nflMessageError = "Please correct the following error(s):";
+  nflUser = "Email";
+  nflPassword = "Password";
 
   notFederatedLogIn(e: Event) {
     e.preventDefault();
@@ -89,6 +91,9 @@ export default class NotFederatedLogin extends Vue {
           ) {
             this.errors.push(this.nflMailNotRegistered);
           }
+          if (this.errors.length == 0) {
+            this.$router.push("/");
+          }
         });
     }
   }
@@ -124,6 +129,14 @@ export default class NotFederatedLogin extends Vue {
         }
         case "nflMessageError": {
           this.nflMessageError = term.termTranslation;
+          break;
+        }
+        case "nflUser": {
+          this.nflUser = term.termTranslation;
+          break;
+        }
+        case "nflPassword": {
+          this.nflPassword = term.termTranslation;
           break;
         }
         default: {
