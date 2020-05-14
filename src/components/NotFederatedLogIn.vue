@@ -26,7 +26,9 @@
       </v-row>
 
       <v-row justify="center">
-        <v-btn type="submit" class="white--text" color="indigo">LogIn</v-btn>
+        <v-btn type="submit" class="white--text" color="indigo">{{
+          navbarLogin
+        }}</v-btn>
       </v-row>
     </v-container>
   </v-form>
@@ -45,6 +47,7 @@ export default class NotFederatedLogin extends Vue {
   };
 
   errors: string[] = [];
+  navbarLogin = "Log In";
   nflEmailRequired = "Email required";
   nflPasswordRequired = "Password required";
   nflInvalidMailOrAccount = "Mail or Account incorrect";
@@ -139,6 +142,10 @@ export default class NotFederatedLogin extends Vue {
           this.nflPassword = term.termTranslation;
           break;
         }
+        case "navbarLogin": {
+          this.navbarLogin = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -147,8 +154,7 @@ export default class NotFederatedLogin extends Vue {
   }
 
   get translator() {
-    console.log(this.$store.state.internationalization.languagesTexts);
-    return this.$store.state.internationalization.languagesTexts;
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 
   get getStatus() {
