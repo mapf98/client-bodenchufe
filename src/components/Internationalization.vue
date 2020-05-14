@@ -35,10 +35,6 @@ export default class Internationalization extends Vue {
     this.getTranslate();
   }
 
-  created() {
-    this.getTranslate();
-  }
-
   getTranslate() {
     this.$store.dispatch("internationalization/getTranslate", {
       lang: this.language,

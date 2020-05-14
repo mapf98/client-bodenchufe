@@ -36,7 +36,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch } from "vue-property-decorator";
-import Internationalization from "../components/Internationalization.vue";
 
 @Component({})
 export default class NotFederatedLogin extends Vue {
@@ -96,6 +95,7 @@ export default class NotFederatedLogin extends Vue {
 
   @Watch("translator")
   translate() {
+    console.log("test", this.translator);
     this.translator.forEach((term: any) => {
       switch (term.termName) {
         case "nflEmailRequired": {
