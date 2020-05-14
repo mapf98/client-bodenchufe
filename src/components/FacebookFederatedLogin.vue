@@ -43,26 +43,28 @@ export default class FacebookFederatedLogin extends Vue {
     this.errors.splice(0);
 
     if (this.errors.length == 0) {
-      this.$store.dispatch("logIn/FacebookFederatedLogIn").then((res: any) => {
-        if (
-          this.getStatus.validated == false &&
-          this.getStatus.blocked == true &&
-          this.getStatus.registered == true
-        ) {
-          this.errors.push(this.nflUserBlocked);
-        }
-        if (
-          this.getStatus.validated == false &&
-          this.getStatus.blocked == false &&
-          this.getStatus.registered == false
-        ) {
-          this.errors.push(this.nflMailNotRegistered);
-        }
-        if (this.errors.length == 0) {
-          console.log(this.getUser);
-          this.$router.push("/");
-        }
-      });
+      this.$store
+        .dispatch("logIn/federatedLogIn", { provider: "facebook" })
+        .then(() => {
+          if (
+            this.getStatus.validated == false &&
+            this.getStatus.blocked == true &&
+            this.getStatus.registered == true
+          ) {
+            this.errors.push(this.nflUserBlocked);
+          }
+          if (
+            this.getStatus.validated == false &&
+            this.getStatus.blocked == false &&
+            this.getStatus.registered == false
+          ) {
+            this.errors.push(this.nflMailNotRegistered);
+          }
+          if (this.errors.length == 0) {
+            console.log(this.getUser);
+            this.$router.push("/");
+          }
+        });
     }
   }
 
