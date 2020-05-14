@@ -36,6 +36,10 @@ export default class SearchBox extends Vue {
     return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1;
   }
 
+  mounted() {
+    this.translate();
+  }
+
   @Watch("translator")
   translate() {
     const translate = this.$store.state.internationalization.languagesTexts;
