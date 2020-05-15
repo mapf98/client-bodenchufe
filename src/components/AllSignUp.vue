@@ -48,7 +48,7 @@ export default class AllSignUp extends Vue {
   FacebookRegistration = "Registro con Facebook";
 
   goToNotFederatedSignUp() {
-    console.log("/");
+    this.$router.push("/usual");
   }
 }
 </script>

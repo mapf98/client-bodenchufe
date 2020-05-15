@@ -28,7 +28,9 @@
         }}</v-btn>
       </v-col>
       <v-col class="d-flex justify-center">
-        <v-btn text small color="indigo" @click="goToSignUp">{{ navbarSingUp }}</v-btn>
+        <v-btn text small color="indigo" @click="goToSignUp">{{
+          navbarSingUp
+        }}</v-btn>
       </v-col>
       <v-col class="d-flex justify-center">
         <Internationalization />

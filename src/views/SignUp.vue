@@ -1,7 +1,6 @@
 <template>
   <v-container>
-    <AllSignUp />
-    <Footer />
+    <router-link></router-link>
   </v-container>
 </template>
 
