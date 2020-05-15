@@ -59,6 +59,10 @@ export default class Navbar extends Vue {
     this.$router.push("/Login");
   }
 
+  mounted() {
+    this.translate();
+  }
+
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -83,7 +87,7 @@ export default class Navbar extends Vue {
   }
 
   get translator() {
-    return this.$store.state.internationalization.languagesTexts;
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 
   openSideMenu() {
