@@ -32,10 +32,20 @@ export default {
     //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
     // },
     notFederatedLogIn: async (context: any, payload: any) => {
-      console.log(payload.user);
+      const userData: any = {
+        userName: "",
+        userLastName: "",
+        userLanguage: "",
+        userPhoto: "",
+      };
       await logInService.checkLogIn(payload.user).then((response: any) => {
         if (response.data.validated == true) {
+          userData.userName = response.data.user[0].user_first_name;
+          userData.userLastName = response.data.user[0].user_first_lastname;
+          userData.userLanguage = response.data.user[0].language_name;
+          userData.userPhoto = response.data.user[0].user_photo;
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("userData", JSON.stringify(userData));
           context.commit("setUser", response.data.user[0]);
           context.commit("setStatus", {
             validado: true,
@@ -68,7 +78,12 @@ export default {
     },
     federatedLogIn: async (context: any, payload: any) => {
       let userEmail: string | null | undefined;
-
+      const userData: any = {
+        userName: "",
+        userLastName: "",
+        userLanguage: "",
+        userPhoto: "",
+      };
       await fa
         .signInWithPopup(
           payload.provider == "google" ? providerGoogle : providerFacebook
@@ -84,7 +99,12 @@ export default {
         .checkLogIn({ userEmail: userEmail, userPassword: "" })
         .then((response: any) => {
           if (response.data.validated == true) {
+            userData.userName = response.data.user[0].user_first_name;
+            userData.userLastName = response.data.user[0].user_first_lastname;
+            userData.userLanguage = response.data.user[0].language_name;
+            userData.userPhoto = response.data.user[0].user_photo;
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("userData", JSON.stringify(userData));
             context.commit("setUser", response.data.user[0]);
             context.commit("setStatus", {
               validado: true,
