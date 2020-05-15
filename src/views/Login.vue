@@ -62,13 +62,7 @@ import FacebookFederatedLogIn from "../components/FacebookFederatedLogin.vue";
     FacebookFederatedLogIn,
   },
 })
-export default class Home extends Vue {
-  loading = false;
-
-  login() {
-    this.$router.push("/");
-  }
-}
+export default class Home extends Vue {}
 </script>
 
 <style lang="scss"></style>
