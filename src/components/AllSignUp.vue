@@ -10,19 +10,19 @@
 
     <v-row>
       <v-col class="d-flex justify-center mt-12">
-        <v-btn color="indigo" class="white--text">Registro Habitual</v-btn>
+        <v-btn color="indigo" class="white--text">{{ RegistroHabitual }}</v-btn>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col class="d-flex justify-center">
-        <v-btn color="indigo" class="white--text">Registro con Google</v-btn>
+        <v-btn color="indigo" class="white--text">{{ RegistroGoogle }}</v-btn>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col class="d-flex justify-center">
-        <v-btn color="indigo" class="white--text">Registro con Facebook</v-btn>
+        <v-btn color="indigo" class="white--text">{{ RegistroFacebook }}</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -34,5 +34,8 @@ import Component from "vue-class-component";
 @Component({})
 export default class AllSignUp extends Vue {
   loading = false;
+  RegistroHabitual = "Registro Habitual";
+  RegistroGoogle = "Registro con Google";
+  RegistroFacebook = "Registro con Facebook";
 }
 </script>
