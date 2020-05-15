@@ -1,25 +1,26 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-btn
-          type="submit"
-          class="white--text"
-          color="indigo"
-          @click="GoogleFederatedLogIn()"
-          >Google</v-btn
-        >
-      </v-col>
-    </v-row>
-    <v-row>
+  <!-- <v-container> -->
+  <!-- <v-row>
+      <v-col> -->
+  <v-btn
+    type="submit"
+    class="white--text"
+    color="indigo"
+    min-width="350"
+    @click="GoogleFederatedLogIn()"
+    >Google</v-btn
+  >
+  <!-- </v-col>
+    </v-row> -->
+  <!-- <v-row>
       <v-card-text v-if="errors.length">
         <b>{{ nflMessageError }}</b>
         <ul>
           <li v-for="error in errors" :key="error.id">{{ error }}</li>
         </ul>
       </v-card-text>
-    </v-row>
-  </v-container>
+    </v-row> -->
+  <!-- </v-container> -->
 </template>
 
 <script lang="ts">

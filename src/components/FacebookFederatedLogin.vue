@@ -1,15 +1,16 @@
 <template>
-  <v-container>
+  <!-- <v-container>
     <v-row>
-      <v-col>
-        <v-btn
-          type="submit"
-          class="white--text"
-          color="indigo"
-          @click="FacebookFederatedLogIn()"
-          >FACEBOOK</v-btn
-        >
-      </v-col>
+      <v-col> -->
+  <v-btn
+    type="submit"
+    class="white--text"
+    color="indigo"
+    min-width="350"
+    @click="FacebookFederatedLogIn()"
+    >FACEBOOK</v-btn
+  >
+  <!-- </v-col>
     </v-row>
     <v-row>
       <v-card-text v-if="errors.length">
@@ -19,7 +20,7 @@
         </ul>
       </v-card-text>
     </v-row>
-  </v-container>
+  </v-container> -->
 </template>
 
 <script lang="ts">

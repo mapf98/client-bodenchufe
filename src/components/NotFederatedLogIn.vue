@@ -1,20 +1,24 @@
 <template>
   <v-form @submit="notFederatedLogIn">
-    <v-container>
+    <v-container fluid>
       <v-row>
-        <v-text-field
-          v-model="user.userEmail"
-          :label="nflUser"
-          required
-        ></v-text-field>
+        <v-col>
+          <v-text-field
+            v-model="user.userEmail"
+            :label="nflUser"
+            required
+          ></v-text-field>
+        </v-col>
       </v-row>
       <v-row>
-        <v-text-field
-          v-model="user.userPassword"
-          :label="nflPassword"
-          required
-          type="password"
-        ></v-text-field>
+        <v-col>
+          <v-text-field
+            v-model="user.userPassword"
+            :label="nflPassword"
+            required
+            type="password"
+          ></v-text-field>
+        </v-col>
       </v-row>
       <v-row>
         <v-card-text v-if="errors.length">

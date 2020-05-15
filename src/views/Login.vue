@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-row cols="12">
+  <v-container fluid>
+    <v-row>
       <v-col class="d-flex justify-center">
         <router-link to="/">
           <v-img src="../assets/logoBodenchufe.png" max-width="300"></v-img
@@ -8,18 +8,39 @@
       </v-col>
     </v-row>
 
-    <v-row cols="d-flex">
-      <v-col md="6">
+    <v-row class="d-flex align-center mt-12">
+      <v-col cols="1"></v-col>
+      <v-col>
         <NotFederatedLogIn />
       </v-col>
-      <v-col md="6">
-        <b>O Inicia sesion a traves de:</b>
-        <GoogleFederatedLogIn />
-        <FacebookFederatedLogIn />
+      <v-col cols="2"></v-col>
+      <v-col>
+        <v-row>
+          <v-col class="d-flex justify-center">
+            <b>O Inicia sesion a traves de:</b>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="d-flex justify-center">
+            <GoogleFederatedLogIn />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="d-flex justify-center">
+            <FacebookFederatedLogIn />
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="1"></v-col>
+    </v-row>
+
+    <v-row class="mt-12">
+      <v-col class="d-flex justify-center">
+        ERROR
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row class="d-flex align-end mt-12">
       <v-col class="d-flex justify-center">
         <v-btn color="indigo" class="white--text">Registrarse</v-btn>
       </v-col>
