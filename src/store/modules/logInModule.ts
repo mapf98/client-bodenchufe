@@ -1,6 +1,6 @@
 import Vue from "vue";
 import logInService from "../../services/logInService";
-import { fa, providerGoogle, providerFacebook } from '../../firebase';
+import { fa, providerGoogle, providerFacebook } from "../../firebase";
 
 export default {
   namespaced: true,
@@ -32,56 +32,79 @@ export default {
     //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
     // },
     notFederatedLogIn: async (context: any, payload: any) => {
-      console.log(payload.user);
-      await logInService
-        .notFederatedLogIn(payload.user)
-        .then((response: any) => {
-          if (response.data.validated == true) {
-            localStorage.setItem("token", response.data.token);
-            context.commit("setUser", response.data.user[0]);
-            context.commit("setStatus", {
-              validado: true,
-              bloqueado: false,
-              registered: true,
-            });
-          }
-          if (response.data.validated == false) {
+      const userData: any = {
+        userName: "",
+        userLastName: "",
+        userLanguage: "",
+        userPhoto: "",
+      };
+      await logInService.checkLogIn(payload.user).then((response: any) => {
+        if (response.data.validated == true) {
+          userData.userName = response.data.user[0].user_first_name;
+          userData.userLastName = response.data.user[0].user_first_lastname;
+          userData.userLanguage = response.data.user[0].language_name;
+          userData.userPhoto = response.data.user[0].user_photo;
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("userData", JSON.stringify(userData));
+          context.commit("setUser", response.data.user[0]);
+          context.commit("setStatus", {
+            validado: true,
+            bloqueado: false,
+            registered: true,
+          });
+        }
+        if (response.data.validated == false) {
+          context.commit("setStatus", {
+            validated: false,
+            blocked: false,
+            registered: true,
+          }); //combinacion de correo y password incorrecto
+          if (response.data.blocked == true) {
             context.commit("setStatus", {
               validated: false,
-              blocked: false,
+              blocked: true,
               registered: true,
-            }); //combinacion de correo y password incorrecto
-            if (response.data.blocked == true) {
-              context.commit("setStatus", {
-                validated: false,
-                blocked: true,
-                registered: true,
-              }); //usuario bloqueado
-            }
+            }); //usuario bloqueado
           }
-          if (response.data.registered == false) {
-            context.commit("setStatus", {
-              validated: false,
-              blocked: false,
-              registered: false,
-            }); //correo no registrado
-          }
-        });
+        }
+        if (response.data.registered == false) {
+          context.commit("setStatus", {
+            validated: false,
+            blocked: false,
+            registered: false,
+          }); //correo no registrado
+        }
+      });
     },
-    GoogleFederatedLogIn: async (context: any) => {
+    federatedLogIn: async (context: any, payload: any) => {
       let userEmail: string | null | undefined;
-
-      await fa.signInWithPopup(providerGoogle).then(result =>{
-        userEmail = result.user?.email
-      }).catch(error =>{
-        console.log(error);
-      })
+      const userData: any = {
+        userName: "",
+        userLastName: "",
+        userLanguage: "",
+        userPhoto: "",
+      };
+      await fa
+        .signInWithPopup(
+          payload.provider == "google" ? providerGoogle : providerFacebook
+        )
+        .then((result) => {
+          userEmail = result.user?.email;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
       await logInService
-        .GoogleFederatedLogIn({userEmail: userEmail, userPassword: ""})
+        .checkLogIn({ userEmail: userEmail, userPassword: "" })
         .then((response: any) => {
           if (response.data.validated == true) {
+            userData.userName = response.data.user[0].user_first_name;
+            userData.userLastName = response.data.user[0].user_first_lastname;
+            userData.userLanguage = response.data.user[0].language_name;
+            userData.userPhoto = response.data.user[0].user_photo;
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("userData", JSON.stringify(userData));
             context.commit("setUser", response.data.user[0]);
             context.commit("setStatus", {
               validado: true,
@@ -89,7 +112,10 @@ export default {
               registered: true,
             });
           }
-          if (response.data.validated == false && response.data.blocked == true) {
+          if (
+            response.data.validated == false &&
+            response.data.blocked == true
+          ) {
             context.commit("setStatus", {
               validated: false,
               blocked: true,
@@ -105,7 +131,6 @@ export default {
           }
         });
     },
-
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
     // },

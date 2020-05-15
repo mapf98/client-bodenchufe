@@ -1,26 +1,26 @@
 <template>
-  <!-- <v-container> -->
-  <!-- <v-row>
+  <!-- <v-container>
+    <v-row>
       <v-col> -->
   <v-btn
     type="submit"
     class="white--text"
     color="indigo"
     min-width="350"
-    @click="GoogleFederatedLogIn()"
-    >Google</v-btn
+    @click="FacebookFederatedLogIn()"
+    >FACEBOOK</v-btn
   >
   <!-- </v-col>
-    </v-row> -->
-  <!-- <v-row>
+    </v-row>
+    <v-row>
       <v-card-text v-if="errors.length">
         <b>{{ nflMessageError }}</b>
         <ul>
           <li v-for="error in errors" :key="error.id">{{ error }}</li>
         </ul>
       </v-card-text>
-    </v-row> -->
-  <!-- </v-container> -->
+    </v-row>
+  </v-container> -->
 </template>
 
 <script lang="ts">
@@ -29,7 +29,7 @@ import Component from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 
 @Component({})
-export default class GoogleFederatedLogin extends Vue {
+export default class FacebookFederatedLogin extends Vue {
   user = {
     userEmail: "",
     userPassword: "",
@@ -40,12 +40,12 @@ export default class GoogleFederatedLogin extends Vue {
   nflMailNotRegistered = "Mail not registered";
   nflMessageError = "Please correct the following error(s):";
 
-  GoogleFederatedLogIn() {
+  FacebookFederatedLogIn() {
     this.errors.splice(0);
 
     if (this.errors.length == 0) {
       this.$store
-        .dispatch("logIn/federatedLogIn", { provider: "google" })
+        .dispatch("logIn/federatedLogIn", { provider: "facebook" })
         .then(() => {
           if (
             this.getStatus.validated == false &&
@@ -62,6 +62,7 @@ export default class GoogleFederatedLogin extends Vue {
             this.errors.push(this.nflMailNotRegistered);
           }
           if (this.errors.length == 0) {
+            console.log(this.getUser);
             this.$router.push("/");
           }
         });
@@ -101,6 +102,10 @@ export default class GoogleFederatedLogin extends Vue {
 
   get getStatus() {
     return this.$store.getters["logIn/getLoginStatus"];
+  }
+
+  get getUser() {
+    return this.$store.getters["logIn/getLoginUserData"];
   }
 }
 </script>

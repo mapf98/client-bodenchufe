@@ -1,6 +1,25 @@
 <template>
   <v-form @submit="notFederatedLogIn">
-    <v-container>
+    <v-container fluid>
+      <v-row>
+        <v-col>
+          <v-text-field
+            v-model="user.userEmail"
+            :label="nflUser"
+            required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-text-field
+            v-model="user.userPassword"
+            :label="nflPassword"
+            required
+            type="password"
+          ></v-text-field>
+        </v-col>
+      </v-row>
       <v-row>
         <v-card-text v-if="errors.length">
           <b>{{ nflMessageError }}</b>
@@ -8,21 +27,6 @@
             <li v-for="error in errors" :key="error.id">{{ error }}</li>
           </ul>
         </v-card-text>
-      </v-row>
-      <v-row>
-        <v-text-field
-          v-model="user.userEmail"
-          :label="nflUser"
-          required
-        ></v-text-field>
-      </v-row>
-      <v-row>
-        <v-text-field
-          v-model="user.userPassword"
-          :label="nflPassword"
-          required
-          type="password"
-        ></v-text-field>
       </v-row>
 
       <v-row justify="center">
