@@ -62,7 +62,7 @@ export default class Navbar extends Vue {
   }
 
   goToSignUp() {
-    this.$router.push("/signUp/All");
+    this.$router.push("/user/signUp");
   }
 
   mounted() {

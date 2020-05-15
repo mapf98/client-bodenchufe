@@ -31,12 +31,12 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: "/signUp",
+    path: "/user",
     name: "SignUp",
     component: SignUp,
     children: [
       {
-        path: "All",
+        path: "signUp",
         name: "All",
         component: AllSignUp,
         meta: {
@@ -45,7 +45,7 @@ const routes: Array<RouteConfig> = [
         },
       },
       {
-        path: "Usual",
+        path: "signUp/external",
         name: "Usual",
         component: NotFederatedSignUp,
         meta: {
