@@ -2,6 +2,8 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Login.vue";
+import SignUp from "../views/SignUp.vue";
+
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
 
@@ -21,6 +23,15 @@ const routes: Array<RouteConfig> = [
     path: "/login",
     name: "Login",
     component: Login,
+    meta: {
+      requiresAuth: false,
+      hideBasicComponents: true,
+    },
+  },
+  {
+    path: "/signUp",
+    name: "SignUp",
+    component: SignUp,
     meta: {
       requiresAuth: false,
       hideBasicComponents: true,

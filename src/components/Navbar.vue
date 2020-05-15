@@ -28,7 +28,7 @@
         }}</v-btn>
       </v-col>
       <v-col class="d-flex justify-center">
-        <v-btn text small color="indigo">{{ navbarSingUp }}</v-btn>
+        <v-btn text small color="indigo" @click="goToSignUp">{{ navbarSingUp }}</v-btn>
       </v-col>
       <v-col class="d-flex justify-center">
         <Internationalization />
@@ -57,6 +57,10 @@ export default class Navbar extends Vue {
 
   goToLogin() {
     this.$router.push("/Login");
+  }
+
+  goToSignUp() {
+    this.$router.push("/signUp");
   }
 
   mounted() {
