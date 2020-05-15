@@ -27,7 +27,7 @@
     <v-row>
       <v-col class="d-flex justify-center">
         <v-btn color="indigo" class="white--text">{{
-          FacebookRegistrationRegistroFacebook
+          FacebookRegistration
         }}</v-btn>
       </v-col>
     </v-row>
