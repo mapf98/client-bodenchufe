@@ -36,20 +36,24 @@ const routes: Array<RouteConfig> = [
     component: SignUp,
     children: [
       {
-        path: "/All",
+        path: "All",
         name: "All",
         component: AllSignUp,
+        meta: {
+          requiresAuth: false,
+          hideBasicComponents: true,
+        },
       },
       {
-        path: "/usual",
+        path: "Usual",
         name: "Usual",
         component: NotFederatedSignUp,
+        meta: {
+          requiresAuth: false,
+          hideBasicComponents: true,
+        },
       },
     ],
-    meta: {
-      requiresAuth: false,
-      hideBasicComponents: true,
-    },
   },
 ];
 

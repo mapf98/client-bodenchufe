@@ -24,13 +24,7 @@ import Footer from "../components/Footer.vue";
     Footer,
   },
 })
-export default class Home extends Vue {
-  loading = false;
-
-  goToNotFederatedSignUp() {
-    this.$router.push("/signUp/usual");
-  }
-}
+export default class SignUp extends Vue {}
 </script>
 
 <style lang="scss"></style>
