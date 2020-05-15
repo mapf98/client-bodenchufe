@@ -10,9 +10,12 @@
 
     <v-row>
       <v-col class="d-flex justify-center mt-12">
-        <v-btn color="indigo" class="white--text">{{
-          UsualRegistration
-        }}</v-btn>
+        <v-btn
+          color="indigo"
+          class="white--text"
+          @click="goToNotFederatedSignUp"
+          >{{ UsualRegistration }}</v-btn
+        >
       </v-col>
     </v-row>
 
@@ -43,5 +46,9 @@ export default class AllSignUp extends Vue {
   UsualRegistration = "Registro Habitual";
   GoogleRegistration = "Registro con Google";
   FacebookRegistration = "Registro con Facebook";
+
+  goToNotFederatedSignUp() {
+    console.log("/");
+  }
 }
 </script>
