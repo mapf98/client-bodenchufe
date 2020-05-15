@@ -1,7 +1,7 @@
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
-import 'firebase/storage';
+import * as firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyASaIP-3ygQk1_GuRnrV0L7OeOW4f8P-6E",
@@ -11,7 +11,7 @@ const firebaseConfig = {
   storageBucket: "bodenchufe-client.appspot.com",
   messagingSenderId: "143017378586",
   appId: "1:143017378586:web:e4dc27f5a99e49b101a2a3",
-  measurementId: "G-05MT486Z8N"
+  measurementId: "G-05MT486Z8N",
 };
 
 const fb = firebase.initializeApp(firebaseConfig);
@@ -19,7 +19,7 @@ const db = firebase.firestore();
 const fs = firebase.storage();
 
 const fa = firebase.auth();
-const providerGoogle = new firebase.auth.GoogleAuthProvider()
-const providerFacebook = new firebase.auth.FacebookAuthProvider()
+const providerGoogle = new firebase.auth.GoogleAuthProvider();
+const providerFacebook = new firebase.auth.FacebookAuthProvider();
 
-export {fb, db, fs, fa, providerGoogle, providerFacebook}
+export { fb, db, fs, fa, providerGoogle, providerFacebook };
