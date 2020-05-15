@@ -4,6 +4,7 @@ import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import AllSignUp from "../components/AllSignUp.vue";
+import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -38,6 +39,11 @@ const routes: Array<RouteConfig> = [
         path: "/All",
         name: "All",
         component: AllSignUp,
+      },
+      {
+        path: "/usual",
+        name: "Usual",
+        component: NotFederatedSignUp,
       },
     ],
     meta: {

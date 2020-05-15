@@ -1,13 +1,5 @@
 <template>
   <v-container>
-    <v-row cols="12">
-      <v-col class="d-flex justify-center mb-12">
-        <router-link to="/">
-          <v-img src="../assets/logoBodenchufe.png" max-width="300"></v-img
-        ></router-link>
-      </v-col>
-    </v-row>
-
     <v-row>
       <v-col class="d-flex justify-center mt-12">
         <v-btn
@@ -48,7 +40,7 @@ export default class AllSignUp extends Vue {
   FacebookRegistration = "Registro con Facebook";
 
   goToNotFederatedSignUp() {
-    this.$router.push("/usual");
+    this.$router.push("/signUp/usual");
   }
 }
 </script>

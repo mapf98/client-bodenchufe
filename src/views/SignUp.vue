@@ -1,6 +1,16 @@
 <template>
   <v-container>
-    <router-link></router-link>
+    <v-row cols="12">
+      <v-col class="d-flex justify-center mb-12">
+        <router-link to="/">
+          <v-img src="../assets/logoBodenchufe.png" max-width="300"></v-img
+        ></router-link>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <router-view></router-view>
+    </v-row>
   </v-container>
 </template>
 
@@ -8,19 +18,17 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import Footer from "../components/Footer.vue";
-import AllSignUp from "../components/AllSignUp.vue";
 
 @Component({
   components: {
     Footer,
-    AllSignUp,
   },
 })
 export default class Home extends Vue {
   loading = false;
 
-  login() {
-    this.$router.push("/");
+  goToNotFederatedSignUp() {
+    this.$router.push("/signUp/usual");
   }
 }
 </script>
