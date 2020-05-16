@@ -32,6 +32,7 @@ export default class SignUpLanguage extends Vue {
   language = "";
   selectLanguage(language: string) {
     this.language = language;
+    this.$emit("languageName", this.language);
   }
 }
 </script>

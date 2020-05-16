@@ -39,6 +39,7 @@ export default class SignUpPhoto extends Vue {
       const files = event || event.dataTransfer.files;
       this.userPhoto = files;
       this.createImg(files);
+      this.$emit("imageFiles", files);
     } else {
       this.agregado = false;
     }

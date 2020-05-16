@@ -80,8 +80,8 @@
       </v-col>
       <v-col md="2"></v-col>
       <v-col md="5" class="text-center">
-        <SignUpPhoto />
-        <SignUpLanguage />
+        <SignUpPhoto @imageFiles="imageFile = $event" />
+        <SignUpLanguage @languageName="user.languageName = $event" />
       </v-col>
     </v-row>
     <v-row class="mt-12">
@@ -91,7 +91,7 @@
           class="white--text"
           color="indigo"
           type="submit"
-          @click="validate"
+          @click="signUp"
           >{{ registerBtnText }}</v-btn
         >
       </v-col>
@@ -136,10 +136,11 @@ export default class NotFederatedSingUp extends Vue {
     userBirthdate: null,
     userEmail: "",
     userPassword: "",
-    userPhoto: "",
+    userPhoto: "photo",
     languageName: "",
     rolName: "user",
   };
+  imageFile: any; //foto que viene del hijo "aun no en FIREBASE"
 
   nameRules = [
     (v: any) => !!v || "Name is required",
@@ -173,9 +174,12 @@ export default class NotFederatedSingUp extends Vue {
     this.$refs.menu.save(date);
   }
 
-  validate() {
+  signUp() {
     this.$refs.form.validate();
-    console.log(this.user);
+    this.$store.dispatch("signUp/notFederatedSignUp", {
+      user: this.user,
+      imageFile: this.imageFile,
+    });
   }
 }
 </script>
