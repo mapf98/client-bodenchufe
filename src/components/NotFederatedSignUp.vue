@@ -87,19 +87,21 @@
         </v-col>
         <v-col md="1"></v-col>
       </v-row>
-      <v-row class="mt-12">
-        <v-col class="text-center">
-          <v-btn
-            :disabled="!valid"
-            class="white--text mb-12"
-            color="indigo"
-            type="submit"
-            @click="signUp"
-            >{{ registerBtnText }}</v-btn
-          >
-        </v-col>
-      </v-row>
     </v-card>
+    <v-row class="mt-12">
+      <v-col class="text-center">
+        <v-btn
+          :disabled="!valid"
+          :loading="loading"
+          class="white--text mb-12"
+          color="amber"
+          type="submit"
+          @click="signUp"
+          >{{ registerBtnText
+          }}<v-icon class="ml-5">mdi-location-enter</v-icon></v-btn
+        >
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -187,15 +189,20 @@ export default class NotFederatedSingUp extends Vue {
   }
 
   signUp() {
-    this.$refs.form.validate();
-    this.$store
-      .dispatch("signUp/notFederatedSignUp", {
-        user: this.user,
-        imageFile: this.imageFile,
-      })
-      .then(() => {
-        this.$router.push("/");
-      });
+    this.loading = true;
+    if (this.$refs.form.validate()) {
+      this.$store
+        .dispatch("signUp/notFederatedSignUp", {
+          user: this.user,
+          imageFile: this.imageFile,
+        })
+        .then(() => {
+          this.loading = false;
+          this.$router.push("/");
+        });
+    } else {
+      this.loading = false;
+    }
   }
 
   mounted() {

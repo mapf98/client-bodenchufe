@@ -24,6 +24,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class SignUpPhoto extends Vue {
@@ -53,6 +54,33 @@ export default class SignUpPhoto extends Vue {
     };
     reader.readAsDataURL(file);
     this.agregado = true;
+  }
+
+  mounted() {
+    this.translate();
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "userPhotoTextTitle": {
+          this.userPhotoTextTitle = term.termTranslation;
+          break;
+        }
+        case "userPhotoTextInput": {
+          this.userPhotoTextInput = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>
