@@ -1,26 +1,17 @@
 <template>
-  <!-- <v-container>
-    <v-row>
-      <v-col> -->
   <v-btn
     type="submit"
     class="white--text"
     color="indigo"
-    min-width="350"
+    :width="buttonCols()"
+    rounded
     @click="FacebookFederatedLogIn()"
-    >FACEBOOK</v-btn
   >
-  <!-- </v-col>
-    </v-row>
-    <v-row>
-      <v-card-text v-if="errors.length">
-        <b>{{ nflMessageError }}</b>
-        <ul>
-          <li v-for="error in errors" :key="error.id">{{ error }}</li>
-        </ul>
-      </v-card-text>
-    </v-row>
-  </v-container> -->
+    {{ loginFacebook }}
+    <v-icon right>
+      mdi-facebook
+    </v-icon>
+  </v-btn>
 </template>
 
 <script lang="ts">
@@ -35,10 +26,16 @@ export default class FacebookFederatedLogin extends Vue {
     userPassword: "",
   };
 
+  loginFacebook = "Login with Facebook";
   errors: string[] = [];
   nflUserBlocked = "User blocked";
   nflMailNotRegistered = "Mail not registered";
   nflMessageError = "Please correct the following error(s):";
+
+  buttonCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs ? 280 : sm ? 280 : 350;
+  }
 
   FacebookFederatedLogIn() {
     this.errors.splice(0);
@@ -62,8 +59,10 @@ export default class FacebookFederatedLogin extends Vue {
             this.errors.push(this.nflMailNotRegistered);
           }
           if (this.errors.length == 0) {
-            console.log(this.getUser);
+            this.$store.dispatch("internationalization/setUserLanguage");
             this.$router.push("/");
+          } else {
+            this.$emit("showErrors", this.errors);
           }
         });
     }
@@ -87,6 +86,10 @@ export default class FacebookFederatedLogin extends Vue {
         }
         case "nflMessageError": {
           this.nflMessageError = term.termTranslation;
+          break;
+        }
+        case "loginFacebook": {
+          this.loginFacebook = term.termTranslation;
           break;
         }
         default: {
