@@ -8,6 +8,11 @@
         </v-icon>
       </v-col>
     </v-row>
+    <v-row class="mt-6" v-if="showUser">
+      <v-col>
+        <NavbarUser />
+      </v-col>
+    </v-row>
     <v-row class="mt-6">
       <v-col class="d-flex justify-center">
         <v-btn large color="amber darken-4" outlined min-width="200">{{
@@ -15,7 +20,7 @@
         }}</v-btn>
       </v-col>
     </v-row>
-    <v-row class="mt-4">
+    <v-row class="mt-4" v-if="!showUser">
       <v-col class="d-flex justify-center">
         <v-btn
           large
@@ -27,7 +32,7 @@
         >
       </v-col>
     </v-row>
-    <v-row class="mt-4">
+    <v-row class="mt-4" v-if="!showUser">
       <v-col class="d-flex justify-center">
         <v-btn
           large
@@ -52,10 +57,12 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch, Prop } from "vue-property-decorator";
 import Internationalization from "../components/Internationalization.vue";
+import NavbarUser from "../components/NavbarUser.vue";
 
 @Component({
   components: {
     Internationalization,
+    NavbarUser,
   },
 })
 export default class MobileSidebar extends Vue {
@@ -65,6 +72,7 @@ export default class MobileSidebar extends Vue {
   navbarLogin = "Log In";
   navbarSingUp = "Sing Up";
   navbarNavigation = "Navigation";
+  showUser = false;
 
   @Watch("openSideMenu")
   drawer() {
@@ -80,6 +88,7 @@ export default class MobileSidebar extends Vue {
   }
 
   mounted() {
+    this.showUser = localStorage.getItem("userData") == null ? false : true;
     this.translate();
   }
 

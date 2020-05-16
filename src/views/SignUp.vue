@@ -2,12 +2,11 @@
   <v-container>
     <v-row cols="12">
       <v-col class="d-flex justify-center mb-12">
-        <router-link to="/">
+        <router-link to="/home">
           <v-img src="../assets/logoBodenchufe.png" max-width="300"></v-img
         ></router-link>
       </v-col>
     </v-row>
-
     <v-row>
       <router-view></router-view>
     </v-row>

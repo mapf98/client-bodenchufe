@@ -22,15 +22,18 @@
           navbarCategories
         }}</v-btn>
       </v-col>
-      <v-col class="d-flex justify-end">
+      <v-col class="d-flex justify-end" v-if="!showUser">
         <v-btn text small color="indigo" @click="goToLogin">{{
           navbarLogin
         }}</v-btn>
       </v-col>
-      <v-col class="d-flex justify-center">
+      <v-col class="d-flex justify-center" v-if="!showUser">
         <v-btn text small color="indigo" @click="goToSignUp">{{
           navbarSingUp
         }}</v-btn>
+      </v-col>
+      <v-col class="d-flex justify-center" v-if="showUser">
+        <NavbarUser />
       </v-col>
       <v-col class="d-flex justify-center">
         <Internationalization />
@@ -45,17 +48,20 @@ import Component from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 import SearchBox from "../components/SearchBox.vue";
 import Internationalization from "../components/Internationalization.vue";
+import NavbarUser from "../components/NavbarUser.vue";
 
 @Component({
   components: {
     SearchBox,
     Internationalization,
+    NavbarUser,
   },
 })
 export default class Navbar extends Vue {
   navbarCategories = "Categories";
   navbarLogin = "Log In";
   navbarSingUp = "Sing Up";
+  showUser = false;
 
   goToLogin() {
     this.$router.push("/Login");
@@ -66,6 +72,7 @@ export default class Navbar extends Vue {
   }
 
   mounted() {
+    this.showUser = localStorage.getItem("userData") == null ? false : true;
     this.translate();
   }
 

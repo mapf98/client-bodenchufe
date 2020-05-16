@@ -7,7 +7,7 @@ export default {
   namespaced: true,
   // -----------------------------------------------------------------
   state: {
-    // Aqui van los 
+    // Aqui van los
     user: {},
     status: {},
   },
@@ -47,12 +47,12 @@ export default {
       };
 
       await signUpService.signUp(payload.user).then((response: any) => {
-        if (response.data.registered == true){
+        if (response.data.registered == true) {
           userId = response.data.user[0].user_id;
           userEmail = response.data.user[0].user_email;
           userPassword = response.data.user[0].user_password;
         } else {
-          context.commit("setStatus", {registered: false}); //el correo ya esta usado
+          context.commit("setStatus", { registered: false }); //el correo ya esta usado
         }
       });
 
@@ -62,28 +62,41 @@ export default {
           .ref("images/user/" + userId + "/" + payload.imageFile);
         const uploadTask = storageRef.put(payload.imageFile);
 
-        uploadTask.on("state_changed",async (snapshot) => {
-          snapshotFinal = snapshot.state
-        }, (error) => {
-          console.log(error);
-        }, async () => {
-          await uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            imageUrl = downloadURL;
-            console.log("File available at", imageUrl);
-          });
-          await signUpService.setUserPhoto({ userId: userId, userPhoto: imageUrl });
-          await logInService.checkLogIn({userEmail: userEmail, userPassword: userPassword}).then((response: any)=>{
-            if (response.data.validated == true) {
-              userData.userName = response.data.user[0].user_first_name;
-              userData.userLastName = response.data.user[0].user_first_lastname;
-              userData.userLanguage = response.data.user[0].language_name;
-              userData.userPhoto = response.data.user[0].user_photo;
-              localStorage.setItem("token", response.data.token);
-              localStorage.setItem("userData", JSON.stringify(userData));
-              context.commit("setUser", response.data.user[0]);
-            }
-          })
-        });
+        uploadTask.on(
+          "state_changed",
+          async (snapshot) => {
+            snapshotFinal = snapshot.state;
+          },
+          (error) => {
+            console.log(error);
+          },
+          async () => {
+            await uploadTask.snapshot.ref
+              .getDownloadURL()
+              .then((downloadURL) => {
+                imageUrl = downloadURL;
+                console.log("File available at", imageUrl);
+              });
+            await signUpService.setUserPhoto({
+              userId: userId,
+              userPhoto: imageUrl,
+            });
+            await logInService
+              .checkLogIn({ userEmail: userEmail, userPassword: userPassword })
+              .then((response: any) => {
+                if (response.data.validated == true) {
+                  userData.userName = response.data.user[0].user_first_name;
+                  userData.userLastName =
+                    response.data.user[0].user_first_lastname;
+                  userData.userLanguage = response.data.user[0].language_name;
+                  userData.userPhoto = response.data.user[0].user_photo;
+                  localStorage.setItem("token", response.data.token);
+                  localStorage.setItem("userData", JSON.stringify(userData));
+                  context.commit("setUser", response.data.user[0]);
+                }
+              });
+          }
+        );
       }
     },
     // update: (context, bankData) => {
