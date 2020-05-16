@@ -38,7 +38,7 @@
 
     <v-row class="d-flex align-end mt-12">
       <v-col class="d-flex justify-center mt-10">
-        <v-btn color="amber" class="white--text" x-large
+        <v-btn color="amber" class="white--text" x-large @click="goToSignUp"
           >{{ loginSignUp }} <v-icon class="ml-5">mdi-location-enter</v-icon>
         </v-btn>
       </v-col>
@@ -84,6 +84,10 @@ export default class Login extends Vue {
 
   mounted() {
     this.translate();
+  }
+
+  goToSignUp(){
+    this.$router.push("/user/signUp");
   }
 
   separatorCols() {
