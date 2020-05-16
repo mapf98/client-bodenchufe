@@ -19,6 +19,7 @@ const routes: Array<RouteConfig> = [
     meta: {
       requiresAuth: false,
       hideBasicComponents: false,
+      applyBackground: false,
     },
   },
   {
@@ -28,6 +29,7 @@ const routes: Array<RouteConfig> = [
     meta: {
       requiresAuth: false,
       hideBasicComponents: true,
+      applyBackground: true,
     },
   },
   {
