@@ -102,6 +102,21 @@
         >
       </v-col>
     </v-row>
+    <v-snackbar
+      v-model="snackbarError"
+      color="indigo darken-4 px-3"
+      class="mb-5 my-5"
+      top
+    >
+      <ul>
+        <li class="body-1" v-for="error in errors" :key="error.id">
+          {{ error }}
+        </li>
+      </ul>
+      <v-btn color="amber" text @click="snackbarError = false" small>
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -124,6 +139,8 @@ export default class NotFederatedSingUp extends Vue {
   menuRef = false;
   valid = true;
   date = null;
+  snackbarError = false;
+  errors: Array<string> = [];
 
   //PoEditor Terms
   registerBtnText = "Check In";
@@ -142,6 +159,9 @@ export default class NotFederatedSingUp extends Vue {
   userEmailRulesRequired = "Email is required";
   userEmailRulesValid = "Email must be valid";
   userBirthdayRulesRequired = "Birthday Date is required";
+  userEmailRegisteredTrue = "This email is already in use";
+
+  btnLanguage: never | string = "Select your preferred language";
 
   //userInfo
   user = {
@@ -179,6 +199,11 @@ export default class NotFederatedSingUp extends Vue {
     form: any;
   };
 
+  showErrors(errors: any) {
+    this.errors = errors;
+    this.snackbarError = true;
+  }
+
   @Watch("menuRef")
   menu(val: Date) {
     val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
@@ -190,18 +215,29 @@ export default class NotFederatedSingUp extends Vue {
 
   signUp() {
     this.loading = true;
-    if (this.$refs.form.validate()) {
+    if (this.$refs.form.validate() && this.user.languageName != "") {
       this.$store
         .dispatch("signUp/notFederatedSignUp", {
           user: this.user,
           imageFile: this.imageFile,
         })
         .then(() => {
-          this.loading = false;
-          this.$router.push("/");
+          console.log(this.getStatus.registered);
+          if (this.getStatus.registered == false) {
+            this.loading = false;
+            this.errors.push(this.userEmailRegisteredTrue);
+            this.showErrors(this.errors);
+          } else {
+            this.loading = false;
+            this.$router.push("/");
+          }
         });
     } else {
       this.loading = false;
+      if (this.user.languageName == "") {
+        this.errors.push(this.btnLanguage);
+        this.showErrors(this.errors);
+      }
     }
   }
 
@@ -223,6 +259,14 @@ export default class NotFederatedSingUp extends Vue {
         }
         case "userSecondNameText": {
           this.userSecondNameText = term.termTranslation;
+          break;
+        }
+        case "userEmailRegisteredTrue": {
+          this.userEmailRegisteredTrue = term.termTranslation;
+          break;
+        }
+        case "btnLanguage": {
+          this.btnLanguage = term.termTranslation;
           break;
         }
         case "userFirstLastNameText": {
@@ -282,6 +326,10 @@ export default class NotFederatedSingUp extends Vue {
 
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
+  get getStatus() {
+    return this.$store.getters["signUp/getLoginStatus"];
   }
 }
 </script>
