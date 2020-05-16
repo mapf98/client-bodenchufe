@@ -119,6 +119,15 @@ export default class MobileSidebar extends Vue {
     });
   }
 
+  @Watch("userData")
+  userLogIn() {
+    this.showUser = localStorage.getItem("userData") == null ? false : true;
+  }
+
+  get userData() {
+    return this.$store.getters["logIn/getLoginUserData"];
+  }
+
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
