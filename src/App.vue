@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :style="setBackground()">
     <MobileSidebar v-bind:open-side-menu="drawer" />
     <Navbar
       v-if="!$route.meta.hideBasicComponents"
@@ -36,5 +36,26 @@ export default class App extends Vue {
   get drawer() {
     return this.draw;
   }
+
+  mounted() {
+    this.$store.dispatch("internationalization/setUserLanguage");
+    this.$store.dispatch("internationalization/getTranslate", {
+      lang: this.$store.getters["internationalization/getPreferredLanguage"],
+    });
+  }
+
+  setBackground() {
+    if (this.$route.meta.applyBackground) {
+      return {
+        backgroundImage: `url("${require("./assets/bglogin.jpg")}")`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover",
+        height: "100%",
+      };
+    }
+  }
 }
 </script>
+<style lang="scss"></style>

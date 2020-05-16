@@ -1,5 +1,5 @@
 <template>
-  <v-footer app class="indigo">
+  <v-footer app class="indigo" absolute>
     <v-row class="d-flex align-center">
       <v-col class="d-flex justify-center">
         <v-icon class="mr-8 pointer" color="white" @click="openInstagram">
