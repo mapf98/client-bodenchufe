@@ -10,7 +10,7 @@
 
     <v-card outlined elevation="6" class="mt-12 px-12">
       <v-card-title>
-        <p class="title">{{ loginIntro }}</p>
+        <p class="title mb-0">{{ loginIntro }}</p>
       </v-card-title>
       <v-row class="d-flex align-center mb-6">
         <v-col>
@@ -46,7 +46,7 @@
     <v-snackbar
       v-model="snackbarError"
       color="indigo darken-4 px-3"
-      class="mb-5 mr-5"
+      class="mb-5 my-5"
       top
     >
       <ul>
