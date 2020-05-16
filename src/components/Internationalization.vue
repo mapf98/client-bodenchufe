@@ -54,18 +54,7 @@ export default class Internationalization extends Vue {
   }
 
   get preferredLanguage() {
-    const userData = localStorage.getItem("userData");
-    let userLanguage: string;
-    let user: any;
-    if (userData !== null) {
-      user = JSON.parse(userData);
-      userLanguage = user.userLanguage;
-      console.log(userLanguage);
-      //localstorage user language
-      return "";
-    } else {
-      return this.$store.getters["internationalization/getPreferredLanguage"];
-    }
+    return this.$store.getters["internationalization/getPreferredLanguage"];
   }
 }
 </script>

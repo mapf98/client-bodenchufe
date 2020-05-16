@@ -1,26 +1,15 @@
 <template>
-  <!-- <v-container> -->
-  <!-- <v-row>
-      <v-col> -->
   <v-btn
     type="submit"
     class="white--text"
-    color="indigo"
-    min-width="350"
+    color="blue"
+    rounded
+    :width="buttonCols()"
     @click="GoogleFederatedLogIn()"
-    >Google</v-btn
   >
-  <!-- </v-col>
-    </v-row> -->
-  <!-- <v-row>
-      <v-card-text v-if="errors.length">
-        <b>{{ nflMessageError }}</b>
-        <ul>
-          <li v-for="error in errors" :key="error.id">{{ error }}</li>
-        </ul>
-      </v-card-text>
-    </v-row> -->
-  <!-- </v-container> -->
+    {{ loginGoogle }}
+    <v-icon right>mdi-google</v-icon>
+  </v-btn>
 </template>
 
 <script lang="ts">
@@ -35,10 +24,16 @@ export default class GoogleFederatedLogin extends Vue {
     userPassword: "",
   };
 
+  loginGoogle = "Login with Google";
   errors: string[] = [];
   nflUserBlocked = "User blocked";
   nflMailNotRegistered = "Mail not registered";
   nflMessageError = "Please correct the following error(s):";
+
+  buttonCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs ? 280 : sm ? 280 : 350;
+  }
 
   GoogleFederatedLogIn() {
     this.errors.splice(0);
@@ -62,7 +57,10 @@ export default class GoogleFederatedLogin extends Vue {
             this.errors.push(this.nflMailNotRegistered);
           }
           if (this.errors.length == 0) {
+            this.$store.dispatch("internationalization/setUserLanguage");
             this.$router.push("/");
+          } else {
+            this.$emit("showErrors", this.errors);
           }
         });
     }
@@ -86,6 +84,10 @@ export default class GoogleFederatedLogin extends Vue {
         }
         case "nflMessageError": {
           this.nflMessageError = term.termTranslation;
+          break;
+        }
+        case "loginGoogle": {
+          this.loginGoogle = term.termTranslation;
           break;
         }
         default: {
