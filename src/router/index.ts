@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
+import DashboardHome from "../components/DashboardHome.vue";
 import Login from "../views/Login.vue";
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -12,6 +13,17 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Dashboard",
     component: Dashboard,
+    children: [
+      {
+        path: "/home",
+        name: "DashboardHome",
+        component: DashboardHome,
+        meta: {
+          requiresAuth: false,
+          hideBasicComponents: false,
+        },
+      },
+    ],
     meta: {
       requiresAuth: false,
       hideBasicComponents: false,
