@@ -1,101 +1,105 @@
 <template>
   <v-container>
-    <v-row class="">
-      <v-col md="5" class="text-center">
-        <v-form v-model="valid" ref="form" lazy-validation>
-          <v-row>
-            <v-col>
-              <v-text-field
-                type="text"
-                v-model="user.userFirstName"
-                :label="userFirstNameText"
-                :rules="nameRules"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field
-                type="text"
-                v-model="user.userFirstLastname"
-                :label="userFirstLastNameText"
-                :rules="nameRules"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field
-                type="text"
-                v-model="user.userEmail"
-                :label="userEmailText"
-                :rules="emailRules"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field
-                type="password"
-                v-model="user.userPassword"
-                :label="userPasswordText"
-                :rules="passwordRules"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-menu
-                ref="menu"
-                v-model="menuRef"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
+    <v-card>
+      <v-row class="">
+        <v-col md="1"></v-col>
+        <v-col md="4" class="text-center">
+          <v-form v-model="valid" ref="form" lazy-validation>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  type="text"
+                  v-model="user.userFirstName"
+                  :label="userFirstNameText"
+                  :rules="nameRules"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  type="text"
+                  v-model="user.userFirstLastname"
+                  :label="userFirstLastNameText"
+                  :rules="nameRules"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  type="text"
+                  v-model="user.userEmail"
+                  :label="userEmailText"
+                  :rules="emailRules"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  type="password"
+                  v-model="user.userPassword"
+                  :label="userPasswordText"
+                  :rules="passwordRules"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-menu
+                  ref="menu"
+                  v-model="menuRef"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="user.userBirthdate"
+                      :label="userBirthDateText"
+                      :rules="birthDateRules"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    ref="picker"
                     v-model="user.userBirthdate"
-                    label="Birthday date"
-                    :rules="birthDateRules"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  ref="picker"
-                  v-model="user.userBirthdate"
-                  :max="new Date().toISOString().substr(0, 10)"
-                  min="1950-01-01"
-                  @change="save"
-                ></v-date-picker>
-              </v-menu>
-            </v-col>
-          </v-row>
-        </v-form>
-      </v-col>
-      <v-col md="2"></v-col>
-      <v-col md="5" class="text-center">
-        <SignUpPhoto @imageFiles="imageFile = $event" />
-        <SignUpLanguage @languageName="user.languageName = $event" />
-      </v-col>
-    </v-row>
-    <v-row class="mt-12">
-      <v-col class="text-center">
-        <v-btn
-          :disabled="!valid"
-          class="white--text"
-          color="indigo"
-          type="submit"
-          @click="signUp"
-          >{{ registerBtnText }}</v-btn
-        >
-      </v-col>
-    </v-row>
+                    :max="new Date().toISOString().substr(0, 10)"
+                    min="1950-01-01"
+                    @change="save"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-col>
+        <v-col md="2"></v-col>
+        <v-col md="4" class="text-center">
+          <SignUpPhoto @imageFiles="imageFile = $event" />
+          <SignUpLanguage @languageName="user.languageName = $event" />
+        </v-col>
+        <v-col md="1"></v-col>
+      </v-row>
+      <v-row class="mt-12">
+        <v-col class="text-center">
+          <v-btn
+            :disabled="!valid"
+            class="white--text mb-12"
+            color="indigo"
+            type="submit"
+            @click="signUp"
+            >{{ registerBtnText }}</v-btn
+          >
+        </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
@@ -129,6 +133,14 @@ export default class NotFederatedSingUp extends Vue {
   userEmailText = "Email ";
   userPasswordText = "Password";
 
+  userNameRulesLength = "Name must be less than 10 characters";
+  userNameRulesRequired = "Name is required";
+  userPasswordRulesLength = "Password must be less than 8 characters";
+  userPasswordRulesRequired = "Password is required";
+  userEmailRulesRequired = "Email is required";
+  userEmailRulesValid = "Email must be valid";
+  userBirthdayRulesRequired = "Birthday Date is required";
+
   //userInfo
   user = {
     userFirstName: "",
@@ -143,21 +155,21 @@ export default class NotFederatedSingUp extends Vue {
   imageFile: any; //foto que viene del hijo "aun no en FIREBASE"
 
   nameRules = [
-    (v: any) => !!v || "Name is required",
-    (v: any) => v.length <= 10 || "Name must be less than 10 characters",
+    (v: any) => !!v || this.userNameRulesRequired,
+    (v: any) => v.length <= 10 || this.userNameRulesLength,
   ];
 
   passwordRules = [
-    (v: any) => !!v || "Password is required",
-    (v: any) => v.length >= 8 || "Password must be less than 8 characters",
+    (v: any) => !!v || this.userPasswordRulesRequired,
+    (v: any) => v.length >= 8 || this.userPasswordRulesLength,
   ];
 
   emailRules = [
-    (v: any) => !!v || "E-mail is required",
-    (v: any) => /.+@.+/.test(v) || "E-mail must be valid",
+    (v: any) => !!v || this.userEmailRulesRequired,
+    (v: any) => /.+@.+/.test(v) || this.userEmailRulesValid,
   ];
 
-  birthDateRules = [(v: any) => !!v || "Birthday Date is required"];
+  birthDateRules = [(v: any) => !!v || this.userBirthdayRulesRequired];
 
   $refs!: {
     picker: any;
@@ -176,10 +188,93 @@ export default class NotFederatedSingUp extends Vue {
 
   signUp() {
     this.$refs.form.validate();
-    this.$store.dispatch("signUp/notFederatedSignUp", {
-      user: this.user,
-      imageFile: this.imageFile,
+    this.$store
+      .dispatch("signUp/notFederatedSignUp", {
+        user: this.user,
+        imageFile: this.imageFile,
+      })
+      .then(() => {
+        this.$router.push("/");
+      });
+  }
+
+  mounted() {
+    this.translate();
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "registerBtnText": {
+          this.registerBtnText = term.termTranslation;
+          break;
+        }
+        case "userFirstNameText": {
+          this.userFirstNameText = term.termTranslation;
+          break;
+        }
+        case "userSecondNameText": {
+          this.userSecondNameText = term.termTranslation;
+          break;
+        }
+        case "userFirstLastNameText": {
+          this.userFirstLastNameText = term.termTranslation;
+          break;
+        }
+        case "userSecondLastNameText": {
+          this.userSecondLastNameText = term.termTranslation;
+          break;
+        }
+        case "userBirthDateText": {
+          this.userBirthDateText = term.termTranslation;
+          break;
+        }
+        case "userEmailText": {
+          this.userEmailText = term.termTranslation;
+          break;
+        }
+        case "userPasswordText": {
+          this.userPasswordText = term.termTranslation;
+          break;
+        }
+        case "userNameRulesLength": {
+          this.userNameRulesLength = term.termTranslation;
+          break;
+        }
+        case "userNameRulesRequired": {
+          this.userNameRulesRequired = term.termTranslation;
+          break;
+        }
+        case "userPasswordRulesLength": {
+          this.userPasswordRulesLength = term.termTranslation;
+          break;
+        }
+        case "userPasswordRulesRequired": {
+          this.userPasswordRulesRequired = term.termTranslation;
+          break;
+        }
+        case "userEmailRulesRequired": {
+          this.userEmailRulesRequired = term.termTranslation;
+          break;
+        }
+        case "userEmailRulesValid": {
+          this.userEmailRulesValid = term.termTranslation;
+          break;
+        }
+        case "userBirthdayRulesRequired": {
+          this.userBirthdayRulesRequired = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
     });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>
