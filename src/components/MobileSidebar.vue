@@ -1,26 +1,26 @@
 <template>
   <v-navigation-drawer v-model="readyOpen" absolute temporary>
     <v-row>
-      <v-col class="d-flex justify-center mt-4 align-center">
+      <v-col class="d-flex justify-center mt-2 align-center">
         <p class="mb-0 mr-3 headline">{{ navbarNavigation }}</p>
         <v-icon color="black">
           mdi-navigation
         </v-icon>
       </v-col>
     </v-row>
-    <v-row class="mt-6" v-if="showUser">
+    <v-row class="mt-1" v-if="showUser">
       <v-col>
         <NavbarUser />
       </v-col>
     </v-row>
-    <v-row class="mt-6">
+    <v-row>
       <v-col class="d-flex justify-center">
         <v-btn large color="amber darken-4" outlined min-width="200">{{
           navbarCategories
         }}</v-btn>
       </v-col>
     </v-row>
-    <v-row class="mt-4" v-if="!showUser">
+    <v-row class="mt-1" v-if="!showUser">
       <v-col class="d-flex justify-center">
         <v-btn
           large
@@ -32,7 +32,7 @@
         >
       </v-col>
     </v-row>
-    <v-row class="mt-4" v-if="!showUser">
+    <v-row class="mt-1" v-if="!showUser">
       <v-col class="d-flex justify-center">
         <v-btn
           large
@@ -44,7 +44,7 @@
         >
       </v-col>
     </v-row>
-    <v-row class="mt-12">
+    <v-row>
       <v-col class="d-flex justify-center">
         <Internationalization />
       </v-col>

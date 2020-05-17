@@ -5,6 +5,7 @@ import Vuex from "vuex";
 import internationalization from "./modules/internationalizationModule";
 import logIn from "./modules/logInModule";
 import signUp from "./modules/signUpModule";
+import home from "./modules/homeModule";
 
 Vue.use(Vuex);
 
@@ -13,5 +14,6 @@ export default new Vuex.Store({
     internationalization,
     logIn,
     signUp,
+    home,
   },
 });

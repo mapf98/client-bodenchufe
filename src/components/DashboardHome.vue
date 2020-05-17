@@ -17,7 +17,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <DashboardHomeProviders />
+        <DashboardHomeOffers />
       </v-col>
     </v-row>
   </v-container>
