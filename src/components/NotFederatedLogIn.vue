@@ -20,19 +20,14 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row>
-        <v-card-text v-if="errors.length">
-          <b>{{ nflMessageError }}</b>
-          <ul>
-            <li v-for="error in errors" :key="error.id">{{ error }}</li>
-          </ul>
-        </v-card-text>
-      </v-row>
-
       <v-row justify="center">
-        <v-btn type="submit" class="white--text" color="indigo">{{
-          navbarLogin
-        }}</v-btn>
+        <v-btn
+          type="submit"
+          class="white--text"
+          color="indigo"
+          :loading="loading"
+          >{{ navbarLogin }}</v-btn
+        >
       </v-row>
     </v-container>
   </v-form>
@@ -60,9 +55,11 @@ export default class NotFederatedLogin extends Vue {
   nflMessageError = "Please correct the following error(s):";
   nflUser = "Email";
   nflPassword = "Password";
+  loading = false;
 
   notFederatedLogIn(e: Event) {
     e.preventDefault();
+    this.loading = true;
     this.errors.splice(0);
 
     if (!this.user.userEmail) {
@@ -71,6 +68,11 @@ export default class NotFederatedLogin extends Vue {
 
     if (!this.user.userPassword) {
       this.errors.push(this.nflPasswordRequired);
+    }
+
+    if (this.errors.length !== 0) {
+      this.$emit("showErrors", this.errors);
+      this.loading = false;
     }
 
     if (this.errors.length == 0) {
@@ -100,6 +102,9 @@ export default class NotFederatedLogin extends Vue {
           }
           if (this.errors.length == 0) {
             this.$router.push("/");
+          } else {
+            this.$emit("showErrors", this.errors);
+            this.loading = false;
           }
         });
     }
