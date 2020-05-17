@@ -1,18 +1,14 @@
 <template>
   <v-menu offset-y>
     <template v-slot:activator="{ on }">
-      <v-btn
-        color="indigo"
-        dark
-        v-on="on"
-      >
+      <v-btn color="indigo" dark v-on="on">
         <v-icon class="mr-4">mdi-translate</v-icon>
-        {{language}}
+        {{ language }}
       </v-btn>
     </template>
     <v-list>
       <v-list-item
-        v-for="(item) in items"
+        v-for="item in items"
         :key="item.value"
         @click="selectLanguage(item.value)"
       >
@@ -25,6 +21,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class Internationalization extends Vue {
@@ -32,20 +29,32 @@ export default class Internationalization extends Vue {
     { text: "English US", value: "en-us" },
     { text: "Spanish VE", value: "es-ve" },
   ];
-  language = "en-us";
+  language = "";
 
   selectLanguage(language: string) {
     this.language = language;
     this.getTranslate();
   }
 
-  created() {
-    this.getTranslate();
+  getTranslate() {
+    this.$store.dispatch("internationalization/getTranslate", {
+      lang: this.language,
+    });
   }
 
-  getTranslate() {
-    this.$store
-      .dispatch("internationalization/getTranslate", { lang: this.language });
+  mounted() {
+    this.language = this.$store.getters[
+      "internationalization/getPreferredLanguage"
+    ];
+  }
+
+  @Watch("preferredLanguage")
+  translate() {
+    this.language = this.preferredLanguage;
+  }
+
+  get preferredLanguage() {
+    return this.$store.getters["internationalization/getPreferredLanguage"];
   }
 }
 </script>

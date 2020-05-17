@@ -5,7 +5,10 @@
         <v-img src="../assets/logoBodenchufe.png" max-width="170"></v-img>
       </v-col>
     </v-row>
-    <v-app-bar-nav-icon class="hidden-md-and-up" @click="openSideMenu"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon
+      class="hidden-md-and-up"
+      @click="openSideMenu"
+    ></v-app-bar-nav-icon>
 
     <v-row class="d-md-flex align-center hidden-sm-and-down">
       <v-col class="mr-8">
@@ -15,13 +18,19 @@
         <SearchBox />
       </v-col>
       <v-col class="d-flex justify-start">
-        <v-btn small color="amber darken-4" outlined>{{navbarCategories}}</v-btn>
+        <v-btn small color="amber darken-4" outlined>{{
+          navbarCategories
+        }}</v-btn>
       </v-col>
       <v-col class="d-flex justify-end">
-        <v-btn text small color="indigo" @click="goToLogin">{{navbarLogin}}</v-btn>
+        <v-btn text small color="indigo" @click="goToLogin">{{
+          navbarLogin
+        }}</v-btn>
       </v-col>
       <v-col class="d-flex justify-center">
-        <v-btn text small color="indigo">{{navbarSingUp}}</v-btn>
+        <v-btn text small color="indigo" @click="goToSignUp">{{
+          navbarSingUp
+        }}</v-btn>
       </v-col>
       <v-col class="d-flex justify-center">
         <Internationalization />
@@ -40,49 +49,56 @@ import Internationalization from "../components/Internationalization.vue";
 @Component({
   components: {
     SearchBox,
-    Internationalization
-  }
+    Internationalization,
+  },
 })
 export default class Navbar extends Vue {
   navbarCategories = "Categories";
   navbarLogin = "Log In";
   navbarSingUp = "Sing Up";
 
-  goToLogin(){
+  goToLogin() {
     this.$router.push("/Login");
+  }
+
+  goToSignUp() {
+    this.$router.push("/user/signUp");
+  }
+
+  mounted() {
+    this.translate();
   }
 
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
-      switch(term.termName) { 
-        case "navbarCategories": { 
-            this.navbarCategories = term.termTranslation;
-            break; 
-        } 
-        case "navbarLogin": { 
-            this.navbarLogin = term.termTranslation;
-            break; 
+      switch (term.termName) {
+        case "navbarCategories": {
+          this.navbarCategories = term.termTranslation;
+          break;
         }
-        case "navbarSingUp": { 
-            this.navbarSingUp = term.termTranslation;
-            break; 
-        }  
-        default: { 
-            break; 
-        } 
-      } 
+        case "navbarLogin": {
+          this.navbarLogin = term.termTranslation;
+          break;
+        }
+        case "navbarSingUp": {
+          this.navbarSingUp = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
     });
   }
 
-  get translator(){
-    return this.$store.state.internationalization.languagesTexts;
-  };
-
-  openSideMenu(){
-    this.$emit('openSideMenu');
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 
+  openSideMenu() {
+    this.$emit("openSideMenu");
+  }
 }
 </script>
 

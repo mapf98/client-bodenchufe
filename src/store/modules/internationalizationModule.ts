@@ -7,17 +7,22 @@ export default {
   state: {
     // Aqui van los atributos
     languagesTexts: [],
+    preferredLanguage: "en-us",
   },
   // -----------------------------------------------------------------
   getters: {
     // getters and computed props
-    //collection: (state: any) => state.users,
+    getLanguageTexts: (state: any) => state.languagesTexts,
+    getPreferredLanguage: (state: any) => state.preferredLanguage,
   },
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
     setLanguageTexts(state: {}, languagesTexts: []) {
       Vue.set(state, "languagesTexts", languagesTexts);
+    },
+    setPreferredLanguage(state: {}, language: string) {
+      Vue.set(state, "preferredLanguage", language);
     },
   },
   // -----------------------------------------------------------------
@@ -30,7 +35,20 @@ export default {
         .getTranslate(payload.lang)
         .then((response: any) => {
           context.commit("setLanguageTexts", response.data.terms);
+          context.commit("setPreferredLanguage", payload.lang);
         });
+    },
+    setUserLanguage: (context: any) => {
+      const userData = localStorage.getItem("userData");
+      let userLanguage: string;
+      let user: any;
+      if (userData !== null) {
+        user = JSON.parse(userData);
+        userLanguage = user.userLanguage;
+        context.commit("setPreferredLanguage", userLanguage);
+      } else {
+        context.commit("setPreferredLanguage", "en-us");
+      }
     },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION

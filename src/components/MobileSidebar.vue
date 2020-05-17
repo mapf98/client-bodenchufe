@@ -1,12 +1,8 @@
 <template>
-  <v-navigation-drawer
-    v-model="readyOpen"
-    absolute
-    temporary
-  >
+  <v-navigation-drawer v-model="readyOpen" absolute temporary>
     <v-row>
       <v-col class="d-flex justify-center mt-4 align-center">
-        <p class="mb-0 mr-3 headline">{{navbarNavigation}}</p>
+        <p class="mb-0 mr-3 headline">{{ navbarNavigation }}</p>
         <v-icon color="black">
           mdi-navigation
         </v-icon>
@@ -14,17 +10,33 @@
     </v-row>
     <v-row class="mt-6">
       <v-col class="d-flex justify-center">
-        <v-btn large color="amber darken-4" outlined min-width="200">{{navbarCategories}}</v-btn>
+        <v-btn large color="amber darken-4" outlined min-width="200">{{
+          navbarCategories
+        }}</v-btn>
       </v-col>
     </v-row>
     <v-row class="mt-4">
       <v-col class="d-flex justify-center">
-        <v-btn large color="indigo" outlined @click="goToLogin" min-width="200">{{navbarLogin}}</v-btn>
+        <v-btn
+          large
+          color="indigo"
+          outlined
+          @click="goToLogin"
+          min-width="200"
+          >{{ navbarLogin }}</v-btn
+        >
       </v-col>
     </v-row>
     <v-row class="mt-4">
       <v-col class="d-flex justify-center">
-        <v-btn large color="indigo" outlined min-width="200">{{navbarSingUp}}</v-btn>
+        <v-btn
+          large
+          color="indigo"
+          outlined
+          min-width="200"
+          @click="goToSignUp"
+          >{{ navbarSingUp }}</v-btn
+        >
       </v-col>
     </v-row>
     <v-row class="mt-12">
@@ -42,12 +54,12 @@ import { Watch, Prop } from "vue-property-decorator";
 import Internationalization from "../components/Internationalization.vue";
 
 @Component({
-  components:{
-    Internationalization
-  }
+  components: {
+    Internationalization,
+  },
 })
 export default class MobileSidebar extends Vue {
-  @Prop() openSideMenu!: boolean; 
+  @Prop() openSideMenu!: boolean;
   readyOpen = false;
   navbarCategories = "Categories";
   navbarLogin = "Log In";
@@ -55,44 +67,52 @@ export default class MobileSidebar extends Vue {
   navbarNavigation = "Navigation";
 
   @Watch("openSideMenu")
-  drawer(){
+  drawer() {
     this.readyOpen = !this.readyOpen;
   }
 
-  goToLogin(){
+  goToLogin() {
     this.$router.push("/Login");
+  }
+
+  goToSignUp() {
+    this.$router.push("/user/signUp");
+  }
+
+  mounted() {
+    this.translate();
   }
 
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
-      switch(term.termName) { 
-        case "navbarCategories": { 
-            this.navbarCategories = term.termTranslation;
-            break; 
-        } 
-        case "navbarLogin": { 
-            this.navbarLogin = term.termTranslation;
-            break; 
+      switch (term.termName) {
+        case "navbarCategories": {
+          this.navbarCategories = term.termTranslation;
+          break;
         }
-        case "navbarSingUp": { 
-            this.navbarSingUp = term.termTranslation;
-            break; 
+        case "navbarLogin": {
+          this.navbarLogin = term.termTranslation;
+          break;
         }
-        case "navbarNavigation": { 
-            this.navbarNavigation = term.termTranslation;
-            break; 
-        }    
-        default: { 
-            break; 
-        } 
-      } 
+        case "navbarSingUp": {
+          this.navbarSingUp = term.termTranslation;
+          break;
+        }
+        case "navbarNavigation": {
+          this.navbarNavigation = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
     });
   }
 
-  get translator(){
-    return this.$store.state.internationalization.languagesTexts;
-  };
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
+  }
 }
 </script>
 
