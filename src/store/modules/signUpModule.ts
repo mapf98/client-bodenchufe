@@ -84,8 +84,8 @@ export default {
             await signUpService.setUserPhoto({
               userId: userId,
               userPhoto: imageUrl,
-            });
-            await logInService
+            }).then(async () => {
+              await logInService
               .checkLogIn({ userEmail: userEmail, userPassword: userPassword })
               .then((response: any) => {
                 if (response.data.validated == true) {
@@ -104,6 +104,7 @@ export default {
                   });
                 }
               });
+            });
           }
         );
       }
@@ -111,28 +112,17 @@ export default {
 
     federatedSignUp: async (context: any, payload: any) => {
       let userEmail: string | null | undefined;
-      let today: any = new Date();
-      let dd: any = today.getDate();
-      let mm: any = today.getMonth() + 1;
-      let isRegistered: any;
-      const yyyy = today.getFullYear();
-      if (dd < 10) {
-        dd = `0${dd}`;
-      }
-      if (mm < 10) {
-        mm = `0${mm}`;
-      }
-      today = `${yyyy}-${mm}-${dd}`;
+      let isRegistered: any = true;
 
       const userData: any = {
         userFirstName: "",
         userFirstLastname: "",
         languageName: "en-us",
-        userPassword: "MDABODUSER",
+        userPassword: null,
         userPhoto: "",
         userEmail: "",
         rolName: "user",
-        userBirthdate: today,
+        userBirthdate: null,
       };
       const userInLs: any = {
         userName: "",
@@ -166,9 +156,9 @@ export default {
       });
 
       await logInService
-        .checkLogIn({ userEmail: userData.userEmail, userPassword: "MDABODUSER" })
+        .checkLogIn({ userEmail: userData.userEmail, userPassword: null })
         .then((response: any) => {
-          if (response.data.validated == true && isRegistered) {
+          if (response.data.validated == true && isRegistered == true) {
             userInLs.userName = response.data.user[0].user_first_name;
             userInLs.userLastName = response.data.user[0].user_first_lastname;
             userInLs.userLanguage = response.data.user[0].language_name;

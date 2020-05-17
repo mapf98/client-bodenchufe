@@ -96,7 +96,7 @@ export default {
         });
 
       await logInService
-        .checkLogIn({ userEmail: userEmail, userPassword: "MDABODUSER" })
+        .checkLogIn({ userEmail: userEmail, userPassword: null })
         .then((response: any) => {
           if (response.data.validated == true) {
             userData.userName = response.data.user[0].user_first_name;
