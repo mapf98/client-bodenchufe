@@ -83,6 +83,10 @@ export default class MobileSidebar extends Vue {
     this.$router.push("/Login");
   }
 
+  goToCart() {
+    this.$router.push("/shoppingCart");
+  }
+
   goToSignUp() {
     this.$router.push("/user/signUp");
   }

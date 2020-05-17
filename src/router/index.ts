@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import DashboardHome from "../components/DashboardHome.vue";
 import Login from "../views/Login.vue";
+import ShoppingCart from "../views/ShoppingCart.vue";
 import SignUp from "../views/SignUp.vue";
 import AllSignUp from "../components/AllSignUp.vue";
 import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
@@ -42,6 +43,15 @@ const routes: Array<RouteConfig> = [
       requiresAuth: false,
       hideBasicComponents: true,
       applyBackground: true,
+    },
+  },
+  {
+    path: "/shoppingCart",
+    name: "ShoppingCart",
+    component: ShoppingCart,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
     },
   },
   {
