@@ -28,7 +28,9 @@
         }}</v-btn>
       </v-col>
       <v-col class="d-flex justify-center">
-        <v-btn text small color="indigo">{{ navbarSingUp }}</v-btn>
+        <v-btn text small color="indigo" @click="goToSignUp">{{
+          navbarSingUp
+        }}</v-btn>
       </v-col>
 
       <v-col class="d-flex justify-center">
@@ -65,6 +67,10 @@ export default class Navbar extends Vue {
 
   goToCart() {
     this.$router.push("/shoppingCart");
+  }
+
+  goToSignUp() {
+    this.$router.push("/user/signUp");
   }
 
   mounted() {

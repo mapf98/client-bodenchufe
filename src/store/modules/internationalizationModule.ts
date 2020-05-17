@@ -38,6 +38,18 @@ export default {
           context.commit("setPreferredLanguage", payload.lang);
         });
     },
+    setUserLanguage: (context: any) => {
+      const userData = localStorage.getItem("userData");
+      let userLanguage: string;
+      let user: any;
+      if (userData !== null) {
+        user = JSON.parse(userData);
+        userLanguage = user.userLanguage;
+        context.commit("setPreferredLanguage", userLanguage);
+      } else {
+        context.commit("setPreferredLanguage", "en-us");
+      }
+    },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
     // },

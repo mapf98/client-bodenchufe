@@ -29,9 +29,14 @@
     </v-row>
     <v-row class="mt-4">
       <v-col class="d-flex justify-center">
-        <v-btn large color="indigo" outlined min-width="200">{{
-          navbarSingUp
-        }}</v-btn>
+        <v-btn
+          large
+          color="indigo"
+          outlined
+          min-width="200"
+          @click="goToSignUp"
+          >{{ navbarSingUp }}</v-btn
+        >
       </v-col>
     </v-row>
     <v-row class="mt-4">
@@ -79,6 +84,10 @@ export default class MobileSidebar extends Vue {
 
   goToCart() {
     this.$router.push("/shoppingCart");
+  }
+
+  goToSignUp() {
+    this.$router.push("/user/signUp");
   }
 
   mounted() {
