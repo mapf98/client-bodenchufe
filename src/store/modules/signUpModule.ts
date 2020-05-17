@@ -61,7 +61,7 @@ export default {
         }
       });
 
-      if (userId) {
+      if (userId && payload.imageFile) {
         const storageRef = fb
           .storage()
           .ref("images/user/" + userId + "/" + payload.imageFile);
@@ -107,6 +107,26 @@ export default {
             });
           }
         );
+      } else {
+        await logInService
+              .checkLogIn({ userEmail: userEmail, userPassword: userPassword })
+              .then((response: any) => {
+                if (response.data.validated == true) {
+                  userData.userName = response.data.user[0].user_first_name;
+                  userData.userLastName =
+                    response.data.user[0].user_first_lastname;
+                  userData.userLanguage = response.data.user[0].language_name;
+                  userData.userPhoto = response.data.user[0].user_photo;
+                  localStorage.setItem("token", response.data.token);
+                  localStorage.setItem("userData", JSON.stringify(userData));
+                  context.commit("setUser", response.data.user[0]);
+                  context.commit("setStatus", {
+                    validated: true,
+                    blocked: false,
+                    registered: true,
+                  });
+                }
+              });
       }
     },
 
