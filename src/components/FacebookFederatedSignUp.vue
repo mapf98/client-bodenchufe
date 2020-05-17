@@ -68,7 +68,11 @@ export default class FacebookFederatedSignUp extends Vue {
             this.errors.push(this.userEmailRegisteredTrue);
             this.showErrors(this.errors);
           } else {
-            this.$router.push("/");
+            this.$store
+              .dispatch("internationalization/setUserLanguage")
+              .then(() => {
+                this.$router.push("/home");
+              });
           }
         });
     }

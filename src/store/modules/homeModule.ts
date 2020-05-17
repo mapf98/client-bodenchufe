@@ -36,25 +36,19 @@ export default {
     //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
     // },
     getMainProviders: async (context: any) => {
-      await homeService
-        .getMainProviders()
-        .then((response: any) => {
-          context.commit("setMainProviders", response.data.providers);
-        });
+      await homeService.getMainProviders().then((response: any) => {
+        context.commit("setMainProviders", response.data.providers);
+      });
     },
     getMainCategories: async (context: any) => {
-      await homeService
-        .getMainCategories()
-        .then((response: any) => {
-          context.commit("setMainCategories", response.data.categories);
-        });
+      await homeService.getMainCategories().then((response: any) => {
+        context.commit("setMainCategories", response.data.categories);
+      });
     },
     getOffers: async (context: any) => {
-      await homeService
-        .getOffers()
-        .then((response: any) => {
-          context.commit("setOffers", response.data.offers);
-        });
+      await homeService.getOffers().then((response: any) => {
+        context.commit("setOffers", response.data.offers);
+      });
     },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION

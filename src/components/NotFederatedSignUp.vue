@@ -229,7 +229,11 @@ export default class NotFederatedSingUp extends Vue {
             this.showErrors(this.errors);
           } else {
             this.loading = false;
-            this.$router.push("/");
+            this.$store
+              .dispatch("internationalization/setUserLanguage")
+              .then(() => {
+                this.$router.push("/home");
+              });
           }
         });
     } else {
