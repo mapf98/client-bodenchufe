@@ -26,12 +26,15 @@ export default {
     deleteShoppingCartProducts: async (context: any, payload: any) => {
       await shoppingCartService.deleteProduct(payload.productId);
     },
-    updateQuantityProduct : async (context: any, payload: any) => {
-      await shoppingCartService.updateQuantity(payload.productId,{ productProviderOrderQuantity: payload.quantity});
+    updateQuantityProduct: async (context: any, payload: any) => {
+      await shoppingCartService.updateQuantity(payload.productId, {
+        productProviderOrderQuantity: payload.quantity,
+      });
     },
-    updateProductStatus : async (context: any, payload: any) => {
-      await shoppingCartService.updateProductStatus(payload.productId,{ status: payload.status});
+    updateProductStatus: async (context: any, payload: any) => {
+      await shoppingCartService.updateProductStatus(payload.productId, {
+        status: payload.status,
+      });
     },
   },
-}
-
+};

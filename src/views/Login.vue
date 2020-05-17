@@ -86,7 +86,7 @@ export default class Login extends Vue {
     this.translate();
   }
 
-  goToSignUp(){
+  goToSignUp() {
     this.$router.push("/user/signUp");
   }
 

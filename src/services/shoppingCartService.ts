@@ -7,10 +7,16 @@ export default {
   deleteProduct(productId: any) {
     return API_URL_TOKEN.delete(`/user/shoppingCart/${productId}`);
   },
-  updateQuantity(productId: number, quantity:any){
-    return API_URL_TOKEN.patch(`/user/shoppingCart/${productId}/quantity`, quantity);
+  updateQuantity(productId: number, quantity: any) {
+    return API_URL_TOKEN.patch(
+      `/user/shoppingCart/${productId}/quantity`,
+      quantity
+    );
   },
-  updateProductStatus(productId: any, status: any){
-    return API_URL_TOKEN.patch(`/user/shoppingCart/${productId}/status`, status);
+  updateProductStatus(productId: any, status: any) {
+    return API_URL_TOKEN.patch(
+      `/user/shoppingCart/${productId}/status`,
+      status
+    );
   },
 };
