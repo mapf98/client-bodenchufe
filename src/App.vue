@@ -4,8 +4,7 @@
     <Navbar
       v-if="!$route.meta.hideBasicComponents"
       @openSideMenu="openSideMenu"
-    />
-    <v-content>
+    />    <v-content>
       <router-view></router-view>
     </v-content>
     <Footer v-if="!$route.meta.hideBasicComponents" />

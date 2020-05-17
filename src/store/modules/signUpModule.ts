@@ -7,7 +7,7 @@ export default {
   namespaced: true,
   // -----------------------------------------------------------------
   state: {
-    // Aqui van los 
+    // Aqui van los
     user: {},
     status: {},
   },
@@ -47,12 +47,12 @@ export default {
       };
 
       await signUpService.signUp(payload.user).then((response: any) => {
-        if (response.data.registered == true){
+        if (response.data.registered == true) {
           userId = response.data.user[0].user_id;
           userEmail = response.data.user[0].user_email;
           userPassword = response.data.user[0].user_password;
         } else {
-          context.commit("setStatus", {registered: false}); //el correo ya esta usado
+          context.commit("setStatus", { registered: false }); //el correo ya esta usado
         }
       });
 
@@ -62,43 +62,54 @@ export default {
           .ref("images/user/" + userId + "/" + payload.imageFile);
         const uploadTask = storageRef.put(payload.imageFile);
 
-        uploadTask.on("state_changed",async (snapshot) => {
-          snapshotFinal = snapshot.state
-        }, (error) => {
-          console.log(error);
-        }, async () => {
-          await uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            imageUrl = downloadURL;
-          });
-          await signUpService.setUserPhoto({ userId: userId, userPhoto: imageUrl });
-          await logInService.checkLogIn({userEmail: userEmail, userPassword: userPassword}).then((response: any)=>{
-            if (response.data.validated == true) {
-              userData.userName = response.data.user[0].user_first_name;
-              userData.userLastName = response.data.user[0].user_first_lastname;
-              userData.userLanguage = response.data.user[0].language_name;
-              userData.userPhoto = response.data.user[0].user_photo;
-              localStorage.setItem("token", response.data.token);
-              localStorage.setItem("userData", JSON.stringify(userData));
-              context.commit("setUser", response.data.user[0]);
-            }
-          })
-        });
+        uploadTask.on(
+          "state_changed",
+          async (snapshot) => {
+            snapshotFinal = snapshot.state;
+          },
+          (error) => {
+            console.log(error);
+          },
+          async () => {
+            await uploadTask.snapshot.ref
+              .getDownloadURL()
+              .then((downloadURL) => {
+                imageUrl = downloadURL;
+              });
+            await signUpService.setUserPhoto({
+              userId: userId,
+              userPhoto: imageUrl,
+            });
+            await logInService
+              .checkLogIn({ userEmail: userEmail, userPassword: userPassword })
+              .then((response: any) => {
+                if (response.data.validated == true) {
+                  userData.userName = response.data.user[0].user_first_name;
+                  userData.userLastName =
+                    response.data.user[0].user_first_lastname;
+                  userData.userLanguage = response.data.user[0].language_name;
+                  userData.userPhoto = response.data.user[0].user_photo;
+                  localStorage.setItem("token", response.data.token);
+                  localStorage.setItem("userData", JSON.stringify(userData));
+                  context.commit("setUser", response.data.user[0]);
+                }
+              });
+          }
+        );
       }
     },
 
-    federatedSignUp: async(context: any, payload: any) =>{
+    federatedSignUp: async (context: any, payload: any) => {
       let userEmail: string | null | undefined;
       let today: any = new Date();
       let dd: any = today.getDate();
-      let mm: any = today.getMonth()+1; 
+      let mm: any = today.getMonth() + 1;
       const yyyy = today.getFullYear();
-      if(dd<10) 
-      {
-          dd=`0${dd}`;
-      } 
-      if(mm<10) 
-      {
-          mm=`0${mm}`;
+      if (dd < 10) {
+        dd = `0${dd}`;
+      }
+      if (mm < 10) {
+        mm = `0${mm}`;
       }
       today = `${yyyy}-${mm}-${dd}`;
 
@@ -133,29 +144,29 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-      
+
       await signUpService.signUp(userData).then((response: any) => {
-        if (response.data.registered == true){
-          context.commit("setStatus", {registered: true});
+        if (response.data.registered == true) {
+          context.commit("setStatus", { registered: true });
         } else {
-          context.commit("setStatus", {registered: false}); //el correo ya esta usado
+          context.commit("setStatus", { registered: false }); //el correo ya esta usado
         }
       });
 
-      await logInService.checkLogIn({userEmail: userData.userEmail, userPassword: " "}).then((response: any)=>{
-        if (response.data.validated == true) {
-          userInLs.userName = response.data.user[0].user_first_name;
-          userInLs.userLastName = response.data.user[0].user_first_lastname;
-          userInLs.userLanguage = response.data.user[0].language_name;
-          userInLs.userPhoto = response.data.user[0].user_photo;
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("userData", JSON.stringify(userInLs));
-          context.commit("setUser", response.data.user[0]);
-        }
-      })
-
-
-    }
+      await logInService
+        .checkLogIn({ userEmail: userData.userEmail, userPassword: " " })
+        .then((response: any) => {
+          if (response.data.validated == true) {
+            userInLs.userName = response.data.user[0].user_first_name;
+            userInLs.userLastName = response.data.user[0].user_first_lastname;
+            userInLs.userLanguage = response.data.user[0].language_name;
+            userInLs.userPhoto = response.data.user[0].user_photo;
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("userData", JSON.stringify(userInLs));
+            context.commit("setUser", response.data.user[0]);
+          }
+        });
+    },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
     // },
