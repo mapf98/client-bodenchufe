@@ -4,28 +4,25 @@
       <v-row>
         <v-col class="d-flex justify-center mt-12">
           <v-btn
-            color="indigo"
+            color="amber"
             class="white--text"
-            min-width="300"
+            rounded
+            :width="buttonCols()"
             @click="goToNotFederatedSignUp"
             >{{ UsualRegistration }}</v-btn
           >
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row class="text-center">
         <v-col class="d-flex justify-center">
-          <v-btn color="indigo" class="white--text" min-width="300">{{
-            GoogleRegistration
-          }}</v-btn>
+          <GoogleFederatedSignUp />
         </v-col>
       </v-row>
 
-      <v-row>
-        <v-col class="d-flex justify-center">
-          <v-btn color="indigo" class="white--text mb-12" min-width="300">{{
-            FacebookRegistration
-          }}</v-btn>
+      <v-row class="text-center">
+        <v-col class="d-flex justify-center mb-12">
+          <FacebookFederatedSignUp />
         </v-col>
       </v-row>
     </v-card>
@@ -34,16 +31,51 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Watch } from "vue-property-decorator";
+import GoogleFederatedSignUp from "./GoogleFederatedSignUp.vue";
+import FacebookFederatedSignUp from "./FacebookFederatedSignUp.vue";
 
-@Component({})
+@Component({
+  components: {
+    GoogleFederatedSignUp,
+    FacebookFederatedSignUp,
+  },
+})
 export default class AllSignUp extends Vue {
   loading = false;
-  UsualRegistration = "Registro Habitual";
-  GoogleRegistration = "Registro con Google";
+  UsualRegistration = "Usual Registration";
   FacebookRegistration = "Registro con Facebook";
+
+  buttonCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs ? 280 : sm ? 280 : 350;
+  }
 
   goToNotFederatedSignUp() {
     this.$router.push("/user/signUp/external");
+  }
+
+  mounted() {
+    this.translate();
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "UsualRegistration": {
+          this.UsualRegistration = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>
