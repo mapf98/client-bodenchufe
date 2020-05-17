@@ -69,7 +69,6 @@ export default {
         }, async () => {
           await uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
             imageUrl = downloadURL;
-            console.log("File available at", imageUrl);
           });
           await signUpService.setUserPhoto({ userId: userId, userPhoto: imageUrl });
           await logInService.checkLogIn({userEmail: userEmail, userPassword: userPassword}).then((response: any)=>{
@@ -86,6 +85,77 @@ export default {
         });
       }
     },
+
+    federatedSignUp: async(context: any, payload: any) =>{
+      let userEmail: string | null | undefined;
+      let today: any = new Date();
+      let dd: any = today.getDate();
+      let mm: any = today.getMonth()+1; 
+      const yyyy = today.getFullYear();
+      if(dd<10) 
+      {
+          dd=`0${dd}`;
+      } 
+      if(mm<10) 
+      {
+          mm=`0${mm}`;
+      }
+      today = `${yyyy}-${mm}-${dd}`;
+
+      const userData: any = {
+        userFirstName: "",
+        userFirstLastname: "",
+        languageName: "en-us",
+        userPassword: " ",
+        userPhoto: "",
+        userEmail: "",
+        rolName: "user",
+        userBirthdate: today,
+      };
+      const userInLs: any = {
+        userName: "",
+        userLastName: "",
+        userLanguage: "",
+        userPhoto: "",
+      };
+      let googleProfile: any;
+      await fa
+        .signInWithPopup(
+          payload.provider == "google" ? providerGoogle : providerFacebook
+        )
+        .then((result) => {
+          googleProfile = result.additionalUserInfo?.profile;
+          userData.userFirstName = googleProfile.given_name;
+          userData.userFirstLastname = googleProfile.family_name;
+          userData.userPhoto = googleProfile.picture;
+          userData.userEmail = googleProfile.email;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      
+      await signUpService.signUp(userData).then((response: any) => {
+        if (response.data.registered == true){
+          context.commit("setStatus", {registered: true});
+        } else {
+          context.commit("setStatus", {registered: false}); //el correo ya esta usado
+        }
+      });
+
+      await logInService.checkLogIn({userEmail: userData.userEmail, userPassword: " "}).then((response: any)=>{
+        if (response.data.validated == true) {
+          userInLs.userName = response.data.user[0].user_first_name;
+          userInLs.userLastName = response.data.user[0].user_first_lastname;
+          userInLs.userLanguage = response.data.user[0].language_name;
+          userInLs.userPhoto = response.data.user[0].user_photo;
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("userData", JSON.stringify(userInLs));
+          context.commit("setUser", response.data.user[0]);
+        }
+      })
+
+
+    }
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
     // },

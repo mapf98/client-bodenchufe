@@ -215,6 +215,7 @@ export default class NotFederatedSingUp extends Vue {
 
   signUp() {
     this.loading = true;
+    this.errors.splice(0);
     if (this.$refs.form.validate() && this.user.languageName != "") {
       this.$store
         .dispatch("signUp/notFederatedSignUp", {
@@ -222,7 +223,6 @@ export default class NotFederatedSingUp extends Vue {
           imageFile: this.imageFile,
         })
         .then(() => {
-          console.log(this.getStatus.registered);
           if (this.getStatus.registered == false) {
             this.loading = false;
             this.errors.push(this.userEmailRegisteredTrue);
@@ -329,7 +329,7 @@ export default class NotFederatedSingUp extends Vue {
   }
 
   get getStatus() {
-    return this.$store.getters["signUp/getLoginStatus"];
+    return this.$store.getters["signUp/LoginStatus"];
   }
 }
 </script>
