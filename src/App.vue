@@ -47,12 +47,13 @@ export default class App extends Vue {
   setBackground() {
     if (this.$route.meta.applyBackground) {
       return {
-        backgroundImage: `url("${require("./assets/bglogin.jpg")}")`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-        backgroundAttachment: "fixed",
-        backgroundSize: "cover",
-        height: "100%",
+        //backgroundImage: `url("${require("./assets/bglogin.jpg")}")`,
+        backgroundColor: "#C5CAE9",
+        // backgroundRepeat: "no-repeat",
+        // backgroundPosition: "center center",
+        // backgroundAttachment: "fixed",
+        // backgroundSize: "cover",
+        // height: "100%",
       };
     }
   }

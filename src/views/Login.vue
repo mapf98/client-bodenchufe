@@ -8,15 +8,9 @@
       </v-col>
     </v-row>
 
-    <!-- <v-row class="mt-12">
-      <v-col class="d-flex justify-center">
-        <p class="headline mb-0 font-weight-black">{{ loginIntro }}</p>
-      </v-col>
-    </v-row> -->
-
-    <v-card outlined elevation="3" class="mt-4 px-12">
+    <v-card outlined elevation="6" class="mt-12 px-12">
       <v-card-title>
-        <p class="headline">{{ loginIntro }}</p>
+        <p class="title mb-0">{{ loginIntro }}</p>
       </v-card-title>
       <v-row class="d-flex align-center mb-6">
         <v-col>
@@ -44,7 +38,7 @@
 
     <v-row class="d-flex align-end mt-12">
       <v-col class="d-flex justify-center mt-10">
-        <v-btn color="indigo" class="white--text" text x-large
+        <v-btn color="amber" class="white--text" x-large @click="goToSignUp"
           >{{ loginSignUp }} <v-icon class="ml-5">mdi-location-enter</v-icon>
         </v-btn>
       </v-col>
@@ -52,7 +46,7 @@
     <v-snackbar
       v-model="snackbarError"
       color="indigo darken-4 px-3"
-      class="mb-5 mr-5"
+      class="mb-5 my-5"
       top
     >
       <ul>
@@ -90,6 +84,10 @@ export default class Login extends Vue {
 
   mounted() {
     this.translate();
+  }
+
+  goToSignUp(){
+    this.$router.push("/user/signUp");
   }
 
   separatorCols() {
