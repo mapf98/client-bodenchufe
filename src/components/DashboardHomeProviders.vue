@@ -2,7 +2,19 @@
   <div>
     <v-row>
       <v-col>
-        <p class="mb-0 title text-center indigo--text">{{ providersTitle }}</p>
+        <div class="d-flex justify-center align-center mb-2">
+          <p class="mb-0 mr-2 title text-center indigo--text">
+            {{ providersTitle }}
+          </p>
+          <v-icon color="indigo" large class="mr-12">
+            mdi-storefront-outline
+          </v-icon>
+          <v-switch
+            v-model="showAll"
+            :label="showProviders"
+            color="indigo"
+          ></v-switch>
+        </div>
         <v-divider class="amber"></v-divider>
       </v-col>
     </v-row>
@@ -13,7 +25,7 @@
           width="350"
           height="100"
           outlined
-          v-for="provider in mainProviders"
+          v-for="provider in providersFilter()"
           :key="provider.provider_id"
           @click="productsByProvider(provider.provider_id)"
         >
@@ -38,11 +50,12 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 
-@Component({
-  components: {},
-})
+@Component({})
 export default class DashboardHomeProviders extends Vue {
   providersTitle = "Providers";
+  showProviders = "Show all providers";
+  showAll = false;
+
   mounted() {
     this.translate();
     this.$store.dispatch("home/getMainProviders");
@@ -56,14 +69,10 @@ export default class DashboardHomeProviders extends Vue {
           this.providersTitle = term.termTranslation;
           break;
         }
-        // case "navbarLogin": {
-        //   this.navbarLogin = term.termTranslation;
-        //   break;
-        // }
-        // case "navbarSingUp": {
-        //   this.navbarSingUp = term.termTranslation;
-        //   break;
-        // }
+        case "showProviders": {
+          this.showProviders = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -72,7 +81,25 @@ export default class DashboardHomeProviders extends Vue {
   }
 
   productsByProvider(provider: number) {
+    //Busqueda de productos por proveedor
     console.log(provider);
+  }
+
+  providersFilter() {
+    const filteredProviders: any[] = [];
+    filteredProviders.push();
+    if (this.showAll == false) {
+      for (
+        let index = 0;
+        index < (this.mainProviders.length > 6 ? 6 : this.mainProviders.length);
+        index++
+      ) {
+        filteredProviders.push(this.mainProviders[index]);
+      }
+      return filteredProviders;
+    } else {
+      return this.mainProviders;
+    }
   }
 
   get translator() {
