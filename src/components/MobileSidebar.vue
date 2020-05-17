@@ -34,6 +34,13 @@
         }}</v-btn>
       </v-col>
     </v-row>
+    <v-row class="mt-4">
+      <v-col class="d-flex justify-center">
+        <v-btn large color="indigo" outlined @click="goToCart" min-width="200"
+          >Carrito</v-btn
+        >
+      </v-col>
+    </v-row>
     <v-row class="mt-12">
       <v-col class="d-flex justify-center">
         <Internationalization />
@@ -68,6 +75,10 @@ export default class MobileSidebar extends Vue {
 
   goToLogin() {
     this.$router.push("/Login");
+  }
+
+  goToCart() {
+    this.$router.push("/shoppingCart");
   }
 
   mounted() {

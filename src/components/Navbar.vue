@@ -30,6 +30,10 @@
       <v-col class="d-flex justify-center">
         <v-btn text small color="indigo">{{ navbarSingUp }}</v-btn>
       </v-col>
+
+      <v-col class="d-flex justify-center">
+        <v-btn text small color="indigo" @click="goToCart">Carrito</v-btn>
+      </v-col>
       <v-col class="d-flex justify-center">
         <Internationalization />
       </v-col>
@@ -57,6 +61,10 @@ export default class Navbar extends Vue {
 
   goToLogin() {
     this.$router.push("/Login");
+  }
+
+  goToCart() {
+    this.$router.push("/shoppingCart");
   }
 
   mounted() {

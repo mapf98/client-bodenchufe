@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Login.vue";
+import ShoppingCart from "../views/ShoppingCart.vue";
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
 
@@ -24,6 +25,15 @@ const routes: Array<RouteConfig> = [
     meta: {
       requiresAuth: false,
       hideBasicComponents: true,
+    },
+  },
+  {
+    path: "/shoppingCart",
+    name: "ShoppingCart",
+    component: ShoppingCart,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
     },
   },
 ];
