@@ -51,6 +51,11 @@ export default {
           userId = response.data.user[0].user_id;
           userEmail = response.data.user[0].user_email;
           userPassword = response.data.user[0].user_password;
+          context.commit("setStatus", {
+            validated: true,
+            blocked: false,
+            registered: true,
+          });
         } else {
           context.commit("setStatus", { registered: false }); //el correo ya esta usado
         }
@@ -92,6 +97,11 @@ export default {
                   localStorage.setItem("token", response.data.token);
                   localStorage.setItem("userData", JSON.stringify(userData));
                   context.commit("setUser", response.data.user[0]);
+                  context.commit("setStatus", {
+                    validated: true,
+                    blocked: false,
+                    registered: true,
+                  });
                 }
               });
           }
@@ -104,6 +114,7 @@ export default {
       let today: any = new Date();
       let dd: any = today.getDate();
       let mm: any = today.getMonth() + 1;
+      let isRegistered: any;
       const yyyy = today.getFullYear();
       if (dd < 10) {
         dd = `0${dd}`;
@@ -117,7 +128,7 @@ export default {
         userFirstName: "",
         userFirstLastname: "",
         languageName: "en-us",
-        userPassword: " ",
+        userPassword: "MDABODUSER",
         userPhoto: "",
         userEmail: "",
         rolName: "user",
@@ -149,14 +160,15 @@ export default {
         if (response.data.registered == true) {
           context.commit("setStatus", { registered: true });
         } else {
+          isRegistered = false;
           context.commit("setStatus", { registered: false }); //el correo ya esta usado
         }
       });
 
       await logInService
-        .checkLogIn({ userEmail: userData.userEmail, userPassword: " " })
+        .checkLogIn({ userEmail: userData.userEmail, userPassword: "MDABODUSER" })
         .then((response: any) => {
-          if (response.data.validated == true) {
+          if (response.data.validated == true && isRegistered) {
             userInLs.userName = response.data.user[0].user_first_name;
             userInLs.userLastName = response.data.user[0].user_first_lastname;
             userInLs.userLanguage = response.data.user[0].language_name;
