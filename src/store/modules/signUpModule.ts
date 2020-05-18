@@ -8,7 +8,7 @@ async function uploadTaskPromise(userId: any, imageFile: any) {
     let finalSnapshot;
     const storageRef = fb
       .storage()
-      .ref("images/user/" + userId + "/" + imageFile);
+      .ref("images/user/" + userId + "/" + imageFile.name);
     const uploadTask = storageRef.put(imageFile);
 
     uploadTask.on(
