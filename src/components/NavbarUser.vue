@@ -104,7 +104,10 @@ export default class NavbarUser extends Vue {
 
   mounted() {
     const userData: any = localStorage.getItem("userData");
-    this.userPhoto = JSON.parse(userData).userPhoto == "photo" ? this.placeHolcerImg : JSON.parse(userData).userPhoto;
+    this.userPhoto =
+      JSON.parse(userData).userPhoto == "photo"
+        ? this.placeHolcerImg
+        : JSON.parse(userData).userPhoto;
     this.userName = `${JSON.parse(userData).userName}`;
     this.translate();
   }
