@@ -223,6 +223,7 @@ export default class NotFederatedSingUp extends Vue {
           imageFile: this.imageFile,
         })
         .then(() => {
+          console.log("Entra 3");
           if (this.getStatus.registered == false) {
             this.loading = false;
             this.errors.push(this.userEmailRegisteredTrue);
