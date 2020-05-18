@@ -5,6 +5,7 @@ import { fa, fb, providerGoogle, providerFacebook } from "../../firebase";
 
 async function uploadTaskPromise(userId: any, imageFile: any) {
   return new Promise(function(resolve, reject) {
+    let finalSnapshot;
     const storageRef = fb
       .storage()
       .ref("images/user/" + userId + "/" + imageFile);
@@ -12,7 +13,7 @@ async function uploadTaskPromise(userId: any, imageFile: any) {
 
     uploadTask.on("state_changed", 
       async (snapshot: any) => {
-        console.log(snapshot.state);
+        finalSnapshot = snapshot.state;
       },
       (error) => {
         console.log(error);
@@ -22,7 +23,6 @@ async function uploadTaskPromise(userId: any, imageFile: any) {
         await uploadTask.snapshot.ref
           .getDownloadURL()
           .then((downloadURL) => {
-            console.log("Entra 1");
             resolve(downloadURL);
           });
       }
@@ -90,9 +90,7 @@ export default {
       });
 
       if (userId && payload.imageFile) {
-        
         const imageUrl = await uploadTaskPromise(userId, payload.imageFile);
-        console.log("Entra 2");
         await signUpService.setUserPhoto({
           userId: userId,
           userPhoto: imageUrl,
