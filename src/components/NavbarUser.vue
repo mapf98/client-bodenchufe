@@ -8,7 +8,10 @@
             v-on="on"
           >
             <v-avatar height="48" width="48">
-              <v-img :src="userPhoto" :alt="userName" />
+              <v-img
+                :src="userPhoto === null ? placeHolcerImg : userPhoto"
+                :alt="userName"
+              />
             </v-avatar>
             <p class="body-2 mb-0 ml-4 mr-4">{{ userName }}</p>
             <v-badge color="amber darken-3" content="10" overlap>
@@ -71,6 +74,9 @@ import { Watch } from "vue-property-decorator";
 export default class NavbarUser extends Vue {
   userPhoto = "";
   userName = "";
+  placeHolcerImg =
+    "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2Fperfil.png?alt=media&token=5b1d7b5c-ecd9-409e-9828-4a5e6cb48b18";
+
   items = [
     { title: "My profile", icon: "mdi-account", route: "/profile" },
     {
