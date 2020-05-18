@@ -9,7 +9,7 @@
           >
             <v-avatar height="48" width="48">
               <v-img
-                :src="userPhoto === null ? placeHolcerImg : userPhoto"
+                :src="userPhoto === `photo` ? placeHolcerImg : userPhoto"
                 :alt="userName"
               />
             </v-avatar>
