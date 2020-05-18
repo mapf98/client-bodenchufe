@@ -59,8 +59,11 @@ export default class FacebookFederatedLogin extends Vue {
             this.errors.push(this.nflMailNotRegistered);
           }
           if (this.errors.length == 0) {
-            this.$store.dispatch("internationalization/setUserLanguage");
-            this.$router.push("/");
+            this.$store
+              .dispatch("internationalization/setUserLanguage")
+              .then(() => {
+                this.$router.push("/home");
+              });
           } else {
             this.$emit("showErrors", this.errors);
           }
