@@ -9,8 +9,9 @@
           >
             <v-avatar height="48" width="48">
               <v-img
-                :src="userPhoto === `photo` ? placeHolcerImg : userPhoto"
+                :src="userPhoto"
                 :alt="userName"
+                :contain="userPhoto == placeHolcerImg"
               />
             </v-avatar>
             <p class="body-2 mb-0 ml-4 mr-4">{{ userName }}</p>
@@ -75,7 +76,7 @@ export default class NavbarUser extends Vue {
   userPhoto = "";
   userName = "";
   placeHolcerImg =
-    "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2Fperfil.png?alt=media&token=5b1d7b5c-ecd9-409e-9828-4a5e6cb48b18";
+    "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2FFotofinal.png?alt=media&token=d9d54e10-3ad2-4906-8986-890b38a27d38";
 
   items = [
     { title: "My profile", icon: "mdi-account", route: "/profile" },
@@ -103,7 +104,7 @@ export default class NavbarUser extends Vue {
 
   mounted() {
     const userData: any = localStorage.getItem("userData");
-    this.userPhoto = JSON.parse(userData).userPhoto;
+    this.userPhoto = JSON.parse(userData).userPhoto == "photo" ? this.placeHolcerImg : JSON.parse(userData).userPhoto;
     this.userName = `${JSON.parse(userData).userName}`;
     this.translate();
   }
