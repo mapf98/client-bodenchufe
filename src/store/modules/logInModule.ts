@@ -48,8 +48,8 @@ export default {
           localStorage.setItem("userData", JSON.stringify(userData));
           context.commit("setUser", response.data.user[0]);
           context.commit("setStatus", {
-            validado: true,
-            bloqueado: false,
+            validated: true,
+            blocked: false,
             registered: true,
           });
         }
@@ -96,7 +96,7 @@ export default {
         });
 
       await logInService
-        .checkLogIn({ userEmail: userEmail, userPassword: "" })
+        .checkLogIn({ userEmail: userEmail, userPassword: null })
         .then((response: any) => {
           if (response.data.validated == true) {
             userData.userName = response.data.user[0].user_first_name;
@@ -107,8 +107,8 @@ export default {
             localStorage.setItem("userData", JSON.stringify(userData));
             context.commit("setUser", response.data.user[0]);
             context.commit("setStatus", {
-              validado: true,
-              bloqueado: false,
+              validated: true,
+              blocked: false,
               registered: true,
             });
           }

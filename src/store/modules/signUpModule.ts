@@ -51,12 +51,17 @@ export default {
           userId = response.data.user[0].user_id;
           userEmail = response.data.user[0].user_email;
           userPassword = response.data.user[0].user_password;
+          context.commit("setStatus", {
+            validated: true,
+            blocked: false,
+            registered: true,
+          });
         } else {
           context.commit("setStatus", { registered: false }); //el correo ya esta usado
         }
       });
 
-      if (userId) {
+      if (userId && payload.imageFile) {
         const storageRef = fb
           .storage()
           .ref("images/user/" + userId + "/" + payload.imageFile);
@@ -79,8 +84,8 @@ export default {
             await signUpService.setUserPhoto({
               userId: userId,
               userPhoto: imageUrl,
-            });
-            await logInService
+            }).then(async () => {
+              await logInService
               .checkLogIn({ userEmail: userEmail, userPassword: userPassword })
               .then((response: any) => {
                 if (response.data.validated == true) {
@@ -92,36 +97,52 @@ export default {
                   localStorage.setItem("token", response.data.token);
                   localStorage.setItem("userData", JSON.stringify(userData));
                   context.commit("setUser", response.data.user[0]);
+                  context.commit("setStatus", {
+                    validated: true,
+                    blocked: false,
+                    registered: true,
+                  });
                 }
               });
+            });
           }
         );
+      } else {
+        await logInService
+              .checkLogIn({ userEmail: userEmail, userPassword: userPassword })
+              .then((response: any) => {
+                if (response.data.validated == true) {
+                  userData.userName = response.data.user[0].user_first_name;
+                  userData.userLastName =
+                    response.data.user[0].user_first_lastname;
+                  userData.userLanguage = response.data.user[0].language_name;
+                  userData.userPhoto = response.data.user[0].user_photo;
+                  localStorage.setItem("token", response.data.token);
+                  localStorage.setItem("userData", JSON.stringify(userData));
+                  context.commit("setUser", response.data.user[0]);
+                  context.commit("setStatus", {
+                    validated: true,
+                    blocked: false,
+                    registered: true,
+                  });
+                }
+              });
       }
     },
 
     federatedSignUp: async (context: any, payload: any) => {
       let userEmail: string | null | undefined;
-      let today: any = new Date();
-      let dd: any = today.getDate();
-      let mm: any = today.getMonth() + 1;
-      const yyyy = today.getFullYear();
-      if (dd < 10) {
-        dd = `0${dd}`;
-      }
-      if (mm < 10) {
-        mm = `0${mm}`;
-      }
-      today = `${yyyy}-${mm}-${dd}`;
+      let isRegistered: any = true;
 
       const userData: any = {
         userFirstName: "",
         userFirstLastname: "",
         languageName: "en-us",
-        userPassword: " ",
+        userPassword: null,
         userPhoto: "",
         userEmail: "",
         rolName: "user",
-        userBirthdate: today,
+        userBirthdate: null,
       };
       const userInLs: any = {
         userName: "",
@@ -149,14 +170,15 @@ export default {
         if (response.data.registered == true) {
           context.commit("setStatus", { registered: true });
         } else {
+          isRegistered = false;
           context.commit("setStatus", { registered: false }); //el correo ya esta usado
         }
       });
 
       await logInService
-        .checkLogIn({ userEmail: userData.userEmail, userPassword: " " })
+        .checkLogIn({ userEmail: userData.userEmail, userPassword: null })
         .then((response: any) => {
-          if (response.data.validated == true) {
+          if (response.data.validated == true && isRegistered == true) {
             userInLs.userName = response.data.user[0].user_first_name;
             userInLs.userLastName = response.data.user[0].user_first_lastname;
             userInLs.userLanguage = response.data.user[0].language_name;

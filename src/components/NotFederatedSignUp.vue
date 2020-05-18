@@ -333,7 +333,7 @@ export default class NotFederatedSingUp extends Vue {
   }
 
   get getStatus() {
-    return this.$store.getters["signUp/LoginStatus"];
+    return this.$store.getters["signUp/getLoginStatus"];
   }
 }
 </script>
