@@ -1,21 +1,26 @@
 <template>
   <v-navigation-drawer v-model="readyOpen" absolute temporary>
     <v-row>
-      <v-col class="d-flex justify-center mt-4 align-center">
+      <v-col class="d-flex justify-center mt-2 align-center">
         <p class="mb-0 mr-3 headline">{{ navbarNavigation }}</p>
         <v-icon color="black">
           mdi-navigation
         </v-icon>
       </v-col>
     </v-row>
-    <v-row class="mt-6">
+    <v-row class="mt-1" v-if="showUser">
+      <v-col>
+        <NavbarUser />
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col class="d-flex justify-center">
         <v-btn large color="amber darken-4" outlined min-width="200">{{
           navbarCategories
         }}</v-btn>
       </v-col>
     </v-row>
-    <v-row class="mt-4">
+    <v-row class="mt-1" v-if="!showUser">
       <v-col class="d-flex justify-center">
         <v-btn
           large
@@ -27,7 +32,7 @@
         >
       </v-col>
     </v-row>
-    <v-row class="mt-4">
+    <v-row class="mt-1" v-if="!showUser">
       <v-col class="d-flex justify-center">
         <v-btn
           large
@@ -39,14 +44,7 @@
         >
       </v-col>
     </v-row>
-    <v-row class="mt-4">
-      <v-col class="d-flex justify-center">
-        <v-btn large color="indigo" outlined @click="goToCart" min-width="200"
-          >Carrito</v-btn
-        >
-      </v-col>
-    </v-row>
-    <v-row class="mt-12">
+    <v-row>
       <v-col class="d-flex justify-center">
         <Internationalization />
       </v-col>
@@ -59,10 +57,12 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch, Prop } from "vue-property-decorator";
 import Internationalization from "../components/Internationalization.vue";
+import NavbarUser from "../components/NavbarUser.vue";
 
 @Component({
   components: {
     Internationalization,
+    NavbarUser,
   },
 })
 export default class MobileSidebar extends Vue {
@@ -72,6 +72,7 @@ export default class MobileSidebar extends Vue {
   navbarLogin = "Log In";
   navbarSingUp = "Sing Up";
   navbarNavigation = "Navigation";
+  showUser = false;
 
   @Watch("openSideMenu")
   drawer() {
@@ -91,6 +92,7 @@ export default class MobileSidebar extends Vue {
   }
 
   mounted() {
+    this.showUser = localStorage.getItem("userData") == null ? false : true;
     this.translate();
   }
 
@@ -119,6 +121,15 @@ export default class MobileSidebar extends Vue {
         }
       }
     });
+  }
+
+  @Watch("userData")
+  userLogIn() {
+    this.showUser = localStorage.getItem("userData") == null ? false : true;
+  }
+
+  get userData() {
+    return this.$store.getters["logIn/getLoginUserData"];
   }
 
   get translator() {

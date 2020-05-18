@@ -101,7 +101,11 @@ export default class NotFederatedLogin extends Vue {
             this.errors.push(this.nflMailNotRegistered);
           }
           if (this.errors.length == 0) {
-            this.$router.push("/");
+            this.$store
+              .dispatch("internationalization/setUserLanguage")
+              .then(() => {
+                this.$router.push("/home");
+              });
           } else {
             this.$emit("showErrors", this.errors);
             this.loading = false;

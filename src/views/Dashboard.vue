@@ -1,10 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col class="d-flex justify-center">
-        <h1>BIENVENIDO AL DASHBOARD</h1>
-      </v-col>
-    </v-row>
+    <router-view></router-view>
   </v-container>
 </template>
 

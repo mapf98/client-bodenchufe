@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col class="d-flex justify-center">
-        <router-link to="/">
+        <router-link to="/home">
           <v-img src="../assets/logoBodenchufe.png" max-width="300"></v-img
         ></router-link>
       </v-col>
@@ -39,7 +39,8 @@
     <v-row class="d-flex align-end mt-12">
       <v-col class="d-flex justify-center mt-10">
         <v-btn color="amber" class="white--text" x-large @click="goToSignUp"
-          >{{ loginSignUp }} <v-icon class="ml-5">mdi-location-enter</v-icon>
+          >{{ loginSignUp }}
+          <v-icon class="ml-5">mdi-badge-account-horizontal-outline</v-icon>
         </v-btn>
       </v-col>
     </v-row>

@@ -4,32 +4,30 @@ import logInService from "../../services/logInService";
 import { fa, fb, providerGoogle, providerFacebook } from "../../firebase";
 
 async function uploadTaskPromise(userId: any, imageFile: any) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
+    let finalSnapshot;
     const storageRef = fb
       .storage()
       .ref("images/user/" + userId + "/" + imageFile);
     const uploadTask = storageRef.put(imageFile);
 
-    uploadTask.on("state_changed", 
+    uploadTask.on(
+      "state_changed",
       async (snapshot: any) => {
-        console.log(snapshot.state);
+        finalSnapshot = snapshot.state;
       },
       (error) => {
         console.log(error);
         reject();
       },
       async () => {
-        await uploadTask.snapshot.ref
-          .getDownloadURL()
-          .then((downloadURL) => {
-            console.log("Entra 1");
-            resolve(downloadURL);
-          });
+        await uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          resolve(downloadURL);
+        });
       }
     );
   });
 }
-
 
 export default {
   namespaced: true,
@@ -90,35 +88,14 @@ export default {
       });
 
       if (userId && payload.imageFile) {
-        
         const imageUrl = await uploadTaskPromise(userId, payload.imageFile);
-        console.log("Entra 2");
-        await signUpService.setUserPhoto({
-          userId: userId,
-          userPhoto: imageUrl,
-        }).then(async () => {
-          await logInService
-          .checkLogIn({ userEmail: userEmail, userPassword: userPassword })
-          .then((response: any) => {
-            if (response.data.validated == true) {
-              userData.userName = response.data.user[0].user_first_name;
-              userData.userLastName =
-                response.data.user[0].user_first_lastname;
-              userData.userLanguage = response.data.user[0].language_name;
-              userData.userPhoto = response.data.user[0].user_photo;
-              localStorage.setItem("token", response.data.token);
-              localStorage.setItem("userData", JSON.stringify(userData));
-              context.commit("setUser", response.data.user[0]);
-              context.commit("setStatus", {
-                validated: true,
-                blocked: false,
-                registered: true,
-              });
-            }
-          });
-        });
-      } else {
-        await logInService
+        await signUpService
+          .setUserPhoto({
+            userId: userId,
+            userPhoto: imageUrl,
+          })
+          .then(async () => {
+            await logInService
               .checkLogIn({ userEmail: userEmail, userPassword: userPassword })
               .then((response: any) => {
                 if (response.data.validated == true) {
@@ -137,6 +114,26 @@ export default {
                   });
                 }
               });
+          });
+      } else {
+        await logInService
+          .checkLogIn({ userEmail: userEmail, userPassword: userPassword })
+          .then((response: any) => {
+            if (response.data.validated == true) {
+              userData.userName = response.data.user[0].user_first_name;
+              userData.userLastName = response.data.user[0].user_first_lastname;
+              userData.userLanguage = response.data.user[0].language_name;
+              userData.userPhoto = response.data.user[0].user_photo;
+              localStorage.setItem("token", response.data.token);
+              localStorage.setItem("userData", JSON.stringify(userData));
+              context.commit("setUser", response.data.user[0]);
+              context.commit("setStatus", {
+                validated: true,
+                blocked: false,
+                registered: true,
+              });
+            }
+          });
       }
     },
 
