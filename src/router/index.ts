@@ -7,6 +7,7 @@ import ShoppingCart from "../views/ShoppingCart.vue";
 import SignUp from "../views/SignUp.vue";
 import AllSignUp from "../components/AllSignUp.vue";
 import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
+import userProfile from "../views/userProfile.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -80,6 +81,16 @@ const routes: Array<RouteConfig> = [
         },
       },
     ],
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: userProfile,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+      applyBackground: false,
+    },
   },
 ];
 

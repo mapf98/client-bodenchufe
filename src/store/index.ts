@@ -7,6 +7,7 @@ import logIn from "./modules/logInModule";
 import shoppingCart from "./modules/shoppingCartModule";
 import signUp from "./modules/signUpModule";
 import home from "./modules/homeModule";
+import profile from "./modules/profileModule";
 
 Vue.use(Vuex);
 
@@ -17,5 +18,6 @@ export default new Vuex.Store({
     shoppingCart,
     signUp,
     home,
+    profile,
   },
 });
