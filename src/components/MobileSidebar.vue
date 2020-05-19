@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="readyOpen" absolute temporary>
+  <v-navigation-drawer v-model="readyOpen" fixed temporary>
     <v-row>
       <v-col class="d-flex justify-center mt-2 align-center">
         <p class="mb-0 mr-3 headline">{{ navbarNavigation }}</p>
