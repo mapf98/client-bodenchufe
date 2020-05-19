@@ -16,6 +16,7 @@
               color="indigo"
               :width="buttonCols()"
               @click="goToChangePassword()"
+              :disabled="isfederated"
               ><v-icon class="mr-2">mdi-lock</v-icon>
               {{ changePasswordButtonText }}</v-btn
             >
@@ -101,6 +102,8 @@ export default class Profile extends Vue {
   shoppingCartButtonText = "Shopping Cart";
   changePasswordButtonText = "Change your password";
   userDataProp = {};
+  accountType = "";
+  isfederated = false;
 
   @Watch("translator")
   translate() {
@@ -138,7 +141,12 @@ export default class Profile extends Vue {
   }
 
   mounted() {
-    this.translator;
+    const lsData: any = localStorage.getItem("userData");
+    this.translate();
+    this.accountType = JSON.parse(lsData).userType;
+    if (this.accountType == "federated") {
+      this.isfederated = true;
+    }
   }
 
   buttonCols() {

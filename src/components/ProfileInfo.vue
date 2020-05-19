@@ -297,6 +297,7 @@ export default class ProfileInfo extends Vue {
       this.getdate = this.user.user_birthdate.split("T");
       // eslint-disable-next-line @typescript-eslint/camelcase
       this.user.user_birthdate = this.getdate[0];
+      console.log(this.user);
     });
   }
 

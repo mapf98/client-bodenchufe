@@ -33,6 +33,7 @@
           :width="buttonCols()"
           class="align-center white--text mt-12"
           color="indigo"
+          :disabled="isfederated"
           @click="changePassword()"
           >{{ saveChangeText }}</v-btn
         >
@@ -49,7 +50,15 @@
           {{ error }}
         </li>
       </ul>
-      <v-btn color="amber" text @click="snackbarError = false" small>
+      <v-btn
+        color="amber"
+        text
+        @click="
+          snackbarError = false;
+          goToprofile();
+        "
+        small
+      >
         Close
       </v-btn>
     </v-snackbar>
@@ -80,6 +89,8 @@ export default class EditPassword extends Vue {
     currentPassword: "",
     newPassword: "",
   };
+  accountType = "";
+  isfederated = false;
 
   passwordRules = [
     (v: any) => !!v || this.userPasswordRulesRequired,
@@ -94,6 +105,11 @@ export default class EditPassword extends Vue {
   mounted() {
     this.translate();
     this.errors.splice(0);
+    const lsData: any = localStorage.getItem("userData");
+    this.accountType = JSON.parse(lsData).userType;
+    if (this.accountType == "federated") {
+      this.isfederated = true;
+    }
   }
 
   @Watch("translator")
@@ -170,7 +186,6 @@ export default class EditPassword extends Vue {
             this.errors.splice(0);
             this.errors.push(this.passwordValidChangeText);
             this.showErrors(this.errors);
-            this.$router.push("/profile");
           } else {
             this.errors.splice(0);
             this.errors.push(this.incorrectCurrentPasswordText);
@@ -179,6 +194,10 @@ export default class EditPassword extends Vue {
         });
     }
     console.log(this.userPasswordData);
+  }
+
+  goToprofile() {
+    this.$router.push("/profile");
   }
 }
 </script>
