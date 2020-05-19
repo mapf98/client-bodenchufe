@@ -33,7 +33,12 @@
       </v-row>
       <v-row>
         <v-col class="text-center">
-          <v-btn class="white--text" color="indigo" :width="buttonCols()">
+          <v-btn
+            class="white--text"
+            color="indigo"
+            :width="buttonCols()"
+            @click="updateUserInfo()"
+          >
             <v-icon class="mr-2">mdi-account-edit</v-icon>
             {{ saveChangeText }}
           </v-btn>
@@ -109,7 +114,7 @@
                   </template>
                   <v-date-picker
                     ref="picker"
-                    v-model="user.userBirthdate"
+                    v-model="user.user_birthdate"
                     :max="new Date().toISOString().substr(0, 10)"
                     min="1950-01-01"
                     @change="save"
@@ -234,6 +239,10 @@ export default class ProfileInfo extends Vue {
     this.translator;
   }
 
+  updateUserInfo() {
+    this.$store.dispatch("profile/updateUserInfo", { user: this.user });
+  }
+
   updateImg(event: any) {
     if (event) {
       const files = event.target.files[0] || event.dataTransfer.files;
@@ -247,7 +256,7 @@ export default class ProfileInfo extends Vue {
         })
         .then(() => {
           this.loading = false;
-          const user:any = localStorage.getItem("userData");
+          const user: any = localStorage.getItem("userData");
           this.userUrlPhoto = JSON.parse(user).userPhoto;
         });
     } else {

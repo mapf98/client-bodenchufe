@@ -11,7 +11,11 @@
       <v-col class="text-center" cols="5">
         <v-row class="align-center mb-5">
           <v-col>
-            <v-btn class="white--text" color="indigo" :width="buttonCols()"
+            <v-btn
+              class="white--text"
+              color="indigo"
+              :width="buttonCols()"
+              @click="goToChangePassword()"
               ><v-icon class="mr-2">mdi-lock</v-icon>
               {{ changePasswordButtonText }}</v-btn
             >
@@ -147,6 +151,9 @@ export default class Profile extends Vue {
   }
   goToShoppingCart() {
     this.$router.push("/shoppingCart");
+  }
+  goToChangePassword() {
+    this.$router.push("/profile/changePassword");
   }
 }
 </script>

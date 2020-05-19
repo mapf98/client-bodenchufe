@@ -75,5 +75,13 @@ export default {
         localStorage.setItem("userData", JSON.stringify(userData));
       })
     },
+    updateUserInfo: async (context: any, payload: any) => {
+      await profileService.updateUserInfo(payload.user).then(() => {console.log("actualizado")});
+    },
+    changePassword: async (context: any, payload:any) => {
+      await profileService.changePassword(payload.userPasswordData).then((res: any) => {
+        const response = res.data.message;
+      });
+    },
   },
 };
