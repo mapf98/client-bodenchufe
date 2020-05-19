@@ -69,9 +69,9 @@ export default class EditPassword extends Vue {
   userConfirmPasswordText = "Confirm Password";
   userPasswordRulesRequired = "Password must be less than 8 characters";
   userPasswordRulesLength = "Password is required";
-  equalPasswordsText = "The new password must be different from the old one";
   incorrectCurrentPasswordText = "The current password is invalid";
   matchCurrentPasswordText = "Password confirmation does not match";
+  passwordValidChangeText = "Password successfully changed";
 
   snackbarError = false;
   errors: Array<string> = [];
@@ -93,6 +93,7 @@ export default class EditPassword extends Vue {
 
   mounted() {
     this.translate();
+    this.errors.splice(0);
   }
 
   @Watch("translator")
@@ -123,6 +124,18 @@ export default class EditPassword extends Vue {
           this.userPasswordRulesLength = term.termTranslation;
           break;
         }
+        case "passwordValidChangeText": {
+          this.passwordValidChangeText = term.termTranslation;
+          break;
+        }
+        case "incorrectCurrentPasswordText": {
+          this.incorrectCurrentPasswordText = term.termTranslation;
+          break;
+        }
+        case "matchCurrentPasswordText": {
+          this.matchCurrentPasswordText = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -139,6 +152,10 @@ export default class EditPassword extends Vue {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
 
+  get passwordStatus() {
+    return this.$store.getters["profile/getPasswordStatus"];
+  }
+
   changePassword() {
     if (this.validatedPassword != this.userPasswordData.newPassword) {
       this.errors.push(this.matchCurrentPasswordText);
@@ -147,8 +164,18 @@ export default class EditPassword extends Vue {
       this.$store
         .dispatch("profile/changePassword", {
           userPasswordData: this.userPasswordData,
-        }).then((res: any)=> {
-          console.log(res);
+        })
+        .then((res: any) => {
+          if (this.passwordStatus.correct == true) {
+            this.errors.splice(0);
+            this.errors.push(this.passwordValidChangeText);
+            this.showErrors(this.errors);
+            this.$router.push("/profile");
+          } else {
+            this.errors.splice(0);
+            this.errors.push(this.incorrectCurrentPasswordText);
+            this.showErrors(this.errors);
+          }
         });
     }
     console.log(this.userPasswordData);

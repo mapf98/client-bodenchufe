@@ -126,13 +126,28 @@
         </v-col>
       </v-row>
     </v-card>
+    <v-snackbar
+      v-model="snackbarError"
+      color="indigo darken-4 px-3"
+      class="mb-5 my-5"
+      top
+    >
+      <ul>
+        <li class="body-1" v-for="error in errors" :key="error.id">
+          {{ error }}
+        </li>
+      </ul>
+      <v-btn color="amber" text @click="snackbarError = false" small>
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch, Prop } from "vue-property-decorator";
+import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class ProfileInfo extends Vue {
@@ -144,6 +159,8 @@ export default class ProfileInfo extends Vue {
   userEmailText = "Email ";
   changePhotoText = "Change your Photo";
   saveChangeText = "Save your changes";
+  saveChangeSuccefullyText = "Your changes has been saved";
+
   snackbarError = false;
   errors: Array<string> = [];
   valid = true;
@@ -200,6 +217,10 @@ export default class ProfileInfo extends Vue {
           this.saveChangeText = term.termTranslation;
           break;
         }
+        case "saveChangeSuccefullyText": {
+          this.saveChangeSuccefullyText = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -240,7 +261,13 @@ export default class ProfileInfo extends Vue {
   }
 
   updateUserInfo() {
-    this.$store.dispatch("profile/updateUserInfo", { user: this.user });
+    this.$store
+      .dispatch("profile/updateUserInfo", { user: this.user })
+      .then(() => {
+        this.errors.splice(0);
+        this.errors.push(this.saveChangeSuccefullyText);
+        this.showErrors(this.errors);
+      });
   }
 
   updateImg(event: any) {

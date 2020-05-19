@@ -45,16 +45,21 @@ export default {
   // -----------------------------------------------------------------
   state: {
     user: {},
+    passwordStatus: {},
   },
   // -----------------------------------------------------------------
   getters: {
     getUserData: (state: any) => state.user,
+    getPasswordStatus: (state: any) => state.passwordStatus,
   },
   // -----------------------------------------------------------------
   mutations: {
     setUserData(state: any, user: any) {
       Vue.set(state, "user", user);
     },
+    setPasswordStatus(state: any, status: any) {
+      Vue.set(state, "passwordStatus", status);
+    }
   },
   // -----------------------------------------------------------------
   actions: {
@@ -81,6 +86,11 @@ export default {
     changePassword: async (context: any, payload:any) => {
       await profileService.changePassword(payload.userPasswordData).then((res: any) => {
         const response = res.data.message;
+        if (response == "La contraseña no coincide con tu contraseña actual almacenada") {
+          context.commit("setPasswordStatus", {correct: false})
+        } else {
+          context.commit("setPasswordStatus", {correct: true})
+        }
       });
     },
   },
