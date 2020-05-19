@@ -2,7 +2,7 @@
   <v-app-bar app>
     <v-row class="hidden-md-and-up">
       <v-col class="d-flex justify-start">
-        <v-img src="../assets/logoBodenchufe.png" max-width="170"></v-img>
+        <v-img src="../assets/logoBodenchufe.png" max-width="170" class="imgPointer" @click="goToHome"></v-img>
       </v-col>
     </v-row>
     <v-app-bar-nav-icon
@@ -12,7 +12,7 @@
 
     <v-row class="d-md-flex align-center hidden-sm-and-down">
       <v-col class="mr-8">
-        <v-img src="../assets/logoBodenchufe.png" max-width="200"></v-img>
+        <v-img src="../assets/logoBodenchufe.png" max-width="200" class="imgPointer" @click="goToHome"></v-img>
       </v-col>
       <v-col cols="3">
         <SearchBox />
@@ -62,6 +62,10 @@ export default class Navbar extends Vue {
   navbarLogin = "Log In";
   navbarSingUp = "Sing Up";
   showUser = false;
+
+  goToHome(){
+    this.$router.currentRoute.path != "/home" ? this.$router.push("/home"):false;
+  }
 
   goToLogin() {
     this.$router.push("/Login");
@@ -113,4 +117,8 @@ export default class Navbar extends Vue {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.imgPointer{
+  cursor: pointer;
+}
+</style>
