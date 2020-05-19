@@ -7,6 +7,7 @@ import ShoppingCart from "../views/ShoppingCart.vue";
 import SignUp from "../views/SignUp.vue";
 import AllSignUp from "../components/AllSignUp.vue";
 import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
+import Checkout from "../views/Checkout.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -52,6 +53,15 @@ const routes: Array<RouteConfig> = [
     meta: {
       requiresAuth: true,
       hideBasicComponents: false,
+    },
+  },
+  {
+    path: "/checkout",
+    name: "Checkout",
+    component: Checkout,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: true,
     },
   },
   {
