@@ -12,34 +12,31 @@
       <v-row>
         <v-col class="text-center">
           <v-btn
-            @click="$refs.file.click()"
+            @click="$refs.fileInp.click()"
+            ref="take"
             class="white--text"
             color="indigo"
+            :loading="loading"
             :width="buttonCols()"
           >
+            <input
+              @change="updateImg"
+              type="file"
+              ref="fileInp"
+              style="display: none;"
+              accept="image/*"
+            />
             <v-icon class="mr-2">mdi-camera</v-icon>
-            {{changePhotoText}}
+            {{ changePhotoText }}
           </v-btn>
-          <input
-            type="file"
-            ref="file"
-            style="display: none;"
-            accept="image/*"
-          />
         </v-col>
       </v-row>
       <v-row>
         <v-col class="text-center">
           <v-btn class="white--text" color="indigo" :width="buttonCols()">
             <v-icon class="mr-2">mdi-account-edit</v-icon>
-            {{saveChangeText}}
+            {{ saveChangeText }}
           </v-btn>
-          <input
-            type="file"
-            ref="file"
-            style="display: none;"
-            accept="image/*"
-          />
         </v-col>
       </v-row>
       <v-row>
@@ -147,11 +144,13 @@ export default class ProfileInfo extends Vue {
   valid = true;
   agregado = false;
   menuRef = false;
+  loading = false;
 
   userData: any;
   userDataString: any;
   userDataProp!: object;
   userUrlPhoto = "";
+  newPhoto: any;
   getdate: any = "";
 
   userNameRulesLength = "Name must be less than 10 characters";
@@ -233,6 +232,25 @@ export default class ProfileInfo extends Vue {
     this.showImageIfExist();
     this.getUserData();
     this.translator;
+  }
+
+  updateImg(event: any) {
+    if (event) {
+      const files = event.target.files[0] || event.dataTransfer.files;
+      this.newPhoto = files;
+      this.loading = true;
+      this.$store
+        .dispatch("profile/updateImage", {
+          imageUrl: this.userUrlPhoto,
+          imageData: this.newPhoto,
+          userId: this.user.user_id,
+        })
+        .then(() => {
+          location.reload();
+        });
+    } else {
+      this.agregado = false;
+    }
   }
 
   getUserData() {
