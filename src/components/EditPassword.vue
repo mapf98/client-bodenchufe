@@ -181,7 +181,7 @@ export default class EditPassword extends Vue {
         .dispatch("profile/changePassword", {
           userPasswordData: this.userPasswordData,
         })
-        .then((res: any) => {
+        .then(() => {
           if (this.passwordStatus.correct == true) {
             this.errors.splice(0);
             this.errors.push(this.passwordValidChangeText);
