@@ -246,7 +246,9 @@ export default class ProfileInfo extends Vue {
           userId: this.user.user_id,
         })
         .then(() => {
-          location.reload();
+          this.loading = false;
+          const user:any = localStorage.getItem("userData");
+          this.userUrlPhoto = JSON.parse(user).userPhoto;
         });
     } else {
       this.agregado = false;

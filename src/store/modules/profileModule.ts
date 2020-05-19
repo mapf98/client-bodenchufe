@@ -7,7 +7,6 @@ async function deleteImage(imageUrl: any) {
   return new Promise(function (resolve, reject) {
     const storage = fs;
     const storageUrlPath = storage.refFromURL(imageUrl);
-    console.log(storageUrlPath.fullPath);
     const storageRef = storage.ref(storageUrlPath.fullPath);
     storageRef.delete().catch((error) => {
       return error;
