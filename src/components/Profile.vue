@@ -21,6 +21,15 @@
               {{ changePasswordButtonText }}</v-btn
             >
           </v-col>
+          <v-col>
+            <v-btn
+              class="white--text"
+              color="indigo"
+              :width="buttonCols()"
+              @click="signOff()"
+              ><v-icon class="mr-2">mdi-logout</v-icon> {{ signOffText }}</v-btn
+            >
+          </v-col>
         </v-row>
         <v-row class="align center">
           <v-col>
@@ -101,6 +110,7 @@ export default class Profile extends Vue {
   couponsButtonText = "Coupons";
   shoppingCartButtonText = "Shopping Cart";
   changePasswordButtonText = "Change your password";
+  signOffText = "Sign off";
   userDataProp = {};
   accountType = "";
   isfederated = false;
@@ -127,6 +137,10 @@ export default class Profile extends Vue {
         }
         case "changePasswordButtonText": {
           this.changePasswordButtonText = term.termTranslation;
+          break;
+        }
+        case "signOffText": {
+          this.signOffText = term.termTranslation;
           break;
         }
         default: {
@@ -162,6 +176,13 @@ export default class Profile extends Vue {
   }
   goToChangePassword() {
     this.$router.push("/profile/changePassword");
+  }
+  goToHome() {
+    this.$router.push("/home");
+  }
+  async signOff() {
+    localStorage.clear();
+    this.$router.push("/home");
   }
 }
 </script>
