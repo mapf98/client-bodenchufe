@@ -1,12 +1,11 @@
 <template>
-  <v-carousel cycle height="400" hide-delimiter-background show-arrows-on-hover>
-    <v-carousel-item v-for="(slide, i) in slides" :key="i">
-      <v-sheet :color="colors[i]" height="100%">
-        <v-row class="fill-height" align="center" justify="center">
-          <div class="display-3">{{ slide }} Slide</div>
-        </v-row>
-      </v-sheet>
-    </v-carousel-item>
+  <v-carousel cycle height="400" hide-delimiter-background show-arrows-on-hover> 
+    <v-carousel-item
+      v-for="(item, i) in items"
+      :key="i"
+      :src="item"
+      transition="slide-x-transition"
+    ></v-carousel-item>
   </v-carousel>
 </template>
 
@@ -19,14 +18,11 @@ import { Watch } from "vue-property-decorator";
   components: {},
 })
 export default class DashboardHomeCarousel extends Vue {
-  colors = [
-    "indigo",
-    "warning",
-    "pink darken-2",
-    "red lighten-1",
-    "deep-purple accent-4",
+  items = [
+    "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2Fslide1.jpg?alt=media&token=d9a7394c-6fa2-41e5-9554-4d23e748ce31",
+    "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2Fslide2.jpg?alt=media&token=5ebe6565-db3a-436a-9ce0-d34a7672fc74", 
+    "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2Fslide3.jpg?alt=media&token=89e3e1df-6543-4156-ae55-d1c8cbeaa718"
   ];
-  slides = ["First", "Second", "Third", "Fourth", "Fifth"];
 
   mounted() {
     this.translate();
