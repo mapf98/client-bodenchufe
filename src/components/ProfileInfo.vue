@@ -41,6 +41,7 @@
             class="white--text"
             color="indigo"
             :width="buttonCols()"
+            :disabled="allFields"
             @click="updateUserInfo()"
           >
             <v-icon class="mr-2">mdi-account-edit</v-icon>
@@ -171,6 +172,7 @@ export default class ProfileInfo extends Vue {
   agregado = false;
   menuRef = false;
   loading = false;
+  allFields = false;
   placeHolcerImg =
     "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2FFotofinal.png?alt=media&token=d9d54e10-3ad2-4906-8986-890b38a27d38";
 
@@ -226,6 +228,19 @@ export default class ProfileInfo extends Vue {
     this.showImageIfExist();
     this.getUserData();
     this.translate();
+  }
+
+  @Watch("user.user_first_name")
+  @Watch("user.user_first_lastname")
+  disableChangeInfoButton() {
+    if (
+      this.user.user_first_name.length == 0 ||
+      this.user.user_first_lastname.length == 0
+    ) {
+      this.allFields = true;
+    } else {
+      this.allFields = false;
+    }
   }
 
   @Watch("translator")
@@ -308,6 +323,7 @@ export default class ProfileInfo extends Vue {
       this.getdate = this.user.user_birthdate.split("T");
       // eslint-disable-next-line @typescript-eslint/camelcase
       this.user.user_birthdate = this.getdate[0];
+      console.log(this.user);
     });
   }
 
