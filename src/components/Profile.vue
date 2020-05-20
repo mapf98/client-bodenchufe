@@ -181,9 +181,10 @@ export default class Profile extends Vue {
   goToHome() {
     this.$router.push("/home");
   }
-  async signOff() {
+  signOff() {
     localStorage.clear();
     this.$router.push("/home");
+    location.reload();
   }
 }
 </script>
