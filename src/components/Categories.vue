@@ -11,7 +11,15 @@
         <v-card v-for="cat in categories" :key="cat.id" elevation="5" class="ma-5 pa-5">
           <p class="indigo--text title">{{cat.name}}</p>
           <v-treeview
+            open-on-click
+            selectable
+            return-object
             open-all
+            expand-icon="mdi-chevron-down"
+            on-icon="mdi-card-search-outline"
+            off-icon="mdi-card-search-outline"
+            indeterminate-icon="mdi-card-search-outline"
+            v-model="selection"
             :items="cat.children"
           ></v-treeview>
         </v-card>
@@ -24,17 +32,24 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch } from "vue-property-decorator";
-import Category from "../components/Category.vue";
 
 @Component({})
 export default class Categories extends Vue {
   categoriesTitle = "Categories";
+  selection: any[] = [];
+
+  @Watch("selection")
+  getProductsByCategory(){
+    if(this.selection[0] !== undefined){
+      this.$store.dispatch("product/getProductByCategory", {categoryId: this.selection[0].id}).then(()=>{
+        this.$router.push("/products");
+      });
+    }
+  }
 
   mounted() {
     this.translate();
-    this.$store.dispatch("category/getCategories").then(()=>{
-      console.log(this.categories);
-    });
+    this.$store.dispatch("category/getCategories");
   }
 
   @Watch("translator")

@@ -1,23 +1,23 @@
 import Vue from "vue";
-import categoryService from "../../services/categoryService";
+import productService from "../../services/productService";
 
 export default {
   namespaced: true,
   // -----------------------------------------------------------------
   state: {
     // Aqui van los atributos
-    categories: [],  
+    products: [],
   },
   // -----------------------------------------------------------------
   getters: {
     // getters and computed props
-    getCategories: (state: any) => state.categories,
+    getProducts: (state: any) => state.products,
   },
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
-    setCategories(state: {}, categories: []) {
-      Vue.set(state, "categories", categories);
+    setProductByCategory(state: {}, products: []) {
+      Vue.set(state, "products", products);
     },
   },
   // -----------------------------------------------------------------
@@ -25,9 +25,9 @@ export default {
     // create: (context, bankData) => {
     //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
     // },
-    getCategories: async (context: any) => {
-      await categoryService.getCategories().then((response: any) => {
-        context.commit("setCategories", response.data.categories);
+    getProductByCategory: async (context: any, payload: any) => {
+      await productService.getProductByCategory(payload.categoryId).then((response: any) => {
+        context.commit("setProductByCategory", response.data.products);
       });
     },
     // update: (context, bankData) => {

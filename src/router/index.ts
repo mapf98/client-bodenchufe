@@ -10,6 +10,7 @@ import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
 import userProfile from "../views/userProfile.vue";
 import ChangePassword from "../views/ChangePassword.vue";
 import Categories from "../components/Categories.vue";
+import Products from "../components/Products.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -55,6 +56,16 @@ const routes: Array<RouteConfig> = [
         path: "/categories",
         name: "Categories",
         component: Categories,
+        meta: {
+          requiresAuth: false,
+          hideBasicComponents: false,
+          applyBackground: false,
+        },
+      },
+      {
+        path: "/products",
+        name: "Products",
+        component: Products,
         meta: {
           requiresAuth: false,
           hideBasicComponents: false,

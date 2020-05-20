@@ -80,7 +80,7 @@ export default class Navbar extends Vue {
   }
 
   goToCategories(){
-    this.$router.push("/categories");
+    this.$router.currentRoute.path != "/categories" ? this.$router.push("/categories"):false;
   }
 
   mounted() {
