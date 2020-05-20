@@ -5,7 +5,11 @@
         <v-col class="text-center">
           <v-avatar size="200" color="white">
             <v-icon size="200" v-if="!agregado">mdi-account</v-icon>
-            <v-img :src="userUrlPhoto" v-if="agregado" contain></v-img>
+            <v-img
+              :src="userUrlPhoto == 'photo' ? placeHolcerImg : userUrlPhoto"
+              v-if="agregado"
+              :contain="userUrlPhoto == placeHolcerImg"
+            ></v-img>
           </v-avatar>
         </v-col>
       </v-row>
@@ -167,6 +171,8 @@ export default class ProfileInfo extends Vue {
   agregado = false;
   menuRef = false;
   loading = false;
+  placeHolcerImg =
+    "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2FFotofinal.png?alt=media&token=d9d54e10-3ad2-4906-8986-890b38a27d38";
 
   userData: any;
   userDataString: any;
@@ -297,7 +303,6 @@ export default class ProfileInfo extends Vue {
       this.getdate = this.user.user_birthdate.split("T");
       // eslint-disable-next-line @typescript-eslint/camelcase
       this.user.user_birthdate = this.getdate[0];
-      console.log(this.user);
     });
   }
 

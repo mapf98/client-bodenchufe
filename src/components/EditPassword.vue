@@ -33,7 +33,7 @@
           :width="buttonCols()"
           class="align-center white--text mt-12"
           color="indigo"
-          :disabled="isfederated"
+          :disabled="allFields"
           @click="changePassword()"
           >{{ saveChangeText }}</v-btn
         >
@@ -50,15 +50,7 @@
           {{ error }}
         </li>
       </ul>
-      <v-btn
-        color="amber"
-        text
-        @click="
-          snackbarError = false;
-          goToprofile();
-        "
-        small
-      >
+      <v-btn color="amber" text @click="snackbarError = false" small>
         Close
       </v-btn>
     </v-snackbar>
@@ -90,7 +82,8 @@ export default class EditPassword extends Vue {
     newPassword: "",
   };
   accountType = "";
-  isfederated = false;
+  isfederated: any = false;
+  allFields: any = true;
 
   passwordRules = [
     (v: any) => !!v || this.userPasswordRulesRequired,
@@ -108,7 +101,22 @@ export default class EditPassword extends Vue {
     const lsData: any = localStorage.getItem("userData");
     this.accountType = JSON.parse(lsData).userType;
     if (this.accountType == "federated") {
-      this.isfederated = true;
+      this.$router.push("/profile");
+    }
+  }
+
+  @Watch("validatedPassword")
+  @Watch("userPasswordData.currentPassword")
+  @Watch("userPasswordData.newPassword")
+  validatedButton() {
+    if (
+      this.userPasswordData.currentPassword.length >= 8 &&
+      this.userPasswordData.newPassword.length >= 8 &&
+      this.validatedPassword.length >= 8
+    ) {
+      this.allFields = false;
+    } else {
+      this.allFields = true;
     }
   }
 
@@ -177,6 +185,8 @@ export default class EditPassword extends Vue {
       this.errors.push(this.matchCurrentPasswordText);
       this.showErrors(this.errors);
     } else {
+      this.validatedButton();
+      this.allFields = true;
       this.$store
         .dispatch("profile/changePassword", {
           userPasswordData: this.userPasswordData,
@@ -186,6 +196,7 @@ export default class EditPassword extends Vue {
             this.errors.splice(0);
             this.errors.push(this.passwordValidChangeText);
             this.showErrors(this.errors);
+            this.goToprofile();
           } else {
             this.errors.splice(0);
             this.errors.push(this.incorrectCurrentPasswordText);
@@ -193,7 +204,6 @@ export default class EditPassword extends Vue {
           }
         });
     }
-    console.log(this.userPasswordData);
   }
 
   goToprofile() {
