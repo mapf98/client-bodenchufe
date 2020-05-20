@@ -157,17 +157,29 @@ export default {
         userLanguage: "",
         userPhoto: "",
       };
+      //hzhscdjpaz_1589939705@tfbnw.net
       let googleProfile: any;
       await fa
         .signInWithPopup(
           payload.provider == "google" ? providerGoogle : providerFacebook
         )
         .then((result) => {
-          googleProfile = result.additionalUserInfo?.profile;
-          userData.userFirstName = googleProfile.given_name;
-          userData.userFirstLastname = googleProfile.family_name;
-          userData.userPhoto = googleProfile.picture;
-          userData.userEmail = googleProfile.email;
+          console.log(result);
+          if (payload.provider == "google"){
+            googleProfile = result.additionalUserInfo?.profile;
+            userData.userFirstName = googleProfile.given_name;
+            userData.userFirstLastname = googleProfile.family_name;
+            userData.userPhoto = googleProfile.picture;
+            userData.userEmail = googleProfile.email;
+            fa.signOut();
+          } else {
+            googleProfile = result.additionalUserInfo?.profile;
+            userData.userFirstName = googleProfile.first_name;
+            userData.userFirstLastname = googleProfile.last_name;
+            userData.userPhoto = googleProfile.picture.data.url;
+            userData.userEmail = googleProfile.email;
+            fa.signOut();
+          }
         })
         .catch((error) => {
           console.log(error);
