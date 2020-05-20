@@ -21,15 +21,6 @@
               {{ changePasswordButtonText }}</v-btn
             >
           </v-col>
-          <v-col>
-            <v-btn
-              class="white--text"
-              color="indigo"
-              :width="buttonCols()"
-              @click="signOff()"
-              ><v-icon class="mr-2">mdi-logout</v-icon> {{ signOffText }}</v-btn
-            >
-          </v-col>
         </v-row>
         <v-row class="align center">
           <v-col>
@@ -88,6 +79,16 @@
             >
           </v-col>
         </v-row>
+        <v-col>
+          <v-btn
+            class="white--text"
+            color="red"
+            :width="buttonCols()"
+            @click="signOff()"
+            text
+            ><v-icon class="mr-2">mdi-logout</v-icon> {{ signOffText }}</v-btn
+          >
+        </v-col>
       </v-col>
     </v-row>
   </v-container>

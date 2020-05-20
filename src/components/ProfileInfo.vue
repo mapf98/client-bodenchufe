@@ -185,6 +185,38 @@ export default class ProfileInfo extends Vue {
     val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
   }
 
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
+  $refs!: {
+    picker: any;
+    menu: any;
+    form: any;
+  };
+
+  nameRules = [(v: any) => !!v || this.userNameRulesRequired];
+
+  buttonCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs ? 280 : sm ? 280 : 350;
+  }
+
+  save(date: Date) {
+    this.$refs.menu.save(date);
+  }
+
+  showErrors(errors: any) {
+    this.errors = errors;
+    this.snackbarError = true;
+  }
+
+  mounted() {
+    this.showImageIfExist();
+    this.getUserData();
+    this.translate();
+  }
+
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -226,38 +258,6 @@ export default class ProfileInfo extends Vue {
         }
       }
     });
-  }
-
-  get translator() {
-    return this.$store.getters["internationalization/getLanguageTexts"];
-  }
-
-  $refs!: {
-    picker: any;
-    menu: any;
-    form: any;
-  };
-
-  nameRules = [(v: any) => !!v || this.userNameRulesRequired];
-
-  buttonCols() {
-    const { xs, sm } = this.$vuetify.breakpoint;
-    return xs ? 280 : sm ? 280 : 350;
-  }
-
-  save(date: Date) {
-    this.$refs.menu.save(date);
-  }
-
-  showErrors(errors: any) {
-    this.errors = errors;
-    this.snackbarError = true;
-  }
-
-  mounted() {
-    this.showImageIfExist();
-    this.getUserData();
-    this.translator;
   }
 
   updateUserInfo() {
