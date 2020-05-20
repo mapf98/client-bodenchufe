@@ -15,7 +15,7 @@
     </v-row>
     <v-row>
       <v-col class="d-flex justify-center">
-        <v-btn large color="amber darken-4" outlined min-width="200">{{
+        <v-btn large color="amber darken-4" outlined min-width="200" @click="goToCategories()">{{
           navbarCategories
         }}</v-btn>
       </v-col>
@@ -89,6 +89,10 @@ export default class MobileSidebar extends Vue {
 
   goToSignUp() {
     this.$router.push("/user/signUp");
+  }
+
+  goToCategories(){
+    this.$router.push("/categories");
   }
 
   mounted() {

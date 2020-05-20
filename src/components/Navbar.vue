@@ -18,7 +18,7 @@
         <SearchBox />
       </v-col>
       <v-col class="d-flex justify-start">
-        <v-btn small color="amber darken-4" outlined>{{
+        <v-btn small color="amber darken-4" outlined @click="goToCategories">{{
           navbarCategories
         }}</v-btn>
       </v-col>
@@ -77,6 +77,10 @@ export default class Navbar extends Vue {
 
   goToSignUp() {
     this.$router.push("/user/signUp");
+  }
+
+  goToCategories(){
+    this.$router.push("/categories");
   }
 
   mounted() {

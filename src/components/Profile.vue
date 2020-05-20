@@ -176,7 +176,7 @@ export default class Profile extends Vue {
     this.$router.push("/shoppingCart");
   }
   goToChangePassword() {
-    this.$router.push("/profile/changePassword");
+    this.$router.push("/changePassword");
   }
   goToHome() {
     this.$router.push("/home");

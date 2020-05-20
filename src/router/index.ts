@@ -9,6 +9,7 @@ import AllSignUp from "../components/AllSignUp.vue";
 import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
 import userProfile from "../views/userProfile.vue";
 import ChangePassword from "../views/ChangePassword.vue";
+import Categories from "../components/Categories.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -31,10 +32,49 @@ const routes: Array<RouteConfig> = [
           hideBasicComponents: false,
         },
       },
+      {
+        path: "/shoppingCart",
+        name: "ShoppingCart",
+        component: ShoppingCart,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: false,
+        },
+      },
+      {
+        path: "/profile",
+        name: "Profile",
+        component: userProfile,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: false,
+          applyBackground: false,
+        },
+      },
+      {
+        path: "/categories",
+        name: "Categories",
+        component: Categories,
+        meta: {
+          requiresAuth: false,
+          hideBasicComponents: false,
+          applyBackground: false,
+        },
+      },
     ],
     meta: {
       requiresAuth: false,
       hideBasicComponents: false,
+      applyBackground: false,
+    },
+  },
+  {
+    path: "/changePassword",
+    name: "ChangePassword",
+    component: ChangePassword,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: true,
       applyBackground: false,
     },
   },
@@ -46,15 +86,6 @@ const routes: Array<RouteConfig> = [
       requiresAuth: false,
       hideBasicComponents: true,
       applyBackground: true,
-    },
-  },
-  {
-    path: "/shoppingCart",
-    name: "ShoppingCart",
-    component: ShoppingCart,
-    meta: {
-      requiresAuth: true,
-      hideBasicComponents: false,
     },
   },
   {
@@ -83,26 +114,6 @@ const routes: Array<RouteConfig> = [
         },
       },
     ],
-  },
-  {
-    path: "/profile",
-    name: "Profile",
-    component: userProfile,
-    meta: {
-      requiresAuth: true,
-      hideBasicComponents: false,
-      applyBackground: false,
-    },
-  },
-  {
-    path: "/profile/changePassword",
-    name: "ChangePassword",
-    component: ChangePassword,
-    meta: {
-      requiresAuth: true,
-      hideBasicComponents: true,
-      applyBackground: false,
-    },
   },
 ];
 
