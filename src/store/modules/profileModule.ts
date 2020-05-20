@@ -10,8 +10,8 @@ async function deleteImage(imageUrl: any) {
     const storageRef = storage.ref(storageUrlPath.fullPath);
     storageRef.delete().catch((error) => {
       return error;
-    })
-  })
+    });
+  });
 }
 
 async function upImage(userId: any, imageFile: any) {
@@ -59,7 +59,7 @@ export default {
     },
     setPasswordStatus(state: any, status: any) {
       Vue.set(state, "passwordStatus", status);
-    }
+    },
   },
   // -----------------------------------------------------------------
   actions: {
@@ -69,29 +69,40 @@ export default {
       });
     },
     updateImage: async (context: any, payload: any) => {
-      if (payload.imageUrl != null && payload.imageUrl != "photo" && payload.imageUrl != ""){
+      if (
+        payload.imageUrl != null &&
+        payload.imageUrl != "photo" &&
+        payload.imageUrl != ""
+      ) {
         deleteImage(payload.imageUrl);
       }
       const newImageUrl = await upImage(payload.userId, payload.imageData);
-      await signUpService.setUserPhoto({userId: payload.userId, userPhoto: newImageUrl,}).then(()=>{
-        const userStringyfy: any = localStorage.getItem("userData");
-        const userData = JSON.parse(userStringyfy);
-        userData.userPhoto = newImageUrl;
-        localStorage.setItem("userData", JSON.stringify(userData));
-      })
+      await signUpService
+        .setUserPhoto({ userId: payload.userId, userPhoto: newImageUrl })
+        .then(() => {
+          const userStringyfy: any = localStorage.getItem("userData");
+          const userData = JSON.parse(userStringyfy);
+          userData.userPhoto = newImageUrl;
+          localStorage.setItem("userData", JSON.stringify(userData));
+        });
     },
     updateUserInfo: async (context: any, payload: any) => {
-      await profileService.updateUserInfo(payload.user).then(() => {console.log("actualizado")});
+      await profileService.updateUserInfo(payload.user)
     },
-    changePassword: async (context: any, payload:any) => {
-      await profileService.changePassword(payload.userPasswordData).then((res: any) => {
-        const response = res.data.message;
-        if (response == "La contraseña no coincide con tu contraseña actual almacenada") {
-          context.commit("setPasswordStatus", {correct: false})
-        } else {
-          context.commit("setPasswordStatus", {correct: true})
-        }
-      });
+    changePassword: async (context: any, payload: any) => {
+      await profileService
+        .changePassword(payload.userPasswordData)
+        .then((res: any) => {
+          const response = res.data.message;
+          if (
+            response ==
+            "La contraseña no coincide con tu contraseña actual almacenada"
+          ) {
+            context.commit("setPasswordStatus", { correct: false });
+          } else {
+            context.commit("setPasswordStatus", { correct: true });
+          }
+        });
     },
   },
 };
