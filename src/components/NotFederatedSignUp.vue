@@ -1,9 +1,8 @@
 <template>
   <v-container>
     <v-card>
-      <v-row class="">
-        <v-col md="1"></v-col>
-        <v-col md="4" class="text-center">
+      <v-row class="ma-12">
+        <v-col class="text-center">
           <v-form v-model="valid" ref="form" lazy-validation>
             <v-row>
               <v-col>
@@ -80,12 +79,10 @@
             </v-row>
           </v-form>
         </v-col>
-        <v-col md="2"></v-col>
-        <v-col md="4" class="text-center">
+        <v-col class="text-center">
           <SignUpPhoto @imageFiles="imageFile = $event" />
           <SignUpLanguage @languageName="user.languageName = $event" />
         </v-col>
-        <v-col md="1"></v-col>
       </v-row>
     </v-card>
     <v-row class="mt-12">

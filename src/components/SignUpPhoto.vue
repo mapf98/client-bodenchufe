@@ -1,25 +1,28 @@
 <template>
-  <v-container>
-    <v-row>
+  <div>
+    <v-row class="d-flex justify-center">
       <v-col>
         <v-card-text class="headline">{{ userPhotoTextTitle }}</v-card-text>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col md="12">
-        <v-avatar size="200" color="white">
+    <v-row class="d-flex justify-center">
+      <v-col class="text-center">
+        <v-avatar size="170" color="white" class="flex-wrap">
           <v-icon size="200" v-if="!agregado">mdi-account</v-icon>
           <v-img :src="image" v-if="agregado" contain></v-img>
         </v-avatar>
       </v-col>
     </v-row>
-    <v-file-input
-      :placeholder="userPhotoTextInput"
-      prepend-icon="mdi-camera"
-      accept="image/*"
-      @change="previewImage"
-    ></v-file-input>
-  </v-container>
+    <v-row>
+      <v-file-input
+        :placeholder="userPhotoTextInput"
+        prepend-icon="mdi-camera"
+        accept="image/*"
+        class="mx-5"
+        @change="previewImage"
+      ></v-file-input>
+    </v-row>
+  </div>
 </template>
 <script lang="ts">
 import Vue from "vue";

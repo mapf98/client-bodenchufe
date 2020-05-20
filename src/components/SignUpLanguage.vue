@@ -1,10 +1,10 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row class="d-flex justify-center">
       <v-col class="text-center">
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn color="indigo" dark v-on="on">
+            <v-btn color="indigo" dark v-on="on" :width="buttonCols()">
               <v-icon class="mr-4">mdi-translate</v-icon>
               {{ language || btnLanguage }}
             </v-btn>
@@ -45,6 +45,11 @@ export default class SignUpLanguage extends Vue {
 
   mounted() {
     this.translate();
+  }
+
+  buttonCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs ? 180 : sm ? 280 : 350;
   }
 
   @Watch("translator")
