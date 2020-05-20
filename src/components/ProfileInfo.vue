@@ -12,34 +12,36 @@
       <v-row>
         <v-col class="text-center">
           <v-btn
-            @click="$refs.file.click()"
+            @click="$refs.fileInp.click()"
+            ref="take"
             class="white--text"
             color="indigo"
+            :loading="loading"
             :width="buttonCols()"
           >
+            <input
+              @change="updateImg"
+              type="file"
+              ref="fileInp"
+              style="display: none;"
+              accept="image/*"
+            />
             <v-icon class="mr-2">mdi-camera</v-icon>
-            {{changePhotoText}}
+            {{ changePhotoText }}
           </v-btn>
-          <input
-            type="file"
-            ref="file"
-            style="display: none;"
-            accept="image/*"
-          />
         </v-col>
       </v-row>
       <v-row>
         <v-col class="text-center">
-          <v-btn class="white--text" color="indigo" :width="buttonCols()">
+          <v-btn
+            class="white--text"
+            color="indigo"
+            :width="buttonCols()"
+            @click="updateUserInfo()"
+          >
             <v-icon class="mr-2">mdi-account-edit</v-icon>
-            {{saveChangeText}}
+            {{ saveChangeText }}
           </v-btn>
-          <input
-            type="file"
-            ref="file"
-            style="display: none;"
-            accept="image/*"
-          />
         </v-col>
       </v-row>
       <v-row>
@@ -112,7 +114,7 @@
                   </template>
                   <v-date-picker
                     ref="picker"
-                    v-model="user.userBirthdate"
+                    v-model="user.user_birthdate"
                     :max="new Date().toISOString().substr(0, 10)"
                     min="1950-01-01"
                     @change="save"
@@ -124,13 +126,28 @@
         </v-col>
       </v-row>
     </v-card>
+    <v-snackbar
+      v-model="snackbarError"
+      color="indigo darken-4 px-3"
+      class="mb-5 my-5"
+      top
+    >
+      <ul>
+        <li class="body-1" v-for="error in errors" :key="error.id">
+          {{ error }}
+        </li>
+      </ul>
+      <v-btn color="amber" text @click="snackbarError = false" small>
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch, Prop } from "vue-property-decorator";
+import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class ProfileInfo extends Vue {
@@ -142,16 +159,20 @@ export default class ProfileInfo extends Vue {
   userEmailText = "Email ";
   changePhotoText = "Change your Photo";
   saveChangeText = "Save your changes";
+  saveChangeSuccefullyText = "Your changes has been saved";
+
   snackbarError = false;
   errors: Array<string> = [];
   valid = true;
   agregado = false;
   menuRef = false;
+  loading = false;
 
   userData: any;
   userDataString: any;
   userDataProp!: object;
   userUrlPhoto = "";
+  newPhoto: any;
   getdate: any = "";
 
   userNameRulesLength = "Name must be less than 10 characters";
@@ -162,6 +183,38 @@ export default class ProfileInfo extends Vue {
   @Watch("menuRef")
   menu(val: Date) {
     val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
+  $refs!: {
+    picker: any;
+    menu: any;
+    form: any;
+  };
+
+  nameRules = [(v: any) => !!v || this.userNameRulesRequired];
+
+  buttonCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs ? 280 : sm ? 280 : 350;
+  }
+
+  save(date: Date) {
+    this.$refs.menu.save(date);
+  }
+
+  showErrors(errors: any) {
+    this.errors = errors;
+    this.snackbarError = true;
+  }
+
+  mounted() {
+    this.showImageIfExist();
+    this.getUserData();
+    this.translate();
   }
 
   @Watch("translator")
@@ -196,6 +249,10 @@ export default class ProfileInfo extends Vue {
           this.saveChangeText = term.termTranslation;
           break;
         }
+        case "saveChangeSuccefullyText": {
+          this.saveChangeSuccefullyText = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -203,36 +260,35 @@ export default class ProfileInfo extends Vue {
     });
   }
 
-  get translator() {
-    return this.$store.getters["internationalization/getLanguageTexts"];
+  updateUserInfo() {
+    this.$store
+      .dispatch("profile/updateUserInfo", { user: this.user })
+      .then(() => {
+        this.errors.splice(0);
+        this.errors.push(this.saveChangeSuccefullyText);
+        this.showErrors(this.errors);
+      });
   }
 
-  $refs!: {
-    picker: any;
-    menu: any;
-    form: any;
-  };
-
-  nameRules = [(v: any) => !!v || this.userNameRulesRequired];
-
-  buttonCols() {
-    const { xs, sm } = this.$vuetify.breakpoint;
-    return xs ? 280 : sm ? 280 : 350;
-  }
-
-  save(date: Date) {
-    this.$refs.menu.save(date);
-  }
-
-  showErrors(errors: any) {
-    this.errors = errors;
-    this.snackbarError = true;
-  }
-
-  mounted() {
-    this.showImageIfExist();
-    this.getUserData();
-    this.translator;
+  updateImg(event: any) {
+    if (event) {
+      const files = event.target.files[0] || event.dataTransfer.files;
+      this.newPhoto = files;
+      this.loading = true;
+      this.$store
+        .dispatch("profile/updateImage", {
+          imageUrl: this.userUrlPhoto,
+          imageData: this.newPhoto,
+          userId: this.user.user_id,
+        })
+        .then(() => {
+          this.loading = false;
+          const user: any = localStorage.getItem("userData");
+          this.userUrlPhoto = JSON.parse(user).userPhoto;
+        });
+    } else {
+      this.agregado = false;
+    }
   }
 
   getUserData() {
@@ -241,6 +297,7 @@ export default class ProfileInfo extends Vue {
       this.getdate = this.user.user_birthdate.split("T");
       // eslint-disable-next-line @typescript-eslint/camelcase
       this.user.user_birthdate = this.getdate[0];
+      console.log(this.user);
     });
   }
 

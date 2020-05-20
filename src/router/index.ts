@@ -8,6 +8,7 @@ import SignUp from "../views/SignUp.vue";
 import AllSignUp from "../components/AllSignUp.vue";
 import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
 import userProfile from "../views/userProfile.vue";
+import ChangePassword from "../views/ChangePassword.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -19,6 +20,7 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Dashboard",
     component: Dashboard,
+    redirect: "/home",
     children: [
       {
         path: "/home",
@@ -89,6 +91,16 @@ const routes: Array<RouteConfig> = [
     meta: {
       requiresAuth: true,
       hideBasicComponents: false,
+      applyBackground: false,
+    },
+  },
+  {
+    path: "/profile/changePassword",
+    name: "ChangePassword",
+    component: ChangePassword,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: true,
       applyBackground: false,
     },
   },
