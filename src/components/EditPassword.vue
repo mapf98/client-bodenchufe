@@ -1,30 +1,28 @@
 <template>
   <v-container>
-    <v-row class="justify-center align-center">
-      <v-col>
-        <v-form>
-          <v-text-field
-            type="password"
-            required
-            v-model="userPasswordData.currentPassword"
-            :label="userCurrentPasswordText"
-            :rules="passwordRules"
-          ></v-text-field>
-          <v-text-field
-            type="password"
-            required
-            v-model="userPasswordData.newPassword"
-            :label="userNewPasswordText"
-            :rules="passwordRules"
-          ></v-text-field>
-          <v-text-field
-            type="password"
-            required
-            v-model="validatedPassword"
-            :label="this.userConfirmPasswordText"
-            :rules="passwordRules"
-          ></v-text-field>
-        </v-form>
+    <v-row>
+      <v-col class="align-center">
+        <v-text-field
+          type="password"
+          required
+          v-model="userPasswordData.currentPassword"
+          :label="userCurrentPasswordText"
+          :rules="passwordRules"
+        ></v-text-field>
+        <v-text-field
+          type="password"
+          required
+          v-model="userPasswordData.newPassword"
+          :label="userNewPasswordText"
+          :rules="passwordRules"
+        ></v-text-field>
+        <v-text-field
+          type="password"
+          required
+          v-model="validatedPassword"
+          :label="this.userConfirmPasswordText"
+          :rules="passwordRules"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row>
