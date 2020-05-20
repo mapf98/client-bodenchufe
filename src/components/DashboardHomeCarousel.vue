@@ -23,37 +23,6 @@ export default class DashboardHomeCarousel extends Vue {
     "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2Fslide2.jpg?alt=media&token=5ebe6565-db3a-436a-9ce0-d34a7672fc74", 
     "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2Fslide3.jpg?alt=media&token=89e3e1df-6543-4156-ae55-d1c8cbeaa718"
   ];
-
-  mounted() {
-    this.translate();
-  }
-
-  @Watch("translator")
-  translate() {
-    this.translator.forEach((term: any) => {
-      switch (term.termName) {
-        // case "navbarCategories": {
-        //   this.navbarCategories = term.termTranslation;
-        //   break;
-        // }
-        // case "navbarLogin": {
-        //   this.navbarLogin = term.termTranslation;
-        //   break;
-        // }
-        // case "navbarSingUp": {
-        //   this.navbarSingUp = term.termTranslation;
-        //   break;
-        // }
-        default: {
-          break;
-        }
-      }
-    });
-  }
-
-  get translator() {
-    return this.$store.getters["internationalization/getLanguageTexts"];
-  }
 }
 </script>
 
