@@ -1,27 +1,21 @@
 <template>
-  <v-container>
-    <v-row class="d-flex justify-center">
-      <v-col class="text-center">
-        <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn color="indigo" dark v-on="on" :width="buttonCols()">
-              <v-icon class="mr-4">mdi-translate</v-icon>
-              {{ language || btnLanguage }}
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item
-              v-for="item in items"
-              :key="item.value"
-              @click="selectLanguage(item.value)"
-            >
-              <v-list-item-title>{{ item.text }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-menu offset-y>
+    <template v-slot:activator="{ on }">
+      <v-btn color="indigo" dark v-on="on" :width="buttonCols()">
+        <v-icon class="mr-4">mdi-translate</v-icon>
+        {{ language || btnLanguage }}
+      </v-btn>
+    </template>
+    <v-list>
+      <v-list-item
+        v-for="item in items"
+        :key="item.value"
+        @click="selectLanguage(item.value)"
+      >
+        <v-list-item-title>{{ item.text }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-menu>
 </template>
 <script lang="ts">
 import Vue from "vue";
@@ -49,7 +43,7 @@ export default class SignUpLanguage extends Vue {
 
   buttonCols() {
     const { xs, sm } = this.$vuetify.breakpoint;
-    return xs ? 180 : sm ? 280 : 350;
+    return xs ? 280 : sm ? 320 : 350;
   }
 
   @Watch("translator")

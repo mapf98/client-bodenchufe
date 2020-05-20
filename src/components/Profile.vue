@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row class="align-center">
+    <v-row class="align-center d-flex justify-center">
       <v-col class="text-center">
         <v-row>
           <v-col>
@@ -8,9 +8,9 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col class="text-center" cols="5">
+      <v-col class="text-center">
         <v-row class="align-center mb-5">
-          <v-col>
+          <v-col class="d-flex justify-center">
             <v-btn
               class="white--text"
               color="indigo"
@@ -23,7 +23,7 @@
           </v-col>
         </v-row>
         <v-row class="align center">
-          <v-col>
+          <v-col class="d-flex justify-center">
             <v-btn
               class="white--text"
               color="indigo darken-4"
@@ -37,7 +37,7 @@
           </v-col>
         </v-row>
         <v-row class="align center">
-          <v-col>
+          <v-col class="d-flex justify-center">
             <v-btn
               class="white--text"
               color="indigo darken-4"
@@ -51,7 +51,7 @@
           </v-col>
         </v-row>
         <v-row class="align center">
-          <v-col>
+          <v-col class="d-flex justify-center">
             <v-btn
               class="white--text"
               color="indigo darken-4"
@@ -65,7 +65,7 @@
           </v-col>
         </v-row>
         <v-row class="align center">
-          <v-col>
+          <v-col class="d-flex justify-center">
             <v-btn
               class="white--text mb-2"
               color="indigo darken-4"
@@ -79,7 +79,7 @@
             >
           </v-col>
         </v-row>
-        <v-col>
+        <v-col class="d-flex justify-center">
           <v-btn
             class="white--text"
             color="red"

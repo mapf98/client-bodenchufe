@@ -2,12 +2,12 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <p>{{categoriesTitle}}</p>
+        <p>{{ categoriesTitle }}</p>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <p>{{categoriesTitle}}</p>
+        <p>{{ categoriesTitle }}</p>
       </v-col>
     </v-row>
   </v-container>

@@ -2,7 +2,9 @@
   <div>
     <v-row class="d-flex justify-center">
       <v-col>
-        <v-card-text class="headline">{{ userPhotoTextTitle }}</v-card-text>
+        <v-card-text class="headline text-center">{{
+          userPhotoTextTitle
+        }}</v-card-text>
       </v-col>
     </v-row>
     <v-row class="d-flex justify-center">

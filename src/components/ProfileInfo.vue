@@ -14,7 +14,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="text-center">
+        <v-col class="text-center d-flex justify-center">
           <v-btn
             @click="$refs.fileInp.click()"
             ref="take"
@@ -36,7 +36,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="text-center">
+        <v-col class="text-center d-flex justify-center">
           <v-btn
             class="white--text"
             color="indigo"
@@ -52,7 +52,7 @@
         <v-col>
           <v-form v-model="valid" ref="form" lazy-validation>
             <v-row>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_first_name"
@@ -61,7 +61,7 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_second_name"
@@ -71,7 +71,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_first_lastname"
@@ -80,7 +80,7 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_second_lastname"
@@ -90,7 +90,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_email"
@@ -99,7 +99,7 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-menu
                   ref="menu"
                   v-model="menuRef"
@@ -195,6 +195,11 @@ export default class ProfileInfo extends Vue {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
 
+  separatorCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 6;
+  }
+
   $refs!: {
     picker: any;
     menu: any;
@@ -205,7 +210,7 @@ export default class ProfileInfo extends Vue {
 
   buttonCols() {
     const { xs, sm } = this.$vuetify.breakpoint;
-    return xs ? 280 : sm ? 280 : 350;
+    return xs ? 200 : sm ? 280 : 350;
   }
 
   save(date: Date) {
