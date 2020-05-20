@@ -70,6 +70,7 @@ export default {
         userLastName: "",
         userLanguage: "",
         userPhoto: "",
+        userType: "notFederated",
       };
 
       await signUpService.signUp(payload.user).then((response: any) => {
@@ -156,6 +157,7 @@ export default {
         userLastName: "",
         userLanguage: "",
         userPhoto: "",
+        userType: "federated",
       };
       //hzhscdjpaz_1589939705@tfbnw.net
       let googleProfile: any;
