@@ -23,11 +23,17 @@
               md="6"
               lg="3"
             >
-              <CheckoutAddresses :address="address" />
+              <CheckoutAddresses
+                :address="address"
+                v-on:orderAddressId="orderAddressId"
+              />
             </v-col>
           </v-row>
         </v-card>
-        <v-btn color="amber darken-4" class="white--text" @click="e6 = 2"
+        <v-btn
+          color="amber darken-4"
+          class="white--text"
+          @click="getCouponsForOrder"
           >Continue</v-btn
         >
       </v-stepper-content>
@@ -37,7 +43,22 @@
       >
 
       <v-stepper-content step="2">
-        <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
+        <v-card color="grey lighten-2" class="mb-12" tile>
+          <v-row class="ml-2">
+            <v-col
+              v-for="coupon in coupons"
+              :key="coupon.coupon_id"
+              cols="12"
+              md="6"
+              lg="3"
+            >
+              <CheckoutCoupons
+                :coupon="coupon"
+                v-on:orderCouponId="orderCouponId"
+              />
+            </v-col>
+          </v-row>
+        </v-card>
         <v-btn color="amber darken-4" class="white--text" @click="e6 = 3"
           >Continue</v-btn
         >
@@ -58,11 +79,13 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import CheckoutAddresses from "../components/CheckoutAddresses.vue";
+import CheckoutCoupons from "../components/CheckoutCoupons.vue";
 import { Watch } from "vue-property-decorator";
 
 @Component({
   components: {
     CheckoutAddresses,
+    CheckoutCoupons,
   },
 })
 export default class Checkout extends Vue {
@@ -76,9 +99,20 @@ export default class Checkout extends Vue {
     quantity: 0,
   };
   e6 = 1;
+  addressId: number | undefined;
+  couponId: number | undefined;
+
+  orderAddressId(id: number) {
+    this.addressId = id;
+  }
+  orderCouponId(id: number) {
+    this.couponId = id;
+    console.log(this.addressId, " cupon: ", this.couponId);
+  }
 
   mounted() {
     this.getAddresses();
+    this.getPaymentDetail();
   }
 
   getAddresses() {
@@ -87,6 +121,25 @@ export default class Checkout extends Vue {
 
   get addresses() {
     return this.$store.getters["address/getAddresses"];
+  }
+
+  getCouponsForOrder() {
+    this.e6 = 2;
+    this.$store.dispatch("coupon/getCouponsForOrder", {
+      orderTotal: this.paymentDetail.orderSummary.subtotal,
+    });
+  }
+
+  get coupons() {
+    return this.$store.getters["coupon/getUserCouponsForOrder"];
+  }
+
+  getPaymentDetail() {
+    this.$store.dispatch("checkout/getPaymentDetail");
+  }
+
+  get paymentDetail() {
+    return this.$store.getters["checkout/getPaymentDetail"];
   }
 
   // @Watch("products")

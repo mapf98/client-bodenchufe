@@ -9,26 +9,22 @@ export default {
   },
   // -----------------------------------------------------------------
   getters: {
-    getAddresses: (state: any) => state.addresses,
+    getPaymentDetail: (state: any) => state.paymentDetail,
   },
   // -----------------------------------------------------------------
   mutations: {
-    setAddresses(state: any, addresses: any) {
-      Vue.set(state, "addresses", addresses);
+    setPaymentDetail(state: any, paymentDetail: any) {
+      Vue.set(state, "paymentDetail", paymentDetail);
     },
-  },
+  }, 
   // -----------------------------------------------------------------
   actions: {
-    getUserAddresses: async (context: any, payload: any) => {
-      const addresses = await checkoutService.getUserAddresses();
-      context.commit("setAddresses", addresses.data.addresses);
-    },
     createCheckout : async () => {
       await checkoutService.checkoutProducts();
     },
-    /*
-    deleteShoppingCartProducts: async (context: any, payload: any) => {
-      await shoppingCartService.deleteProduct(payload.productId);
-    },*/
+    getPaymentDetail: async (contex: any) => {
+      const paymentDetail = await checkoutService.getPaymentDetail();
+      contex.commit("setPaymentDetail", paymentDetail.data)
+    },
   },
 };

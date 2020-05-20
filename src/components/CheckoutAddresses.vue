@@ -6,11 +6,17 @@
     <v-card-text class="mt-n9 white--text font-weight-thin">
       {{ address.delivery_address_primary_line }}
     </v-card-text>
-    <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
+    <v-card-text
+      v-if="address.delivery_address_secondary_line != null"
+      class="subtitle-1 white--text mt-n6 font-weight-black"
+    >
       Secondary line
     </v-card-text>
-    <v-card-text class="mt-n9 white--text font-weight-thin">
-      emerahdnk
+    <v-card-text
+      v-if="address.delivery_address_secondary_line != null"
+      class="mt-n9 white--text font-weight-thin"
+    >
+      {{ address.delivery_address_secondary_line }}
     </v-card-text>
     <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
       City
@@ -32,7 +38,7 @@
     </v-card-text>
 
     <v-row class="d-flex justify-center pb-5">
-      <v-btn> Select </v-btn>
+      <v-btn @click="setAddress(address.delivery_address_id)"> Select </v-btn>
     </v-row>
   </v-card>
 </template>
@@ -70,18 +76,12 @@ export default class CheckoutAddresses extends Vue {
     });
   }
 
-  get translator() {
-    return this.$store.getters["internationalization/getLanguageTexts"];
+  setAddress(id: number) {
+    this.$emit("orderAddressId", id);
   }
 
-  deleteProduct(productId: number) {
-    this.$store
-      .dispatch("shoppingCart/deleteShoppingCartProducts", {
-        productId,
-      })
-      .then(() => {
-        this.$store.dispatch("shoppingCart/getShoppingCartProducts");
-      });
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>

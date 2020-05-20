@@ -14,13 +14,14 @@ export default {
   // -----------------------------------------------------------------
   mutations: {
     setUserCouponsForOrder(state: any, coupons: any) {
-      Vue.set(state, "coupons", coupons);
+      Vue.set(state, "orderCoupons", coupons);
     },
   },
   // -----------------------------------------------------------------
   actions: {
     getCouponsForOrder: async (context: any, payload: any) => {
-      const coupons = await couponService.getUserCouponsForOrder(payload.orderTotal);
+      const coupons = await couponService.getUserCouponsForOrder(150);
+      console.log('cuponesss', coupons.data.coupons);
       context.commit("setUserCouponsForOrder", coupons.data.coupons);
     },
     /*

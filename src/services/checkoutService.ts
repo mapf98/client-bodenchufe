@@ -1,9 +1,8 @@
 import { API_URL } from "./config";
-import axios from 'axios';
 
 export default {
   checkoutProducts (){
-    return axios.patch(`/user/shoppingCart/checkout`, {
+    return API_URL.get(`/user/shoppingCart/checkout`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -16,4 +15,11 @@ export default {
       },
     });
   },
+  getPaymentDetail () {
+    return API_URL.get(`/payment/paymentDetail`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  }
 }
