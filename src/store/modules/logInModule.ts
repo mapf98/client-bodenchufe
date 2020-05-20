@@ -37,6 +37,7 @@ export default {
         userLastName: "",
         userLanguage: "",
         userPhoto: "",
+        userType: "notFederated",
       };
       await logInService.checkLogIn(payload.user).then((response: any) => {
         if (response.data.validated == true) {
@@ -83,6 +84,7 @@ export default {
         userLastName: "",
         userLanguage: "",
         userPhoto: "",
+        userType: "federated",
       };
       await fa
         .signInWithPopup(

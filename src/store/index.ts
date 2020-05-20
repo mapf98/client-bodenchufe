@@ -10,6 +10,7 @@ import home from "./modules/homeModule";
 import address from "./modules/addressModule";
 import coupon from "./modules/couponModule";
 import checkout from "./modules/checkoutModule";
+import profile from "./modules/profileModule";
 
 Vue.use(Vuex);
 
@@ -20,8 +21,12 @@ export default new Vuex.Store({
     shoppingCart,
     signUp,
     home,
+<<<<<<< HEAD
     address,
     coupon,
     checkout,
+=======
+    profile,
+>>>>>>> d74ae042bcb6fef091d8304c2ef247052f036ec4
   },
 });

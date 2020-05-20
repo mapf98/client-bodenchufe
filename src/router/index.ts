@@ -7,7 +7,13 @@ import ShoppingCart from "../views/ShoppingCart.vue";
 import SignUp from "../views/SignUp.vue";
 import AllSignUp from "../components/AllSignUp.vue";
 import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
+<<<<<<< HEAD
 import Checkout from "../views/Checkout.vue";
+=======
+import userProfile from "../views/userProfile.vue";
+import ChangePassword from "../views/ChangePassword.vue";
+import Categories from "../components/Categories.vue";
+>>>>>>> d74ae042bcb6fef091d8304c2ef247052f036ec4
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -19,6 +25,7 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Dashboard",
     component: Dashboard,
+    redirect: "/home",
     children: [
       {
         path: "/home",
@@ -29,10 +36,49 @@ const routes: Array<RouteConfig> = [
           hideBasicComponents: false,
         },
       },
+      {
+        path: "/shoppingCart",
+        name: "ShoppingCart",
+        component: ShoppingCart,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: false,
+        },
+      },
+      {
+        path: "/profile",
+        name: "Profile",
+        component: userProfile,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: false,
+          applyBackground: false,
+        },
+      },
+      {
+        path: "/categories",
+        name: "Categories",
+        component: Categories,
+        meta: {
+          requiresAuth: false,
+          hideBasicComponents: false,
+          applyBackground: false,
+        },
+      },
     ],
     meta: {
       requiresAuth: false,
       hideBasicComponents: false,
+      applyBackground: false,
+    },
+  },
+  {
+    path: "/changePassword",
+    name: "ChangePassword",
+    component: ChangePassword,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: true,
       applyBackground: false,
     },
   },
