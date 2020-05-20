@@ -11,7 +11,12 @@
       <v-col class="text-center" cols="5">
         <v-row class="align-center mb-5">
           <v-col>
-            <v-btn class="white--text" color="indigo" :width="buttonCols()"
+            <v-btn
+              class="white--text"
+              color="indigo"
+              :width="buttonCols()"
+              @click="goToChangePassword()"
+              :disabled="isfederated"
               ><v-icon class="mr-2">mdi-lock</v-icon>
               {{ changePasswordButtonText }}</v-btn
             >
@@ -74,6 +79,16 @@
             >
           </v-col>
         </v-row>
+        <v-col>
+          <v-btn
+            class="white--text"
+            color="red"
+            :width="buttonCols()"
+            @click="signOff()"
+            text
+            ><v-icon class="mr-2">mdi-logout</v-icon> {{ signOffText }}</v-btn
+          >
+        </v-col>
       </v-col>
     </v-row>
   </v-container>
@@ -96,7 +111,10 @@ export default class Profile extends Vue {
   couponsButtonText = "Coupons";
   shoppingCartButtonText = "Shopping Cart";
   changePasswordButtonText = "Change your password";
+  signOffText = "Sign off";
   userDataProp = {};
+  accountType = "";
+  isfederated = false;
 
   @Watch("translator")
   translate() {
@@ -122,6 +140,10 @@ export default class Profile extends Vue {
           this.changePasswordButtonText = term.termTranslation;
           break;
         }
+        case "signOffText": {
+          this.signOffText = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -134,7 +156,12 @@ export default class Profile extends Vue {
   }
 
   mounted() {
-    this.translator;
+    const lsData: any = localStorage.getItem("userData");
+    this.translate();
+    this.accountType = JSON.parse(lsData).userType;
+    if (this.accountType == "federated") {
+      this.isfederated = true;
+    }
   }
 
   buttonCols() {
@@ -147,6 +174,16 @@ export default class Profile extends Vue {
   }
   goToShoppingCart() {
     this.$router.push("/shoppingCart");
+  }
+  goToChangePassword() {
+    this.$router.push("/profile/changePassword");
+  }
+  goToHome() {
+    this.$router.push("/home");
+  }
+  async signOff() {
+    localStorage.clear();
+    this.$router.push("/home");
   }
 }
 </script>
