@@ -1,8 +1,12 @@
 <template>
   <v-container fluid>
-    <v-row v-for="address in userAddresses" :key="address.id">
+    <v-row v-for="address in addresses" :key="address.delivery_address_id">
       <v-col>
-        <UserDelivery :userAddress="address" :toEdit="toEdit" />
+        <UserDelivery
+          :userAddress="address"
+          @deleteAddress="deleteAddress"
+          @update="update = $event"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -12,6 +16,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import UserDelivery from "../components/UserAddress.vue";
+import { Watch } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -20,16 +25,35 @@ import UserDelivery from "../components/UserAddress.vue";
 })
 export default class AllDeliveries extends Vue {
   userAddresses = [];
-  toEdit = false;
+  update = false;
 
+  get addresses() {
+    console.log(this.$store.getters["address/getAddresses"]);
+    return this.$store.getters["address/getAddresses"];
+  }
+
+  @Watch("update")
   getAllUserAddresses() {
     this.$store.dispatch("address/getUserAddresses").then(() => {
       this.userAddresses = this.addresses;
     });
   }
 
-  get addresses() {
-    return this.$store.getters["address/getAddresses"];
+  @Watch("addresses")
+  resetAddresses() {
+    this.userAddresses = this.addresses;
+  }
+
+  deleteAddress(id: number) {
+    console.log(id, "dentro");
+    this.$store
+      .dispatch("address/deleteAddress", {
+        deliveryAddressId: id,
+        statusName: "INACTIVE",
+      })
+      .then(() => {
+        this.$store.dispatch("address/getUserAddresses");
+      });
   }
 
   mounted() {

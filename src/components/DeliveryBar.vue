@@ -8,7 +8,7 @@
             color="indigo"
             class="white--text"
             :width="buttonCols()"
-            :outlined="!InAddressView"
+            :outlined="InAddressView == true"
             @click="goToMyAddresses()"
             >Mis direcciones</v-btn
           >
@@ -18,7 +18,7 @@
             color="indigo"
             class="white--text text-center"
             :width="buttonCols()"
-            :outlined="!InAddView"
+            :outlined="InAddView == true"
             @click="goToAddAddress()"
             >Agregar una direccion</v-btn
           >
@@ -46,13 +46,13 @@ export default class DeliveryBar extends Vue {
     return xs || sm ? 12 : 3;
   }
   goToMyAddresses() {
-    this.InAddressView = false;
-    this.InAddView = true;
+    this.InAddressView = true;
+    this.InAddView = false;
     this.$router.push("/delivery");
   }
   goToAddAddress() {
-    this.InAddView = false;
-    this.InAddressView = true;
+    this.InAddView = true;
+    this.InAddressView = false;
     this.$router.push("/delivery/add");
   }
 }
