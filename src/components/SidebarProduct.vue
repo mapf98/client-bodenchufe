@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row class="d-flex justify-center grey pa-5 white--text">
-      <p v-for="category in categoryPaths" :key="category.categoryId" class="mx-1 paths" @click="goToCategory(category.categoryId)">
+      <p v-for="category in categoryPaths" :key="category.categoryId" class="mx-1 paths" @click="goToCategory(category.categoryId, category.categoryName)">
         {{category.categoryName}}
       </p>
     </v-row>
@@ -41,8 +41,12 @@ export default class SidebarProduct extends Vue {
     });
   }
 
-  goToCategory(categoryId: number){
+  goToCategory(categoryId: number, categoryName: string){
     console.log(categoryId);
+    console.log(categoryName);
+    this.$store.dispatch("product/getProductByCategory", {categoryId: categoryId, name: categoryName.split(' ')[0]}).then(()=>{
+      this.$store.dispatch("category/setActualPath", {categoryId: categoryId, categories: this.$store.getters["category/getCategories"]});
+    });
   }
 
   get productPath(){

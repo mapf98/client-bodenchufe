@@ -28,7 +28,6 @@ export default class Products extends Vue {
 
   mounted() {
     this.translate();
-    console.log(this.products);
   }
 
   created(){
