@@ -34,6 +34,8 @@ export default class FilterSideProducts extends Vue {
     const paths = this.$store.getters["category/getActualPath"];
     if(paths.length == 1){
       this.rootCategory = true;
+    }else{
+      this.rootCategory = false;
     }
     return paths[paths.length-1];
   }

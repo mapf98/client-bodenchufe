@@ -2,14 +2,17 @@
   <div>
     <v-row>
       <v-col>
-        <div class="d-flex justify-center align-center mb-2">
+        <div class="d-flex justify-center align-center">
           <p class="mb-0 mr-2 title text-center indigo--text">
             {{ providersTitle }}
           </p>
-          <v-icon color="indigo" large class="mr-12">
+          <v-icon color="indigo" large>
             mdi-storefront-outline
           </v-icon>
+        </div>
+        <div class="d-flex justify-center align-center">
           <v-switch
+            class="mt-1"
             v-model="showAll"
             :label="showProviders"
             color="indigo"
