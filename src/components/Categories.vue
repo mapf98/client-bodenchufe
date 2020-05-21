@@ -41,15 +41,20 @@ export default class Categories extends Vue {
   @Watch("selection")
   getProductsByCategory(){
     if(this.selection[0] !== undefined){
-      this.$store.dispatch("product/getProductByCategory", {categoryId: this.selection[0].id}).then(()=>{
-        this.$router.push("/products");
+      const categoryId = this.selection[0].id;
+      this.$store.dispatch("product/getProductByCategory", {categoryId: categoryId, name:this.selection[0].name}).then(()=>{
+        this.$store.dispatch("category/setActualPath", {paths: this.getFinalPaths(categoryId)}).then(()=>{
+          this.$router.push("/products");
+        });
       });
     }
   }
 
   mounted() {
     this.translate();
-    this.$store.dispatch("category/getCategories");
+    this.$store.dispatch("category/getCategories").then(()=>{
+      const categories = this.$store.getters["category/getCategories"];
+    });
   }
 
   @Watch("translator")
@@ -77,6 +82,65 @@ export default class Categories extends Vue {
       });
     });
     return recursiveCategory;
+  }
+
+  getFKID(id: number, categories: any[]){
+    let FID = -1;
+    for (let index = 0; index < categories.length; index++) {
+      if (id == categories[index].category_id) {
+        FID = categories[index].fk_category_id;
+      }
+
+      if(this.getFKID(id, categories[index].category_child) !== -1 && FID == -1){
+        FID = this.getFKID(id, categories[index].category_child);
+      }      
+    }
+    return FID;
+  }
+
+  getFKPaths(id: number, categories: any[]){
+    let fk = id;
+    const paths = [];
+
+    paths.push(fk);
+    
+    for (let index = 0; fk !== null; index++) {
+      fk = this.getFKID(fk, categories);
+      if(fk !== null){
+        paths.push(fk);
+      }      
+    }
+
+    return paths;
+  }
+
+  getPathNameID(id: number, categories: any[]){
+    let namePath = "";
+    for (let index = 0; index < categories.length; index++) {
+      if (id == categories[index].category_id) {
+        namePath = categories[index].category_name;
+      }
+
+      if(this.getPathNameID(id, categories[index].category_child) !== ""  && namePath == ""){
+        namePath = this.getPathNameID(id, categories[index].category_child);
+      }      
+    }
+    return namePath;
+  }
+
+  getFinalPaths(id: number){
+    const categories = this.$store.getters["category/getCategories"];
+    const fkPaths = this.getFKPaths(id, categories).reverse();;
+    const finalPaths: any[] = [];
+    
+    for (let index = 0; index < fkPaths.length; index++) {
+      finalPaths.push({
+        categoryName: `${this.getPathNameID(fkPaths[index], categories)} ${fkPaths.length-index == 1 ? "":">"}`,
+        categoryId: fkPaths[index]
+      });        
+    }
+
+    return finalPaths;
   }
 
   get categories(){

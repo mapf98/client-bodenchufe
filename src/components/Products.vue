@@ -28,6 +28,13 @@ export default class Products extends Vue {
 
   mounted() {
     this.translate();
+    console.log(this.products);
+  }
+
+  created(){
+    if(this.products.length == 0){
+      this.$router.push("/categories");
+    }
   }
 
   @Watch("translator")

@@ -1,7 +1,15 @@
 <template>
   <v-container fluid>
-    <v-row>
-      Sidebar test
+    <v-row class="d-flex justify-center grey pa-5 white--text">
+      <p v-for="category in categoryPaths" :key="category.categoryId" class="mx-1 paths" @click="goToCategory(category.categoryId)">
+        {{category.categoryName}}
+      </p>
+    </v-row>
+    <v-row class="d-flex justify-center align-center indigo pa-5 white--text">
+      <p class="mb-0">{{ productPath }}</p>
+    </v-row>
+    <v-row class="d-flex justify-center amber pa-5 white--text">
+      <p class="mb-0">Filtros</p>
     </v-row>
   </v-container>
 </template>
@@ -33,10 +41,30 @@ export default class SidebarProduct extends Vue {
     });
   }
 
+  goToCategory(categoryId: number){
+    console.log(categoryId);
+  }
+
+  get productPath(){
+    return this.$store.getters["product/getProductsPath"];
+  }
+
+  get categoryPaths(){
+    return this.$store.getters["category/getActualPath"];
+  }
+
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.paths{
+  cursor: pointer;
+}
+
+.paths:hover{
+  text-decoration: underline;
+}
+</style>

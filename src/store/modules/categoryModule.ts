@@ -6,18 +6,23 @@ export default {
   // -----------------------------------------------------------------
   state: {
     // Aqui van los atributos
-    categories: [],  
+    categories: [],
+    actualPath: [],  
   },
   // -----------------------------------------------------------------
   getters: {
     // getters and computed props
     getCategories: (state: any) => state.categories,
+    getActualPath: (state: any) => state.actualPath,
   },
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
     setCategories(state: {}, categories: []) {
       Vue.set(state, "categories", categories);
+    },
+    setActualPath(state: {}, actualPath: []) {
+      Vue.set(state, "actualPath", actualPath);
     },
   },
   // -----------------------------------------------------------------
@@ -29,6 +34,9 @@ export default {
       await categoryService.getCategories().then((response: any) => {
         context.commit("setCategories", response.data.categories);
       });
+    },
+    setActualPath: (context: any, payload: any) => {
+      context.commit("setActualPath", payload.paths);
     },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
