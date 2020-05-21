@@ -22,6 +22,6 @@ export default new Vuex.Store({
     home,
     profile,
     category,
-    product
+    product,
   },
 });

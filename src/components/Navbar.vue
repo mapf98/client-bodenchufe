@@ -2,7 +2,12 @@
   <v-app-bar app>
     <v-row class="hidden-md-and-up">
       <v-col class="d-flex justify-start">
-        <v-img src="../assets/logoBodenchufe.png" max-width="170" class="imgPointer" @click="goToHome"></v-img>
+        <v-img
+          src="../assets/logoBodenchufe.png"
+          max-width="170"
+          class="imgPointer"
+          @click="goToHome"
+        ></v-img>
       </v-col>
     </v-row>
     <v-app-bar-nav-icon
@@ -12,7 +17,12 @@
 
     <v-row class="d-md-flex align-center hidden-sm-and-down">
       <v-col class="mr-8">
-        <v-img src="../assets/logoBodenchufe.png" max-width="200" class="imgPointer" @click="goToHome"></v-img>
+        <v-img
+          src="../assets/logoBodenchufe.png"
+          max-width="200"
+          class="imgPointer"
+          @click="goToHome"
+        ></v-img>
       </v-col>
       <v-col cols="3">
         <SearchBox />
@@ -63,8 +73,10 @@ export default class Navbar extends Vue {
   navbarSingUp = "Sing Up";
   showUser = false;
 
-  goToHome(){
-    this.$router.currentRoute.path != "/home" ? this.$router.push("/home"):false;
+  goToHome() {
+    this.$router.currentRoute.path != "/home"
+      ? this.$router.push("/home")
+      : false;
   }
 
   goToLogin() {
@@ -79,8 +91,10 @@ export default class Navbar extends Vue {
     this.$router.push("/user/signUp");
   }
 
-  goToCategories(){
-    this.$router.currentRoute.path != "/categories" ? this.$router.push("/categories"):false;
+  goToCategories() {
+    this.$router.currentRoute.path != "/categories"
+      ? this.$router.push("/categories")
+      : false;
   }
 
   mounted() {
@@ -122,7 +136,7 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="scss">
-.imgPointer{
+.imgPointer {
   cursor: pointer;
 }
 </style>

@@ -9,7 +9,7 @@
           >
             <v-avatar height="48" width="48" class="mx-3">
               <v-img
-                :src="userPhoto"  
+                :src="userPhoto"
                 :alt="userName"
                 :contain="userPhoto == placeHolcerImg"
               >
@@ -19,13 +19,22 @@
                     align="center"
                     justify="center"
                   >
-                    <v-progress-circular indeterminate color="indigo lighten-2"></v-progress-circular>
+                    <v-progress-circular
+                      indeterminate
+                      color="indigo lighten-2"
+                    ></v-progress-circular>
                   </v-row>
                 </template>
               </v-img>
             </v-avatar>
             <p class="body-2 mb-0 mx-3">{{ userName }}</p>
-            <v-badge color="amber darken-3" content="10" overlap class="mx-3">
+            <v-badge
+              color="amber darken-3"
+              :content="userProducts"
+              overlap
+              class="mx-3"
+              :value="userProducts"
+            >
               <v-icon color="indigo">
                 mdi-cart-minus
               </v-icon>
@@ -49,19 +58,18 @@
     <div class="hidden-md-and-up">
       <div class="d-flex justify-center align-center pa-2 mx-4">
         <v-avatar height="75" width="75" class="mr-12">
-          <v-img :src="userPhoto" :alt="userName"> 
+          <v-img :src="userPhoto" :alt="userName">
             <template v-slot:placeholder>
-              <v-row
-                class="fill-height ma-0"
-                align="center"
-                justify="center"
-              >
-                <v-progress-circular indeterminate color="indigo lighten-2"></v-progress-circular>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="indigo lighten-2"
+                ></v-progress-circular>
               </v-row>
             </template>
           </v-img>
         </v-avatar>
-        <v-badge color="amber darken-3" content="10" overlap>
+        <v-badge color="amber darken-3" content="1" overlap>
           <v-icon color="indigo" large>
             mdi-cart-minus
           </v-icon>
@@ -122,7 +130,12 @@ export default class NavbarUser extends Vue {
     this.$router.push(route);
   }
 
+  // created(){
+  //   this.$store.dispatch("shoppingCart/getShoppingCartProducts");
+  // }
+
   mounted() {
+    this.$store;
     const userData: any = localStorage.getItem("userData");
     this.userPhoto =
       JSON.parse(userData).userPhoto == "photo"
@@ -169,6 +182,10 @@ export default class NavbarUser extends Vue {
 
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
+  get userProducts() {
+    return this.$store.getters["shoppingCart/getProductsBadge"];
   }
 }
 </script>

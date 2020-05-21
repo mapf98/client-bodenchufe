@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col>
-       <v-card
+      <v-card
         class="mx-auto"
         outlined
         :loading="loading"
@@ -10,15 +10,15 @@
         <v-list-item three-line>
           <v-list-item-content>
             <div class="overline mb-4">{{ product.provider_name }}</div>
-            <v-list-item-title class="headline mb-1">{{ product.product_name }}</v-list-item-title>
-            <v-list-item-subtitle>{{product.product_provider_price}} $</v-list-item-subtitle>
+            <v-list-item-title class="headline mb-1">{{
+              product.product_name
+            }}</v-list-item-title>
+            <v-list-item-subtitle
+              >{{ product.product_provider_price }} $</v-list-item-subtitle
+            >
           </v-list-item-content>
 
-          <v-list-item-avatar
-            tile
-            size="80"
-            color="grey"
-          ></v-list-item-avatar>
+          <v-list-item-avatar tile size="80" color="grey"></v-list-item-avatar>
         </v-list-item>
 
         <v-card-actions>
@@ -60,12 +60,14 @@ export default class Product extends Vue {
     });
   }
 
-  goToDetail(postId: number){
+  goToDetail(postId: number) {
     this.loading = true;
-    this.$store.dispatch("product/getProductDetail", {postId: postId}).then(()=>{
-      this.loading = false;
-      console.log(this.$store.getters["product/getProductDetail"]);
-    });
+    this.$store
+      .dispatch("product/getProductDetail", { postId: postId })
+      .then(() => {
+        this.loading = false;
+        console.log(this.$store.getters["product/getProductDetail"]);
+      });
   }
 
   get translator() {

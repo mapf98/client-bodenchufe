@@ -2,14 +2,19 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <p class="mb-0 text-center title indigo--text">{{categoriesTitle}}</p>
+        <p class="mb-0 text-center title indigo--text">{{ categoriesTitle }}</p>
         <v-divider class="amber mt-2"></v-divider>
       </v-col>
     </v-row>
     <v-row>
       <v-col class="d-flex justify-center flex-wrap">
-        <v-card v-for="cat in categories" :key="cat.id" elevation="5" class="ma-5 pa-5">
-          <p class="indigo--text title">{{cat.name}}</p>
+        <v-card
+          v-for="cat in categories"
+          :key="cat.id"
+          elevation="5"
+          class="ma-5 pa-5"
+        >
+          <p class="indigo--text title">{{ cat.name }}</p>
           <v-treeview
             open-on-click
             selectable
@@ -39,20 +44,30 @@ export default class Categories extends Vue {
   selection: any[] = [];
 
   @Watch("selection")
-  getProductsByCategory(){
-    if(this.selection[0] !== undefined){
+  getProductsByCategory() {
+    if (this.selection[0] !== undefined) {
       const categoryId = this.selection[0].id;
-      this.$store.dispatch("product/getProductByCategory", {categoryId: categoryId, name:this.selection[0].name}).then(()=>{
-        this.$store.dispatch("category/setActualPath", {categoryId: categoryId, categories: this.$store.getters["category/getCategories"]}).then(()=>{
-          this.$router.push("/products");
+      this.$store
+        .dispatch("product/getProductByCategory", {
+          categoryId: categoryId,
+          name: this.selection[0].name,
+        })
+        .then(() => {
+          this.$store
+            .dispatch("category/setActualPath", {
+              categoryId: categoryId,
+              categories: this.$store.getters["category/getCategories"],
+            })
+            .then(() => {
+              this.$router.push("/products");
+            });
         });
-      });
     }
   }
 
   mounted() {
     this.translate();
-    this.$store.dispatch("category/getCategories").then(()=>{
+    this.$store.dispatch("category/getCategories").then(() => {
       const categories = this.$store.getters["category/getCategories"];
     });
   }
@@ -72,9 +87,9 @@ export default class Categories extends Vue {
     });
   }
 
-  setCategories(categories: any){
+  setCategories(categories: any) {
     const recursiveCategory: any = [];
-    categories.forEach((category:any) => {
+    categories.forEach((category: any) => {
       recursiveCategory.push({
         id: category.category_id,
         name: category.category_name,
@@ -84,9 +99,9 @@ export default class Categories extends Vue {
     return recursiveCategory;
   }
 
-  get categories(){
+  get categories() {
     const categories = this.$store.getters["category/getCategories"];
-    return this.setCategories(categories)
+    return this.setCategories(categories);
   }
 
   get translator() {

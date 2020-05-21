@@ -4,7 +4,7 @@ export default {
   getProductByCategory(categoryId: number) {
     return API_URL.get(`/product/category/${categoryId}`);
   },
-  getProductDetail(postId: number){
+  getProductDetail(postId: number) {
     return API_URL.get(`/product/${postId}`);
-  }
+  },
 };

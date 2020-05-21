@@ -8,7 +8,7 @@ export default {
     // Aqui van los atributos
     products: [],
     productsPath: "",
-    productDetail: {}
+    productDetail: {},
   },
   // -----------------------------------------------------------------
   getters: {
@@ -36,19 +36,23 @@ export default {
     //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
     // },
     getProductByCategory: async (context: any, payload: any) => {
-      await productService.getProductByCategory(payload.categoryId).then((response: any) => {
-        context.commit("setProductByCategory", response.data.products);
-        context.commit("setProductsPath", payload.name);
-      });
+      await productService
+        .getProductByCategory(payload.categoryId)
+        .then((response: any) => {
+          context.commit("setProductByCategory", response.data.products);
+          context.commit("setProductsPath", payload.name);
+        });
     },
     getProductDetail: async (context: any, payload: any) => {
-      await productService.getProductDetail(payload.postId).then((response: any) => {
-        const productDetail = {
-          details: response.data.product,
-          qualifications: response.data.qualifications
-        }
-        context.commit("setProductDetail", productDetail);
-      });
+      await productService
+        .getProductDetail(payload.postId)
+        .then((response: any) => {
+          const productDetail = {
+            details: response.data.product,
+            qualifications: response.data.qualifications,
+          };
+          context.commit("setProductDetail", productDetail);
+        });
     },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION

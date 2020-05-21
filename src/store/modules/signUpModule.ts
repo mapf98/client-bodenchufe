@@ -166,7 +166,7 @@ export default {
           payload.provider == "google" ? providerGoogle : providerFacebook
         )
         .then((result) => {
-          if (payload.provider == "google"){
+          if (payload.provider == "google") {
             googleProfile = result.additionalUserInfo?.profile;
             userData.userFirstName = googleProfile.given_name;
             userData.userFirstLastname = googleProfile.family_name;

@@ -1,64 +1,68 @@
 import Vue from "vue";
 import categoryService from "../../services/categoryService";
 
-function getFKID(id: number, categories: any[]){
+function getFKID(id: number, categories: any[]) {
   let FID = -1;
   for (let index = 0; index < categories.length; index++) {
     if (id == categories[index].category_id) {
       FID = categories[index].fk_category_id;
     }
 
-    if(getFKID(id, categories[index].category_child) !== -1 && FID == -1){
+    if (getFKID(id, categories[index].category_child) !== -1 && FID == -1) {
       FID = getFKID(id, categories[index].category_child);
-    }      
+    }
   }
   return FID;
 }
 
-function getFKPaths(id: number, categories: any[]){
+function getFKPaths(id: number, categories: any[]) {
   let fk = id;
   const paths = [];
 
   paths.push(fk);
-  
+
   for (let index = 0; fk !== null; index++) {
     fk = getFKID(fk, categories);
-    if(fk !== null){
+    if (fk !== null) {
       paths.push(fk);
-    }      
+    }
   }
 
   return paths;
 }
 
-function getPathNameID(id: number, categories: any[]){
+function getPathNameID(id: number, categories: any[]) {
   let namePath = "";
   for (let index = 0; index < categories.length; index++) {
     if (id == categories[index].category_id) {
       namePath = categories[index].category_name;
     }
 
-    if(getPathNameID(id, categories[index].category_child) !== ""  && namePath == ""){
+    if (
+      getPathNameID(id, categories[index].category_child) !== "" &&
+      namePath == ""
+    ) {
       namePath = getPathNameID(id, categories[index].category_child);
-    }      
+    }
   }
   return namePath;
 }
 
-function getFinalPaths(id: number, categories: any[]){
-  const fkPaths = getFKPaths(id, categories).reverse();;
+function getFinalPaths(id: number, categories: any[]) {
+  const fkPaths = getFKPaths(id, categories).reverse();
   const finalPaths: any[] = [];
-  
+
   for (let index = 0; index < fkPaths.length; index++) {
     finalPaths.push({
-      categoryName: `${getPathNameID(fkPaths[index], categories)} ${fkPaths.length-index == 1 ? "":">"}`,
-      categoryId: fkPaths[index]
-    });        
+      categoryName: `${getPathNameID(fkPaths[index], categories)} ${
+        fkPaths.length - index == 1 ? "" : ">"
+      }`,
+      categoryId: fkPaths[index],
+    });
   }
 
   return finalPaths;
 }
-
 
 export default {
   namespaced: true,
@@ -66,7 +70,7 @@ export default {
   state: {
     // Aqui van los atributos
     categories: [],
-    actualPath: [],  
+    actualPath: [],
   },
   // -----------------------------------------------------------------
   getters: {
@@ -95,6 +99,7 @@ export default {
       });
     },
     setActualPath: (context: any, payload: any) => {
+      console.log("entra2");
       const paths = getFinalPaths(payload.categoryId, payload.categories);
       context.commit("setActualPath", paths);
     },

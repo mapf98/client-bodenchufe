@@ -1,7 +1,12 @@
 <template>
   <v-menu offset-y open-on-hover>
     <template v-slot:activator="{ on }">
-      <v-btn color="indigo" dark v-on="on" class="d-flex justify-center alig-center">
+      <v-btn
+        color="indigo"
+        dark
+        v-on="on"
+        class="d-flex justify-center alig-center"
+      >
         <v-icon class="mr-4">mdi-translate</v-icon>
         {{ language }}
         <v-progress-circular
@@ -47,11 +52,13 @@ export default class Internationalization extends Vue {
 
   getTranslate() {
     this.loading = true;
-    this.$store.dispatch("internationalization/getTranslate", {
-      lang: this.language,
-    }).then(()=>{
-      this.loading = false;
-    });
+    this.$store
+      .dispatch("internationalization/getTranslate", {
+        lang: this.language,
+      })
+      .then(() => {
+        this.loading = false;
+      });
   }
 
   mounted() {
@@ -59,11 +66,13 @@ export default class Internationalization extends Vue {
     this.language = this.$store.getters[
       "internationalization/getPreferredLanguage"
     ];
-    this.$store.dispatch("internationalization/getTranslate", {
-      lang: this.language,
-    }).then(()=>{
-      this.loading = false;
-    });
+    this.$store
+      .dispatch("internationalization/getTranslate", {
+        lang: this.language,
+      })
+      .then(() => {
+        this.loading = false;
+      });
   }
 
   @Watch("preferredLanguage")
