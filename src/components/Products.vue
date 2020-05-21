@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="3" v-if="categoryPaths.length !== 0">
+      <v-col v-if="categoryPaths.length !== 0" :cols="responsivePanel()" >
         <SidebarProduct />
       </v-col>
       <v-col>
@@ -11,7 +11,7 @@
           v-bind:product="product"
         />
         <div v-if="products.length == 0 ? true : false" class="mt-12">
-          <p class="mb-0 mt-12 indigo--text display-1 text-center">
+          <p class="mb-0 mt-12 indigo--text title text-center">
             {{ noResults }}
           </p>
           <v-icon
@@ -54,6 +54,11 @@ export default class Products extends Vue {
 
   mounted() {
     this.translate();
+  }
+
+  responsivePanel() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 3;
   }
 
   @Watch("translator")

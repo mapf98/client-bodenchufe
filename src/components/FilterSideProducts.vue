@@ -15,6 +15,9 @@
         {{otherCategories}}
       </p>
     </div>
+    <div class="d-flex justify-center" v-if="responsivePanel()">
+      <v-btn>Test</v-btn>
+    </div>
   </v-row>
 </template>
 
@@ -29,6 +32,10 @@ export default class FilterSideProducts extends Vue {
   rootCategory = false;
   otherCategories = "Other categories";
 
+  responsivePanel() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? true : false;
+  }
 
   get filterCategory() {
     const paths = this.$store.getters["category/getActualPath"];
