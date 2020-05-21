@@ -31,21 +31,21 @@ function getFKPaths(id: number, categories: any[]) {
   return paths;
 }
 
-function getPathNameID(id: number, categories: any[]) {
-  let namePath = "";
+function getPathInfoID(id: number, categories: any[]) {
+  let pathInfo: any = null;
   for (let index = 0; index < categories.length; index++) {
     if (id == categories[index].category_id) {
-      namePath = categories[index].category_name;
+      pathInfo = categories[index];
     }
 
     if (
-      getPathNameID(id, categories[index].category_child) !== "" &&
-      namePath == ""
+      getPathInfoID(id, categories[index].category_child) !== null &&
+      pathInfo == null
     ) {
-      namePath = getPathNameID(id, categories[index].category_child);
+      pathInfo = getPathInfoID(id, categories[index].category_child);
     }
   }
-  return namePath;
+  return pathInfo;
 }
 
 function getFinalPaths(id: number, categories: any[]) {
@@ -53,14 +53,15 @@ function getFinalPaths(id: number, categories: any[]) {
   const finalPaths: any[] = [];
 
   for (let index = 0; index < fkPaths.length; index++) {
+    const data = getPathInfoID(fkPaths[index], categories);
     finalPaths.push({
-      categoryName: `${getPathNameID(fkPaths[index], categories)} ${
+      categoryName: `${data.category_name} ${
         fkPaths.length - index == 1 ? "" : ">"
       }`,
       categoryId: fkPaths[index],
+      categoryChild: data.category_child,
     });
   }
-
   return finalPaths;
 }
 
@@ -99,7 +100,6 @@ export default {
       });
     },
     setActualPath: (context: any, payload: any) => {
-      console.log("entra2");
       const paths = getFinalPaths(payload.categoryId, payload.categories);
       context.commit("setActualPath", paths);
     },
