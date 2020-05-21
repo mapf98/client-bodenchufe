@@ -1,5 +1,5 @@
 import Vue from "vue";
-import couponService from '@/services/couponService';
+import couponService from "@/services/couponService";
 
 export default {
   namespaced: true,
@@ -21,7 +21,7 @@ export default {
   actions: {
     getCouponsForOrder: async (context: any, payload: any) => {
       const coupons = await couponService.getUserCouponsForOrder(150);
-      console.log('cuponesss', coupons.data.coupons);
+      console.log("cuponesss", coupons.data.coupons);
       context.commit("setUserCouponsForOrder", coupons.data.coupons);
     },
     /*

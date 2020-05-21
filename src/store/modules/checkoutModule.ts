@@ -1,5 +1,5 @@
 import Vue from "vue";
-import checkoutService from '@/services/checkoutService';
+import checkoutService from "@/services/checkoutService";
 
 export default {
   namespaced: true,
@@ -16,15 +16,15 @@ export default {
     setPaymentDetail(state: any, paymentDetail: any) {
       Vue.set(state, "paymentDetail", paymentDetail);
     },
-  }, 
+  },
   // -----------------------------------------------------------------
   actions: {
-    createCheckout : async () => {
+    createCheckout: async () => {
       await checkoutService.checkoutProducts();
     },
     getPaymentDetail: async (contex: any) => {
       const paymentDetail = await checkoutService.getPaymentDetail();
-      contex.commit("setPaymentDetail", paymentDetail.data)
+      contex.commit("setPaymentDetail", paymentDetail.data);
     },
   },
 };

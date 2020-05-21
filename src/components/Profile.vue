@@ -30,6 +30,7 @@
               :width="buttonCols()"
               :height="heigthCols()"
               outlined
+              @click="goToDeliveryAddress()"
             >
               <v-icon class="mr-2">mdi-truck</v-icon>
               {{ deliveryAddressButtonText }}</v-btn
@@ -180,6 +181,9 @@ export default class Profile extends Vue {
   }
   goToHome() {
     this.$router.push("/home");
+  }
+  goToDeliveryAddress() {
+    this.$router.push("/delivery");
   }
   async signOff() {
     localStorage.clear();

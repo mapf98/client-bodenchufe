@@ -9,7 +9,7 @@
           >
             <v-avatar height="48" width="48" class="mx-3">
               <v-img
-                :src="userPhoto"  
+                :src="userPhoto"
                 :alt="userName"
                 :contain="userPhoto == placeHolcerImg"
               >
@@ -19,7 +19,10 @@
                     align="center"
                     justify="center"
                   >
-                    <v-progress-circular indeterminate color="indigo lighten-2"></v-progress-circular>
+                    <v-progress-circular
+                      indeterminate
+                      color="indigo lighten-2"
+                    ></v-progress-circular>
                   </v-row>
                 </template>
               </v-img>
@@ -49,14 +52,13 @@
     <div class="hidden-md-and-up">
       <div class="d-flex justify-center align-center pa-2 mx-4">
         <v-avatar height="75" width="75" class="mr-12">
-          <v-img :src="userPhoto" :alt="userName"> 
+          <v-img :src="userPhoto" :alt="userName">
             <template v-slot:placeholder>
-              <v-row
-                class="fill-height ma-0"
-                align="center"
-                justify="center"
-              >
-                <v-progress-circular indeterminate color="indigo lighten-2"></v-progress-circular>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="indigo lighten-2"
+                ></v-progress-circular>
               </v-row>
             </template>
           </v-img>

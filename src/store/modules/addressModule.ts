@@ -1,5 +1,5 @@
 import Vue from "vue";
-import addressService from '@/services/addressService';
+import addressService from "@/services/addressService";
 
 export default {
   namespaced: true,

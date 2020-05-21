@@ -16,11 +16,11 @@ export default {
       },
     });
   },
-  changePassword(userPasswordData: any){
+  changePassword(userPasswordData: any) {
     return API_URL.patch(`user/changePassword`, userPasswordData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-  }
+  },
 };
