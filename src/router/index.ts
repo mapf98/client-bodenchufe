@@ -7,13 +7,10 @@ import ShoppingCart from "../views/ShoppingCart.vue";
 import SignUp from "../views/SignUp.vue";
 import AllSignUp from "../components/AllSignUp.vue";
 import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
-<<<<<<< HEAD
 import Checkout from "../views/Checkout.vue";
-=======
 import userProfile from "../views/userProfile.vue";
 import ChangePassword from "../views/ChangePassword.vue";
 import Categories from "../components/Categories.vue";
->>>>>>> d74ae042bcb6fef091d8304c2ef247052f036ec4
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -108,6 +105,7 @@ const routes: Array<RouteConfig> = [
     meta: {
       requiresAuth: true,
       hideBasicComponents: true,
+      applyBackground: true,
     },
   },
   {

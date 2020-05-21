@@ -1,7 +1,7 @@
 <template>
-  <v-card color="indigo">
+  <v-card color="indigo" :class="colors">
     <v-card-text class="subtitle-1 white--text font-weight-black">
-      Primary line
+      {{ primaryLine }}
     </v-card-text>
     <v-card-text class="mt-n9 white--text font-weight-thin">
       {{ address.delivery_address_primary_line }}
@@ -10,7 +10,7 @@
       v-if="address.delivery_address_secondary_line != null"
       class="subtitle-1 white--text mt-n6 font-weight-black"
     >
-      Secondary line
+      {{ secondaryLine }}
     </v-card-text>
     <v-card-text
       v-if="address.delivery_address_secondary_line != null"
@@ -19,26 +19,28 @@
       {{ address.delivery_address_secondary_line }}
     </v-card-text>
     <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
-      City
+      {{ city }}
     </v-card-text>
     <v-card-text class="mt-n9 white--text font-weight-thin">
       {{ address.delivery_address_city }}
     </v-card-text>
     <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
-      State
+      {{ state }}
     </v-card-text>
     <v-card-text class="mt-n9 white--text font-weight-thin">
       {{ address.delivery_address_state }}
     </v-card-text>
     <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
-      Zip code
+      {{ zipCode }}
     </v-card-text>
     <v-card-text class="mt-n9 white--text font-weight-thin">
       {{ address.delivery_address_zip_code }}
     </v-card-text>
 
     <v-row class="d-flex justify-center pb-5">
-      <v-btn @click="setAddress(address.delivery_address_id)"> Select </v-btn>
+      <v-btn @click="setAddress(address.delivery_address_id)" small>
+        {{ select }}
+      </v-btn>
     </v-row>
   </v-card>
 </template>
@@ -53,6 +55,21 @@ export default class CheckoutAddresses extends Vue {
   quantity = "Quantity";
   discount = "Off";
   included = "included";
+
+  primaryLine = "Primary line";
+  secondaryLine = "Secondary line";
+  city = "City";
+  state = "State";
+  zipCode = "Zip code";
+  select = "Select";
+
+  selectedAddress = false;
+
+  colors() {
+    return {
+      amber: this.selectedAddress,
+    };
+  }
 
   @Prop() address!: object;
 
@@ -77,6 +94,7 @@ export default class CheckoutAddresses extends Vue {
   }
 
   setAddress(id: number) {
+    this.selectedAddress = !this.selectedAddress;
     this.$emit("orderAddressId", id);
   }
 

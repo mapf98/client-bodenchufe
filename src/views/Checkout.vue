@@ -10,11 +10,11 @@
 
     <v-stepper color="grey lighten-1" v-model="e6" vertical>
       <v-stepper-step :complete="e6 > 1" step="1">
-        Select your shipping address
+        {{ selectShippingAddress }}
       </v-stepper-step>
 
       <v-stepper-content step="1">
-        <v-card color="grey lighten-2" class="mb-12" tile>
+        <v-card color="grey lighten-2" class="mb-12 pr-4" tile>
           <v-row class="ml-2">
             <v-col
               v-for="address in addresses"
@@ -31,19 +31,21 @@
           </v-row>
         </v-card>
         <v-btn
+          v-if="selectAddress"
           color="amber darken-4"
           class="white--text"
           @click="getCouponsForOrder"
-          >Continue</v-btn
         >
+          {{ Continue }}
+        </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 2" step="2"
-        >Select a coupon discount</v-stepper-step
+      <v-stepper-step :complete="e6 > 2" step="2">
+        {{ selectCoupon }}</v-stepper-step
       >
 
       <v-stepper-content step="2">
-        <v-card color="grey lighten-2" class="mb-12" tile>
+        <v-card color="grey lighten-2" class="mb-12 pr-4" tile>
           <v-row class="ml-2">
             <v-col
               v-for="coupon in coupons"
@@ -55,21 +57,31 @@
               <CheckoutCoupons
                 :coupon="coupon"
                 v-on:orderCouponId="orderCouponId"
+                v-on:orderCouponRate="orderCouponRate"
               />
             </v-col>
           </v-row>
         </v-card>
-        <v-btn color="amber darken-4" class="white--text" @click="e6 = 3"
-          >Continue</v-btn
-        >
-        <v-btn outlined class="ml-4" @click="e6 = 1">Previous</v-btn>
+        <v-btn color="amber darken-4" class="white--text" @click="e6 = 3">{{
+          Continue
+        }}</v-btn>
+        <v-btn outlined class="ml-4" @click="e6 = 1">{{ Previous }}</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 3" step="3">Pay order</v-stepper-step>
+      <v-stepper-step :complete="e6 > 3" step="3"
+        >{{ payOrder }}
+      </v-stepper-step>
 
       <v-stepper-content step="3">
-        <v-card color="grey lighten-1" class="mb-12" height="200px"></v-card>
-        <v-btn outlined @click="e6 = 2">Previous</v-btn>
+        <v-card color="grey lighten-2" class="mb-12" tile>
+          <CheckoutPayment
+            :paymentDetail="paymentDetail"
+            :addressId="addressId"
+            :couponId="couponId"
+            :couponRate="couponRate"
+          />
+        </v-card>
+        <v-btn outlined @click="e6 = 2">{{ Previous }}</v-btn>
       </v-stepper-content>
     </v-stepper>
   </v-container>
@@ -80,12 +92,14 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import CheckoutAddresses from "../components/CheckoutAddresses.vue";
 import CheckoutCoupons from "../components/CheckoutCoupons.vue";
+import CheckoutPayment from "../components/CheckoutPayment.vue";
 import { Watch } from "vue-property-decorator";
 
 @Component({
   components: {
     CheckoutAddresses,
     CheckoutCoupons,
+    CheckoutPayment,
   },
 })
 export default class Checkout extends Vue {
@@ -93,21 +107,34 @@ export default class Checkout extends Vue {
   totalWeight = "Volumetric total weight";
   productsQuantity = "Products quantity";
   checkout = "Checkout";
+
+  selectShippingAddress = "Select your shipping address";
+  selectCoupon = "Select a coupon discount";
+  Continue = "Continue";
+  Previous = "Previous";
+  payOrder = "Pay order";
+
   totals = {
     subtotal: 0,
     weight: 0,
     quantity: 0,
   };
   e6 = 1;
-  addressId: number | undefined;
-  couponId: number | undefined;
+  selectAddress = false;
+  addressId = -1;
+  couponId = -1;
+  couponRate = "";
 
   orderAddressId(id: number) {
+    this.selectAddress = true;
     this.addressId = id;
   }
   orderCouponId(id: number) {
     this.couponId = id;
-    console.log(this.addressId, " cupon: ", this.couponId);
+  }
+
+  orderCouponRate(rate: string) {
+    this.couponRate = rate;
   }
 
   mounted() {
@@ -141,28 +168,6 @@ export default class Checkout extends Vue {
   get paymentDetail() {
     return this.$store.getters["checkout/getPaymentDetail"];
   }
-
-  // @Watch("products")
-  // reloadProducts() {
-  //this.calculateTotals();
-  //  }
-
-  /* calculateTotals() {
-    (this.totals.subtotal = 0),
-      (this.totals.weight = 0),
-      (this.totals.quantity = 0);
-    this.products.forEach((product: any) => {
-      if (product.status_name === "SELECTED") {
-        (this.totals.subtotal += product.total),
-          (this.totals.weight +=
-            product.volumetric_weight *
-            product.product_provider_order_quantity),
-          (this.totals.quantity += product.product_provider_order_quantity);
-        this.totals.weight = Math.round(this.totals.weight * 100) / 100;
-        this.totals.subtotal = Math.round(this.totals.subtotal * 100) / 100;
-      }
-    });
-  }*/
 
   @Watch("translator")
   translate() {

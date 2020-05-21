@@ -7,7 +7,12 @@
       {{ coupon.coupon_discount_rate }}
     </v-card-text>
     <v-row class="d-flex justify-center pb-5">
-      <v-btn @click="setCoupon(coupon.coupon_id)"> Select </v-btn>
+      <v-btn
+        @click="setCoupon(coupon.coupon_id, coupon.coupon_discount_rate)"
+        small
+      >
+        {{ select }}
+      </v-btn>
     </v-row>
   </v-card>
 </template>
@@ -22,6 +27,8 @@ export default class CheckoutCoupons extends Vue {
   quantity = "Quantity";
   discount = "Off";
   included = "included";
+
+  select = "Select";
 
   @Prop() coupon!: object;
 
@@ -45,8 +52,9 @@ export default class CheckoutCoupons extends Vue {
     });
   }
 
-  setCoupon(id: number) {
+  setCoupon(id: number, rate: string) {
     this.$emit("orderCouponId", id);
+    this.$emit("orderCouponRate", rate);
   }
 
   get translator() {
