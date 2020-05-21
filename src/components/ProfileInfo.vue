@@ -5,12 +5,16 @@
         <v-col class="text-center">
           <v-avatar size="200" color="white">
             <v-icon size="200" v-if="!agregado">mdi-account</v-icon>
-            <v-img :src="userUrlPhoto" v-if="agregado" contain></v-img>
+            <v-img
+              :src="userUrlPhoto == 'photo' ? placeHolcerImg : userUrlPhoto"
+              v-if="agregado"
+              :contain="userUrlPhoto == placeHolcerImg"
+            ></v-img>
           </v-avatar>
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="text-center">
+        <v-col class="text-center d-flex justify-center">
           <v-btn
             @click="$refs.fileInp.click()"
             ref="take"
@@ -32,11 +36,12 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col class="text-center">
+        <v-col class="text-center d-flex justify-center">
           <v-btn
             class="white--text"
             color="indigo"
             :width="buttonCols()"
+            :disabled="allFields"
             @click="updateUserInfo()"
           >
             <v-icon class="mr-2">mdi-account-edit</v-icon>
@@ -48,7 +53,7 @@
         <v-col>
           <v-form v-model="valid" ref="form" lazy-validation>
             <v-row>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_first_name"
@@ -57,7 +62,7 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_second_name"
@@ -67,7 +72,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_first_lastname"
@@ -76,7 +81,7 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_second_lastname"
@@ -86,7 +91,7 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-text-field
                   type="text"
                   v-model="user.user_email"
@@ -95,7 +100,7 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col class="mx-8">
+              <v-col :cols="separatorCols()">
                 <v-menu
                   ref="menu"
                   v-model="menuRef"
@@ -167,6 +172,9 @@ export default class ProfileInfo extends Vue {
   agregado = false;
   menuRef = false;
   loading = false;
+  allFields = false;
+  placeHolcerImg =
+    "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2FFotofinal.png?alt=media&token=d9d54e10-3ad2-4906-8986-890b38a27d38";
 
   userData: any;
   userDataString: any;
@@ -189,6 +197,11 @@ export default class ProfileInfo extends Vue {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
 
+  separatorCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 6;
+  }
+
   $refs!: {
     picker: any;
     menu: any;
@@ -199,7 +212,7 @@ export default class ProfileInfo extends Vue {
 
   buttonCols() {
     const { xs, sm } = this.$vuetify.breakpoint;
-    return xs ? 280 : sm ? 280 : 350;
+    return xs ? 200 : sm ? 280 : 350;
   }
 
   save(date: Date) {
@@ -215,6 +228,19 @@ export default class ProfileInfo extends Vue {
     this.showImageIfExist();
     this.getUserData();
     this.translate();
+  }
+
+  @Watch("user.user_first_name")
+  @Watch("user.user_first_lastname")
+  disableChangeInfoButton() {
+    if (
+      this.user.user_first_name.length == 0 ||
+      this.user.user_first_lastname.length == 0
+    ) {
+      this.allFields = true;
+    } else {
+      this.allFields = false;
+    }
   }
 
   @Watch("translator")
