@@ -8,16 +8,18 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
-        <v-card class="justify-center ma-12">
+      <v-col :cols="separatorCols()"></v-col>
+      <v-col :cols="separatorCols()">
+        <v-card>
           <v-card-title
-            class="justify-center font-weight-bold display-1 indigo--text ma-12"
+            class="d-flex justify-center text-center font-weight-bold title indigo--text"
           >
             {{ changePasswordButtonText }}
           </v-card-title>
           <EditPassword />
         </v-card>
       </v-col>
+      <v-col :cols="separatorCols()"></v-col>
     </v-row>
   </v-container>
 </template>
@@ -53,6 +55,11 @@ export default class ChangePassword extends Vue {
         }
       }
     });
+  }
+
+  separatorCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 4;
   }
 
   get translator() {
