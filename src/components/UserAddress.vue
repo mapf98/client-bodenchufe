@@ -184,14 +184,6 @@ export default class UserAddress extends Vue {
 
   deleteAddress() {
     this.$emit("deleteAddress", this.address.delivery_address_id);
-    // this.$store
-    //   .dispatch("address/deleteAddress", {
-    //     deliveryAddressId: id,
-    //     statusName: "INACTIVE",
-    //   })
-    //   .then(() => {
-    //     this.$store.dispatch("address/getUserAddresses").then;
-    //   });
   }
 
   showErrors(errors: any) {

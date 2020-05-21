@@ -28,7 +28,6 @@ export default class AllDeliveries extends Vue {
   update = false;
 
   get addresses() {
-    console.log(this.$store.getters["address/getAddresses"]);
     return this.$store.getters["address/getAddresses"];
   }
 
@@ -45,7 +44,6 @@ export default class AllDeliveries extends Vue {
   }
 
   deleteAddress(id: number) {
-    console.log(id, "dentro");
     this.$store
       .dispatch("address/deleteAddress", {
         deliveryAddressId: id,
