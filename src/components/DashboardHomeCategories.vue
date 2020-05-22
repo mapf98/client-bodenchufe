@@ -2,14 +2,17 @@
   <div>
     <v-row>
       <v-col>
-        <div class="d-flex justify-center align-center mb-2">
+        <div class="d-flex justify-center align-center">
           <p class="mb-0 mr-2 title text-center indigo--text">
             {{ categoriesTitle }}
           </p>
-          <v-icon large color="indigo" class="mr-12">
+          <v-icon large color="indigo">
             mdi-clipboard-text-multiple-outline
           </v-icon>
+        </div>
+        <div class="d-flex justify-center align-center">
           <v-switch
+            class="mt-1"
             v-model="showAll"
             :label="showCategories"
             color="indigo"
@@ -26,7 +29,9 @@
           outlined
           v-for="category in categoriesFilter()"
           :key="category.category_id"
-          @click="productsByCategory(category.category_id)"
+          @click="
+            productsByCategory(category.category_id, category.category_name)
+          "
         >
           <v-list-item three-line>
             <v-list-item-content
@@ -76,9 +81,25 @@ export default class DashboardHomeCategories extends Vue {
     });
   }
 
-  productsByCategory(category: number) {
-    //Busqueda de productos por categoría
-    console.log(category);
+  productsByCategory(categoryId: number, categoryName: string) {
+    this.$store
+      .dispatch("product/getProductByCategory", {
+        categoryId: categoryId,
+        name: categoryName,
+      })
+      .then(() => {
+        this.$store.dispatch("category/getCategories").then(() => {
+          const categories = this.$store.getters["category/getCategories"];
+          this.$store
+            .dispatch("category/setActualPath", {
+              categoryId: categoryId,
+              categories: categories,
+            })
+            .then(() => {
+              this.$router.push("/products");
+            });
+        });
+      });
   }
 
   categoriesFilter() {

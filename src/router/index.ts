@@ -11,6 +11,7 @@ import Checkout from "../views/Checkout.vue";
 import userProfile from "../views/userProfile.vue";
 import ChangePassword from "../views/ChangePassword.vue";
 import Categories from "../components/Categories.vue";
+import Products from "../components/Products.vue";
 import DeliveryAddress from "../views/DeliveryAddress.vue";
 import AllDeliveries from "../components/AllDeliveries.vue";
 import AddDelivery from "../components/AddDelivery.vue";
@@ -60,6 +61,16 @@ const routes: Array<RouteConfig> = [
         path: "/categories",
         name: "Categories",
         component: Categories,
+        meta: {
+          requiresAuth: false,
+          hideBasicComponents: false,
+          applyBackground: false,
+        },
+      },
+      {
+        path: "/products",
+        name: "Products",
+        component: Products,
         meta: {
           requiresAuth: false,
           hideBasicComponents: false,
@@ -154,7 +165,7 @@ const routes: Array<RouteConfig> = [
     component: DeliveryAddress,
     children: [
       {
-        path: "/delivery",
+        path: "all",
         name: "Addresses",
         component: AllDeliveries,
         meta: {

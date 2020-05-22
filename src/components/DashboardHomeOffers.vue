@@ -2,14 +2,17 @@
   <div>
     <v-row>
       <v-col>
-        <div class="d-flex justify-center align-center mb-2">
+        <div class="d-flex justify-center align-center">
           <p class="mb-0 mr-2 title text-center indigo--text">
             {{ offersTitle }}
           </p>
-          <v-icon large color="indigo" class="mr-12">
+          <v-icon large color="indigo">
             mdi-clipboard-text-multiple-outline
           </v-icon>
+        </div>
+        <div class="d-flex justify-center align-center">
           <v-switch
+            class="mt-1"
             v-model="showAll"
             :label="showOffers"
             color="indigo"
@@ -27,7 +30,7 @@
           outlined
           v-for="offer in OffersFilter()"
           :key="offer.offer_id"
-          @click="productsByCategory(offer.offer_id)"
+          @click="productsByOffer(offer.offer_id, offer.offer_rate)"
         >
           <p class="display-4 amber--text font-weight-bold text-center">
             {{ offer.offer_rate }}
@@ -73,9 +76,21 @@ export default class DashboardHomeOffers extends Vue {
     });
   }
 
-  productsByOffer(offer: number) {
-    //Busqueda de productos por offerta
-    console.log(offer);
+  productsByOffer(offerId: number, offerRate: string) {
+    this.$store
+      .dispatch("product/getProductByOffer", {
+        offerId: offerId,
+        name: offerRate,
+      })
+      .then(() => {
+        this.$store
+          .dispatch("category/setActualPath", {
+            clear: true,
+          })
+          .then(() => {
+            this.$router.push("/products");
+          });
+      });
   }
 
   get translator() {
