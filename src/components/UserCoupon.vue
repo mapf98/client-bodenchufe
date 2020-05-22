@@ -7,11 +7,11 @@
       <v-card-text>
         <v-row class="d-flex">
           <v-col>
-            <div class="amber--text display-2">
+            <div class="amber--text display-1">
               {{ coupon.coupon_discount_rate }} {{ discountRateText }}
             </div>
             <div class="white--text">
-              {{ canBeUsedText }}: {{ coupon.coupon_min_use }}$ -
+              {{ canBeUsedInText }}: {{ coupon.coupon_min_use }}$ -
               {{ coupon.coupon_max_use }}$
             </div>
           </v-col>
@@ -24,7 +24,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Prop } from "vue-property-decorator";
+import { Prop, Watch } from "vue-property-decorator";
 
 @Component({})
 export default class UserCoupons extends Vue {
@@ -32,10 +32,34 @@ export default class UserCoupons extends Vue {
   coupon = this.userCoupon;
 
   discountRateText = "Discount";
-  canBeUsedText = "On purchases between";
+  canBeUsedInText = "On purchases between";
 
   mounted() {
+    this.translate();
     this.coupon = this.userCoupon;
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "discountRateText": {
+          this.discountRateText = term.termTranslation;
+          break;
+        }
+        case "canBeUsedInText": {
+          this.canBeUsedInText = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>

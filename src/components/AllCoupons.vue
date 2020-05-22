@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col class="text-center">
-        <h1 class="blue--text">Coupons</h1>
+        <h1 class="blue--text">{{ couponTitleText }}</h1>
         <hr />
       </v-col>
     </v-row>
@@ -12,7 +12,7 @@
       :key="coupon.coupon_id"
     >
       <v-col :cols="separatorCols()">
-        <UserCoupon :userCoupon="coupon"/>
+        <UserCoupon :userCoupon="coupon" />
       </v-col>
     </v-row>
   </v-container>
@@ -22,6 +22,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import UserCoupon from "../components/UserCoupon.vue";
+import { Watch } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -30,6 +31,7 @@ import UserCoupon from "../components/UserCoupon.vue";
 })
 export default class AllCoupons extends Vue {
   coupons = [];
+  couponTitleText = "Coupons";
 
   separatorCols() {
     const { xs, sm } = this.$vuetify.breakpoint;
@@ -45,7 +47,27 @@ export default class AllCoupons extends Vue {
   }
 
   mounted() {
+    this.translate();
     this.getUserCoupons();
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "couponTitleText": {
+          this.couponTitleText = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>
