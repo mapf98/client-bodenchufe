@@ -11,6 +11,9 @@ import Checkout from "../views/Checkout.vue";
 import userProfile from "../views/userProfile.vue";
 import ChangePassword from "../views/ChangePassword.vue";
 import Categories from "../components/Categories.vue";
+import DeliveryAddress from "../views/DeliveryAddress.vue";
+import AllDeliveries from "../components/AllDeliveries.vue";
+import AddDelivery from "../components/AddDelivery.vue";
 import AfterPay from "../views/AfterPay.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
@@ -144,6 +147,38 @@ const routes: Array<RouteConfig> = [
         },
       },
     ],
+  },
+  {
+    path: "/delivery",
+    name: "Delivery",
+    component: DeliveryAddress,
+    children: [
+      {
+        path: "/delivery",
+        name: "Addresses",
+        component: AllDeliveries,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: true,
+          applyBackground: false,
+        },
+      },
+      {
+        path: "add",
+        name: "AddDelivery",
+        component: AddDelivery,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: true,
+          applyBackground: false,
+        },
+      },
+    ],
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: true,
+      applyBackground: false,
+    },
   },
 ];
 

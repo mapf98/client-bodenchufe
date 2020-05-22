@@ -115,13 +115,13 @@ export default class Checkout extends Vue {
   payOrder = "Pay order";
   noAvailableCoupons =
     "You do not have any availble coupon for this order amount";
-
   totals = {
     subtotal: 0,
     weight: 0,
     quantity: 0,
   };
   e6 = 1;
+
   //Los 3 atributos de abajo se usan para almacenar la informacion pasada desde los componentes hijos
   //Si no se pasa niguna informacion se quedan con los valores establecidos e indican que no se selecciono direccion ni cupon
   addressId = -1;
@@ -170,7 +170,7 @@ export default class Checkout extends Vue {
   get paymentDetail() {
     return this.$store.getters["checkout/getPaymentDetail"];
   }
-
+  
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {

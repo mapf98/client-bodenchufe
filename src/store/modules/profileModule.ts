@@ -87,7 +87,9 @@ export default {
         });
     },
     updateUserInfo: async (context: any, payload: any) => {
-      await profileService.updateUserInfo(payload.user)
+      await profileService.updateUserInfo(payload.user).then(() => {
+        console.log("actualizado");
+      });
     },
     changePassword: async (context: any, payload: any) => {
       await profileService

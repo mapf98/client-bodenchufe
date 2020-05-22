@@ -122,18 +122,10 @@ export default class CheckoutAddresses extends Vue {
     });
   }
 
-  /* setAddress(id: number) {
-    this.$emit("orderAddressId", id);
-  }*/
-
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>
 
-<style lang="scss">
-.changecolor {
-  background-color: blueviolet;
-}
-</style>
+<style lang="scss"></style>
