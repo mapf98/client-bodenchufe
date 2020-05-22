@@ -3,9 +3,9 @@
     <v-card>
       <v-row>
         <v-col class="d-flex justify-center text-center">
-          <v-card-title class="indigo--text"
-            >Agregar Nueva Direccion</v-card-title
-          >
+          <v-card-title class="indigo--text">{{
+            addNewAddresText
+          }}</v-card-title>
         </v-col>
       </v-row>
       <v-row>
@@ -27,7 +27,9 @@ import AddDeliveryForm from "../components/AddDeliveryForm.vue";
     AddDeliveryForm,
   },
 })
-export default class AddDeliveries extends Vue {}
+export default class AddDeliveries extends Vue {
+  addNewAddresText = "Add Address"
+}
 </script>
 
 <style lang="scss"></style>

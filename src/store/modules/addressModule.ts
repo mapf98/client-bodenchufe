@@ -20,29 +20,27 @@ export default {
     },
     setVerifiedStatus(state: any, verified: boolean) {
       Vue.set(state, "verified", verified);
-    }
+    },
   },
   // -----------------------------------------------------------------
   actions: {
     getUserAddresses: async (context: any, payload: any) => {
-      const addresses = await addressService.getUserAddresses().then((res)=> {
+      const addresses = await addressService.getUserAddresses().then((res) => {
         context.commit("setAddresses", res.data.addresses);
       });
     },
-    editAddress: async (context: any, payload:any) => {
-      await addressService.editUserAddress(payload.userAddress).then((res)=> {
+    editAddress: async (context: any, payload: any) => {
+      await addressService.editUserAddress(payload.userAddress).then((res) => {
         context.commit("setVerifiedStatus", res.data.verified);
       });
     },
     addAddress: async (context: any, payload: any) => {
-      await addressService.addUserAddress(payload.userAddress).then((res)=> {
+      await addressService.addUserAddress(payload.userAddress).then((res) => {
         context.commit("setVerifiedStatus", res.data.verified);
-      })
+      });
     },
     deleteAddress: async (context: any, payload: any) => {
-      await addressService.deleteUserAddress(payload).then((res) => {
-        console.log(res);
-      })
+      await addressService.deleteUserAddress(payload);
     },
     /*
     deleteShoppingCartProducts: async (context: any, payload: any) => {

@@ -7,20 +7,22 @@
           <v-btn
             color="indigo"
             class="white--text"
+            :class="{ overline: $vuetify.breakpoint.xs }"
             :width="buttonCols()"
             :outlined="InAddressView == true"
             @click="goToMyAddresses()"
-            >Mis direcciones</v-btn
+            >{{ myAddressesText }}</v-btn
           >
         </v-col>
         <v-col class="d-flex justify-center text-center">
           <v-btn
             color="indigo"
             class="white--text text-center"
+            :class="{ overline: $vuetify.breakpoint.xs }"
             :width="buttonCols()"
             :outlined="InAddView == true"
             @click="goToAddAddress()"
-            >Agregar una direccion</v-btn
+            >{{ addNewAddresText }}</v-btn
           >
         </v-col>
         <v-col :cols="separatorCols()"></v-col>
@@ -37,6 +39,10 @@ import Component from "vue-class-component";
 export default class DeliveryBar extends Vue {
   InAddressView = true;
   InAddView = false;
+
+  addNewAddresText = "Add Address";
+  myAddressesText = "My Addresses";
+
   buttonCols() {
     const { xs, sm } = this.$vuetify.breakpoint;
     return xs ? 105 : sm ? 280 : 210;

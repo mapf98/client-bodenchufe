@@ -95,7 +95,10 @@ export default class AddDeliveryForm extends Vue {
   acceptButtonText = "accept";
   allFields = false;
   addressRules = [(v: any) => !!v || this.addressRulesRequired];
-  addressZipRules: any = [(v: any) => !!v || this.addressRulesRequired];
+  addressZipRules = [
+    (v: any) => !!v || this.addressRulesRequired,
+    (v: any) => (v.length <= 5 && v.length >= 5) || this.zipCodeLengthText,
+  ];
 
   snackbarError = false;
   errors: Array<string> = [];
@@ -117,7 +120,7 @@ export default class AddDeliveryForm extends Vue {
   @Watch("userAddress.deliveryAddressZipCode")
   disableChangeInfoButton() {
     if (
-      this.userAddress.deliveryAddressZipCode.length == 0 ||
+      this.userAddress.deliveryAddressZipCode.length != 5 ||
       this.userAddress.deliveryAddressState.length == 0 ||
       this.userAddress.deliveryAddressCity.length == 0 ||
       this.userAddress.deliveryAddressPrimaryLine.length == 0

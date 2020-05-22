@@ -46,9 +46,9 @@
                 :disabled="!edit"
               ></v-text-field>
               <v-text-field
-                type="text"
+                type="number"
                 required
-                :rules="addressRules"
+                :rules="addressZipRules"
                 :label="zipCodeText"
                 v-model="address.delivery_address_zip_code"
                 :disabled="!edit"
@@ -81,7 +81,7 @@
                     min-width="200"
                     color="indigo"
                     outlined
-                    :disabled="!edit"
+                    :disabled="!allFields || !edit"
                     @click="editAddress()"
                   >
                     <v-icon>mdi-check-bold</v-icon>
@@ -142,7 +142,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Prop } from "vue-property-decorator";
+import { Prop, Watch } from "vue-property-decorator";
 
 @Component({})
 export default class UserAddress extends Vue {
@@ -153,6 +153,7 @@ export default class UserAddress extends Vue {
 
   edit = false;
   update = false;
+  allFields = false;
   primaryLineText = "Primary Line";
   secondaryLineText = "Secondary Line";
   cityText = "City";
@@ -165,13 +166,18 @@ export default class UserAddress extends Vue {
   cancelButtonText = "cancel";
   deleteButtonText = "delete";
   editButtonText = "edit";
-
   saveChangeSuccefullyText = "Your changes has been saved";
   addressNotValidText = "Address not valid";
+  zipCodeLengthText = "Zip Code must be valid";
 
   addressRules = [(v: any) => !!v || this.addressRulesRequired];
+  addressZipRules = [
+    (v: any) => !!v || this.addressRulesRequired,
+    (v: any) => (v.length <= 5 && v.length >= 5) || this.zipCodeLengthText,
+  ];
 
   mounted() {
+    this.translate();
     if (this.userAddress.delivery_address_aditional_info == "null") {
       // eslint-disable-next-line @typescript-eslint/camelcase
       this.userAddress.delivery_address_aditional_info = "";
@@ -180,6 +186,99 @@ export default class UserAddress extends Vue {
       // eslint-disable-next-line @typescript-eslint/camelcase
       this.userAddress.delivery_address_secondary_line = "";
     }
+  }
+
+  @Watch("address.delivery_address_primary_line")
+  @Watch("address.delivery_address_city")
+  @Watch("address.delivery_address_state")
+  @Watch("address.delivery_address_zip_code")
+  disableChangeInfoButton() {
+    if (
+      this.address.delivery_address_zip_code.toString().length > 5 ||
+      this.address.delivery_address_zip_code.toString().length < 5 ||
+      this.address.delivery_address_state.length == 0 ||
+      this.address.delivery_address_city.length == 0 ||
+      this.address.delivery_address_primary_line.length == 0
+    ) {
+      this.allFields = false;
+    } else {
+      this.allFields = true;
+    }
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "primaryLineText": {
+          this.primaryLineText = term.termTranslation;
+          break;
+        }
+        case "secondaryLineText": {
+          this.secondaryLineText = term.termTranslation;
+          break;
+        }
+        case "cityText": {
+          this.cityText = term.termTranslation;
+          break;
+        }
+        case "stateText": {
+          this.stateText = term.termTranslation;
+          break;
+        }
+        case "zipCodeText": {
+          this.zipCodeText = term.termTranslation;
+          break;
+        }
+        case "aditionalInfoText": {
+          this.aditionalInfoText = term.termTranslation;
+          break;
+        }
+        case "saveChangeSuccefullyText": {
+          this.saveChangeSuccefullyText = term.termTranslation;
+          break;
+        }
+        case "addressNotValidText": {
+          this.addressNotValidText = term.termTranslation;
+          break;
+        }
+        case "editButtonText": {
+          this.editButtonText = term.termTranslation;
+          break;
+        }
+        case "deleteButtonText": {
+          this.deleteButtonText = term.termTranslation;
+          break;
+        }
+        case "cancelButtonText": {
+          this.cancelButtonText = term.termTranslation;
+          break;
+        }
+        case "acceptButtonText": {
+          this.acceptButtonText = term.termTranslation;
+          break;
+        }
+        case "addressRulesRequired": {
+          this.addressRulesRequired = term.termTranslation;
+          break;
+        }
+        case "addressText": {
+          this.addressText = term.termTranslation;
+          break;
+        }
+        case "zipCodeLengthText": {
+          this.zipCodeLengthText = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 
   deleteAddress() {
