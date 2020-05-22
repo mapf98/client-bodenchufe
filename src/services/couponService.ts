@@ -8,4 +8,11 @@ export default {
       },
     });
   },
+  getUserCoupons() {
+    return API_URL.get(`/user/coupon`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  },
 };

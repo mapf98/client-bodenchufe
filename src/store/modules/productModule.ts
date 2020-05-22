@@ -1,21 +1,25 @@
 import Vue from "vue";
 import productService from "../../services/productService";
 
-async function getAllProducts(categoryId: number, child: any){
+async function getAllProducts(categoryId: number, child: any) {
   const totalProducts: any = [];
   let childProducts: any = [];
   let products: any = [];
 
-  products = await (await productService.getProductByCategory(categoryId)).data.products;
+  products = await (await productService.getProductByCategory(categoryId)).data
+    .products;
   products.forEach((product: any) => {
     totalProducts.push(product);
   });
 
   for (let index = 0; index < child.length; index++) {
-    childProducts = await getAllProducts(child[index].category_id, child[index].category_child);
-    childProducts.forEach((product: any)  => {
+    childProducts = await getAllProducts(
+      child[index].category_id,
+      child[index].category_child
+    );
+    childProducts.forEach((product: any) => {
       totalProducts.push(product);
-    });    
+    });
   }
 
   return totalProducts;
@@ -56,7 +60,10 @@ export default {
     //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
     // },
     getProductByCategory: async (context: any, payload: any) => {
-      const allProducts = await getAllProducts(payload.categoryId, payload.childCategories);
+      const allProducts = await getAllProducts(
+        payload.categoryId,
+        payload.childCategories
+      );
       context.commit("setProducts", allProducts);
       context.commit("setProductsPath", {
         pathName: payload.name,
