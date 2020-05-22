@@ -23,9 +23,5 @@ export default {
       const coupons = await couponService.getUserCouponsForOrder(150);
       context.commit("setUserCouponsForOrder", coupons.data.coupons);
     },
-    /*
-    deleteShoppingCartProducts: async (context: any, payload: any) => {
-      await shoppingCartService.deleteProduct(payload.productId);
-    },*/
   },
 };

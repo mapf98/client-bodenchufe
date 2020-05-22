@@ -11,6 +11,7 @@ import Checkout from "../views/Checkout.vue";
 import userProfile from "../views/userProfile.vue";
 import ChangePassword from "../views/ChangePassword.vue";
 import Categories from "../components/Categories.vue";
+import AfterPay from "../views/AfterPay.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -106,6 +107,15 @@ const routes: Array<RouteConfig> = [
       requiresAuth: true,
       hideBasicComponents: true,
       applyBackground: true,
+    },
+  },
+  {
+    path: "/success",
+    name: "AfterPay",
+    component: AfterPay,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
     },
   },
   {

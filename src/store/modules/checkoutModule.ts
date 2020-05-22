@@ -31,9 +31,12 @@ export default {
       const paymentDetail = await checkoutService.getPaymentDetail();
       contex.commit("setPaymentDetail", paymentDetail.data);
     },
-    payOrder : async (contex: any, payload: any) =>{
+    payOrder: async (contex: any, payload: any) => {
       const urlPaymentGateway = await checkoutService.payOrder(payload);
-      contex.commit("setPaymentUrl", urlPaymentGateway.data.paymentUrl.data.attributes.redirect_url);
-    } 
+      contex.commit(
+        "setPaymentUrl",
+        urlPaymentGateway.data.paymentUrl.data.attributes.redirect_url
+      );
+    },
   },
 };

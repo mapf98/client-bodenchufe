@@ -1,9 +1,8 @@
 <template>
   <v-container>
     <v-card>
-      <v-row class="">
-        <v-col md="1"></v-col>
-        <v-col md="4" class="text-center">
+      <v-row class="ma-12">
+        <v-col class="text-center" :cols="separatorCols()">
           <v-form v-model="valid" ref="form" lazy-validation>
             <v-row>
               <v-col>
@@ -80,12 +79,12 @@
             </v-row>
           </v-form>
         </v-col>
-        <v-col md="2"></v-col>
-        <v-col md="4" class="text-center">
+        <v-col :cols="separatorCols()">
           <SignUpPhoto @imageFiles="imageFile = $event" />
-          <SignUpLanguage @languageName="user.languageName = $event" />
+          <div class="d-flex justify-center">
+            <SignUpLanguage @languageName="user.languageName = $event" />
+          </div>
         </v-col>
-        <v-col md="1"></v-col>
       </v-row>
     </v-card>
     <v-row class="mt-12">
@@ -247,6 +246,11 @@ export default class NotFederatedSingUp extends Vue {
 
   mounted() {
     this.translate();
+  }
+
+  separatorCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 6;
   }
 
   @Watch("translator")

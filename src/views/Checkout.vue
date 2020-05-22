@@ -25,13 +25,14 @@
             >
               <CheckoutAddresses
                 :address="address"
+                :addressIdSelected="addressId"
                 v-on:orderAddressId="orderAddressId"
               />
             </v-col>
           </v-row>
         </v-card>
         <v-btn
-          v-if="selectAddress"
+          v-if="addressId > -1"
           color="amber darken-4"
           class="white--text"
           @click="getCouponsForOrder"
@@ -46,6 +47,9 @@
 
       <v-stepper-content step="2">
         <v-card color="grey lighten-2" class="mb-12 pr-4" tile>
+          <v-card-text class="subtitle-1" v-if="coupons.length == 0">
+            {{ noAvailableCoupons }}</v-card-text
+          >
           <v-row class="ml-2">
             <v-col
               v-for="coupon in coupons"
@@ -56,6 +60,7 @@
             >
               <CheckoutCoupons
                 :coupon="coupon"
+                :couponIdSelected="couponId"
                 v-on:orderCouponId="orderCouponId"
                 v-on:orderCouponRate="orderCouponRate"
               />
@@ -103,16 +108,13 @@ import { Watch } from "vue-property-decorator";
   },
 })
 export default class Checkout extends Vue {
-  myShoppingCart = "My shopping cart";
-  totalWeight = "Volumetric total weight";
-  productsQuantity = "Products quantity";
-  checkout = "Checkout";
-
   selectShippingAddress = "Select your shipping address";
-  selectCoupon = "Select a coupon discount";
+  selectCoupon = "Select a discount coupon";
   Continue = "Continue";
   Previous = "Previous";
   payOrder = "Pay order";
+  noAvailableCoupons =
+    "You do not have any availble coupon for this order amount";
 
   totals = {
     subtotal: 0,
@@ -120,13 +122,13 @@ export default class Checkout extends Vue {
     quantity: 0,
   };
   e6 = 1;
-  selectAddress = false;
+  //Los 3 atributos de abajo se usan para almacenar la informacion pasada desde los componentes hijos
+  //Si no se pasa niguna informacion se quedan con los valores establecidos e indican que no se selecciono direccion ni cupon
   addressId = -1;
   couponId = -1;
   couponRate = "";
 
   orderAddressId(id: number) {
-    this.selectAddress = true;
     this.addressId = id;
   }
   orderCouponId(id: number) {
@@ -173,20 +175,28 @@ export default class Checkout extends Vue {
   translate() {
     this.translator.forEach((term: any) => {
       switch (term.termName) {
-        case "myShoppingCart": {
-          this.myShoppingCart = term.termTranslation;
+        case "continueText": {
+          this.Continue = term.termTranslation;
           break;
         }
-        case "shoppingCartTotalWeight": {
-          this.totalWeight = term.termTranslation;
+        case "previousText": {
+          this.Previous = term.termTranslation;
           break;
         }
-        case "shoppingCartProductsQuantity": {
-          this.productsQuantity = term.termTranslation;
+        case "payOrder": {
+          this.payOrder = term.termTranslation;
           break;
         }
-        case "shoppingCartCheckout": {
-          this.checkout = term.termTranslation;
+        case "selectCoupon": {
+          this.selectCoupon = term.termTranslation;
+          break;
+        }
+        case "selectShippingAddress": {
+          this.selectShippingAddress = term.termTranslation;
+          break;
+        }
+        case "noAvailableCoupons": {
+          this.noAvailableCoupons = term.termTranslation;
           break;
         }
         default: {

@@ -1,5 +1,5 @@
 <template>
-  <v-row class="d-flex align-center">
+  <v-row class="d-flex flex-wrap align-center">
     <v-col cols="1"></v-col>
     <v-col>
       <v-card max-width="400px" color="indigo" class="flex-wrap">
@@ -32,7 +32,7 @@
         <v-card-text
           class="title white--text font-weight-black d-flex align-center mt-n12"
         >
-          {{ commision }}
+          {{ commission }}
           <v-card-text
             class="white--text font-weight-thin d-flex justify-end title"
           >
@@ -84,11 +84,7 @@ import { Prop, Watch } from "vue-property-decorator";
 
 @Component({})
 export default class CheckoutPayment extends Vue {
-  quantity = "Quantity";
-  discount = "Off";
-  included = "included";
-
-  commision = "Commission";
+  commission = "Commissions";
   subtotal = "Subtotal";
   total = "Total";
   payCrypto = "Pay with crypto";
@@ -143,16 +139,19 @@ export default class CheckoutPayment extends Vue {
   translate() {
     this.translator.forEach((term: any) => {
       switch (term.termName) {
-        case "shoppingCartQuantity": {
-          this.quantity = term.termTranslation;
+        case "commissionsPay": {
+          this.commission = term.termTranslation;
           break;
         }
-        case "shoppingCartDiscount": {
-          this.discount = term.termTranslation;
+        case "payCrypto": {
+          this.payCrypto = term.termTranslation;
           break;
         }
-        case "discountIncluded": {
-          this.included = term.termTranslation;
+        case "couponPay": {
+          this.coupon = term.termTranslation;
+          break;
+        }
+        default: {
           break;
         }
       }
