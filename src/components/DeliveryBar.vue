@@ -22,7 +22,7 @@
             :width="buttonCols()"
             :outlined="InAddView == true"
             @click="goToAddAddress()"
-            >{{ addNewAddresText }}</v-btn
+            >{{ addAddresText }}</v-btn
           >
         </v-col>
         <v-col :cols="separatorCols()"></v-col>
@@ -34,13 +34,14 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class DeliveryBar extends Vue {
   InAddressView = true;
   InAddView = false;
 
-  addNewAddresText = "Add Address";
+  addAddresText = "Add Address";
   myAddressesText = "My Addresses";
 
   buttonCols() {
@@ -60,6 +61,33 @@ export default class DeliveryBar extends Vue {
     this.InAddView = true;
     this.InAddressView = false;
     this.$router.push("/delivery/add");
+  }
+
+  mounted() {
+    this.translate();
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "addAddressText": {
+          this.addAddresText = term.termTranslation;
+          break;
+        }
+        case "myAddressesText": {
+          this.myAddressesText = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>

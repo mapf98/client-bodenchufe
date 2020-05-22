@@ -3,9 +3,7 @@
     <v-card>
       <v-row>
         <v-col class="d-flex justify-center text-center">
-          <v-card-title class="indigo--text">{{
-            addNewAddresText
-          }}</v-card-title>
+          <v-card-title class="indigo--text">{{ addAddresText }}</v-card-title>
         </v-col>
       </v-row>
       <v-row>
@@ -21,6 +19,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import AddDeliveryForm from "../components/AddDeliveryForm.vue";
+import { Watch } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -28,7 +27,30 @@ import AddDeliveryForm from "../components/AddDeliveryForm.vue";
   },
 })
 export default class AddDeliveries extends Vue {
-  addNewAddresText = "Add Address"
+  addAddresText = "Add Address";
+
+  mounted() {
+    this.translate();
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "addAddressText": {
+          this.addAddresText = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
+  }
 }
 </script>
 

@@ -120,7 +120,8 @@ export default class AddDeliveryForm extends Vue {
   @Watch("userAddress.deliveryAddressZipCode")
   disableChangeInfoButton() {
     if (
-      this.userAddress.deliveryAddressZipCode.length != 5 ||
+      this.userAddress.deliveryAddressZipCode.toString().length > 5 ||
+      this.userAddress.deliveryAddressZipCode.toString().length < 5 ||
       this.userAddress.deliveryAddressState.length == 0 ||
       this.userAddress.deliveryAddressCity.length == 0 ||
       this.userAddress.deliveryAddressPrimaryLine.length == 0
@@ -162,6 +163,65 @@ export default class AddDeliveryForm extends Vue {
           this.$router.push("/delivery");
         }
       });
+  }
+
+  mounted() {
+    this.translate();
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "primaryLineText": {
+          this.primaryLineText = term.termTranslation;
+          break;
+        }
+        case "secondaryLineText": {
+          this.secondaryLineText = term.termTranslation;
+          break;
+        }
+        case "cityText": {
+          this.cityText = term.termTranslation;
+          break;
+        }
+        case "stateText": {
+          this.stateText = term.termTranslation;
+          break;
+        }
+        case "zipCodeText": {
+          this.zipCodeText = term.termTranslation;
+          break;
+        }
+        case "aditionalInfoText": {
+          this.aditionalInfoText = term.termTranslation;
+          break;
+        }
+        case "addressNotValidText": {
+          this.addressNotValidText = term.termTranslation;
+          break;
+        }
+        case "acceptButtonText": {
+          this.acceptButtonText = term.termTranslation;
+          break;
+        }
+        case "addressRulesRequired": {
+          this.addressRulesRequired = term.termTranslation;
+          break;
+        }
+        case "zipCodeLengthText": {
+          this.zipCodeLengthText = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>
