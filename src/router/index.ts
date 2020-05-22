@@ -165,7 +165,7 @@ const routes: Array<RouteConfig> = [
     component: DeliveryAddress,
     children: [
       {
-        path: "/delivery",
+        path: "all",
         name: "Addresses",
         component: AllDeliveries,
         meta: {
