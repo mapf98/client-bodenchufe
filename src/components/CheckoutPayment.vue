@@ -126,6 +126,7 @@ export default class CheckoutPayment extends Vue {
         couponRate: this.couponRate,
         couponId: this.couponId == -1 ? null : this.couponId,
         deliveryAddressId: this.addressId,
+        port: window.location.port,
       })
       .then(() => {
         this.loading = false;
