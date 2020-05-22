@@ -1,30 +1,29 @@
 import { API_URL } from "./config";
-import axios from "axios";
 
 export default {
-  getShoppingCart() {
-    return API_URL.get(`/user/shoppingCart`, {
+  checkoutProducts() {
+    return API_URL.get(`/user/shoppingCart/checkout`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
   },
-  deleteProduct(productId: any) {
-    return API_URL.delete(`/user/shoppingCart/${productId}`, {
+  getUserAddresses() {
+    return API_URL.get(`/user/deliveryAddress`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
   },
-  updateQuantity(productId: number, quantity: any) {
-    return API_URL.patch(`/user/shoppingCart/${productId}/quantity`, quantity, {
+  getPaymentDetail() {
+    return API_URL.get(`/payment/paymentDetail`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
   },
-  updateProductStatus(productId: any, status: any) {
-    return API_URL.patch(`/user/shoppingCart/${productId}/status`, status, {
+  payOrder(payload: any) {
+    return API_URL.post(`/payment/payOrder`, payload, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

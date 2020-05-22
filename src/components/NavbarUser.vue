@@ -1,21 +1,34 @@
 <template>
   <div>
     <div class="hidden-sm-and-down">
-      <v-menu offset-y>
+      <v-menu offset-y open-on-hover>
         <template v-slot:activator="{ on }">
           <div
             class="d-flex justify-center align-center navbarUser px-8 py-1"
             v-on="on"
           >
-            <v-avatar height="48" width="48">
+            <v-avatar height="48" width="48" class="mx-3">
               <v-img
                 :src="userPhoto"
                 :alt="userName"
                 :contain="userPhoto == placeHolcerImg"
-              />
+              >
+                <template v-slot:placeholder>
+                  <v-row
+                    class="fill-height ma-0"
+                    align="center"
+                    justify="center"
+                  >
+                    <v-progress-circular
+                      indeterminate
+                      color="indigo lighten-2"
+                    ></v-progress-circular>
+                  </v-row>
+                </template>
+              </v-img>
             </v-avatar>
-            <p class="body-2 mb-0 ml-4 mr-4">{{ userName }}</p>
-            <v-badge color="amber darken-3" content="10" overlap>
+            <p class="body-2 mb-0 mx-3">{{ userName }}</p>
+            <v-badge color="amber darken-3" content="10" overlap class="mx-3">
               <v-icon color="indigo">
                 mdi-cart-minus
               </v-icon>
@@ -39,7 +52,16 @@
     <div class="hidden-md-and-up">
       <div class="d-flex justify-center align-center pa-2 mx-4">
         <v-avatar height="75" width="75" class="mr-12">
-          <v-img :src="userPhoto" :alt="userName" />
+          <v-img :src="userPhoto" :alt="userName">
+            <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="indigo lighten-2"
+                ></v-progress-circular>
+              </v-row>
+            </template>
+          </v-img>
         </v-avatar>
         <v-badge color="amber darken-3" content="10" overlap>
           <v-icon color="indigo" large>
@@ -104,7 +126,10 @@ export default class NavbarUser extends Vue {
 
   mounted() {
     const userData: any = localStorage.getItem("userData");
-    this.userPhoto = JSON.parse(userData).userPhoto == "photo" ? this.placeHolcerImg : JSON.parse(userData).userPhoto;
+    this.userPhoto =
+      JSON.parse(userData).userPhoto == "photo"
+        ? this.placeHolcerImg
+        : JSON.parse(userData).userPhoto;
     this.userName = `${JSON.parse(userData).userName}`;
     this.translate();
   }

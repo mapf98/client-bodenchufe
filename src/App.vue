@@ -37,10 +37,11 @@ export default class App extends Vue {
     return this.draw;
   }
 
-  mounted() {
-    this.$store.dispatch("internationalization/setUserLanguage");
-    this.$store.dispatch("internationalization/getTranslate", {
-      lang: this.$store.getters["internationalization/getPreferredLanguage"],
+  created() {
+    this.$store.dispatch("internationalization/setUserLanguage").then(() => {
+      this.$store.dispatch("internationalization/getTranslate", {
+        lang: this.$store.getters["internationalization/getPreferredLanguage"],
+      });
     });
   }
 

@@ -37,7 +37,9 @@
           </v-col>
           <v-col class="col-3">
             <v-col class="d-flex justify-center">
-              <v-btn x-large v-if="totals.quantity > 0">{{ checkout }}</v-btn>
+              <v-btn x-large v-if="totals.quantity > 0" @click="goToCheckout">{{
+                checkout
+              }}</v-btn>
             </v-col>
           </v-col>
         </v-row>
@@ -142,6 +144,12 @@ export default class ShoppingCart extends Vue {
 
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
+  goToCheckout() {
+    this.$store.dispatch("checkout/createCheckout").then(() => {
+      this.$router.push("/checkout");
+    });
   }
 }
 </script>

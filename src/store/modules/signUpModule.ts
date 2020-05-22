@@ -8,7 +8,7 @@ async function uploadTaskPromise(userId: any, imageFile: any) {
     let finalSnapshot;
     const storageRef = fb
       .storage()
-      .ref("images/user/" + userId + "/" + imageFile);
+      .ref("images/user/" + userId + "/" + imageFile.name);
     const uploadTask = storageRef.put(imageFile);
 
     uploadTask.on(
@@ -70,6 +70,7 @@ export default {
         userLastName: "",
         userLanguage: "",
         userPhoto: "",
+        userType: "notFederated",
       };
 
       await signUpService.signUp(payload.user).then((response: any) => {
@@ -156,18 +157,30 @@ export default {
         userLastName: "",
         userLanguage: "",
         userPhoto: "",
+        userType: "federated",
       };
+      //hzhscdjpaz_1589939705@tfbnw.net
       let googleProfile: any;
       await fa
         .signInWithPopup(
           payload.provider == "google" ? providerGoogle : providerFacebook
         )
         .then((result) => {
-          googleProfile = result.additionalUserInfo?.profile;
-          userData.userFirstName = googleProfile.given_name;
-          userData.userFirstLastname = googleProfile.family_name;
-          userData.userPhoto = googleProfile.picture;
-          userData.userEmail = googleProfile.email;
+          if (payload.provider == "google") {
+            googleProfile = result.additionalUserInfo?.profile;
+            userData.userFirstName = googleProfile.given_name;
+            userData.userFirstLastname = googleProfile.family_name;
+            userData.userPhoto = googleProfile.picture;
+            userData.userEmail = googleProfile.email;
+            fa.signOut();
+          } else {
+            googleProfile = result.additionalUserInfo?.profile;
+            userData.userFirstName = googleProfile.first_name;
+            userData.userFirstLastname = googleProfile.last_name;
+            userData.userPhoto = googleProfile.picture.data.url;
+            userData.userEmail = googleProfile.email;
+            fa.signOut();
+          }
         })
         .catch((error) => {
           console.log(error);

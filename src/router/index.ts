@@ -7,6 +7,14 @@ import ShoppingCart from "../views/ShoppingCart.vue";
 import SignUp from "../views/SignUp.vue";
 import AllSignUp from "../components/AllSignUp.vue";
 import NotFederatedSignUp from "../components/NotFederatedSignUp.vue";
+import Checkout from "../views/Checkout.vue";
+import userProfile from "../views/userProfile.vue";
+import ChangePassword from "../views/ChangePassword.vue";
+import Categories from "../components/Categories.vue";
+import DeliveryAddress from "../views/DeliveryAddress.vue";
+import AllDeliveries from "../components/AllDeliveries.vue";
+import AddDelivery from "../components/AddDelivery.vue";
+import AfterPay from "../views/AfterPay.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -18,6 +26,7 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Dashboard",
     component: Dashboard,
+    redirect: "/home",
     children: [
       {
         path: "/home",
@@ -28,10 +37,49 @@ const routes: Array<RouteConfig> = [
           hideBasicComponents: false,
         },
       },
+      {
+        path: "/shoppingCart",
+        name: "ShoppingCart",
+        component: ShoppingCart,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: false,
+        },
+      },
+      {
+        path: "/profile",
+        name: "Profile",
+        component: userProfile,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: false,
+          applyBackground: false,
+        },
+      },
+      {
+        path: "/categories",
+        name: "Categories",
+        component: Categories,
+        meta: {
+          requiresAuth: false,
+          hideBasicComponents: false,
+          applyBackground: false,
+        },
+      },
     ],
     meta: {
       requiresAuth: false,
       hideBasicComponents: false,
+      applyBackground: false,
+    },
+  },
+  {
+    path: "/changePassword",
+    name: "ChangePassword",
+    component: ChangePassword,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: true,
       applyBackground: false,
     },
   },
@@ -49,6 +97,25 @@ const routes: Array<RouteConfig> = [
     path: "/shoppingCart",
     name: "ShoppingCart",
     component: ShoppingCart,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+    },
+  },
+  {
+    path: "/checkout",
+    name: "Checkout",
+    component: Checkout,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: true,
+      applyBackground: true,
+    },
+  },
+  {
+    path: "/success",
+    name: "AfterPay",
+    component: AfterPay,
     meta: {
       requiresAuth: true,
       hideBasicComponents: false,
@@ -80,6 +147,38 @@ const routes: Array<RouteConfig> = [
         },
       },
     ],
+  },
+  {
+    path: "/delivery",
+    name: "Delivery",
+    component: DeliveryAddress,
+    children: [
+      {
+        path: "/delivery",
+        name: "Addresses",
+        component: AllDeliveries,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: true,
+          applyBackground: false,
+        },
+      },
+      {
+        path: "add",
+        name: "AddDelivery",
+        component: AddDelivery,
+        meta: {
+          requiresAuth: true,
+          hideBasicComponents: true,
+          applyBackground: false,
+        },
+      },
+    ],
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: true,
+      applyBackground: false,
+    },
   },
 ];
 

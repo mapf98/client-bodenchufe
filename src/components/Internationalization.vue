@@ -1,9 +1,22 @@
 <template>
-  <v-menu offset-y>
+  <v-menu offset-y open-on-hover>
     <template v-slot:activator="{ on }">
-      <v-btn color="indigo" dark v-on="on">
+      <v-btn
+        color="indigo"
+        dark
+        v-on="on"
+        class="d-flex justify-center alig-center"
+      >
         <v-icon class="mr-4">mdi-translate</v-icon>
         {{ language }}
+        <v-progress-circular
+          v-if="loading"
+          :size="20"
+          class="ml-1"
+          width="3"
+          color="white"
+          indeterminate
+        ></v-progress-circular>
       </v-btn>
     </template>
     <v-list>
@@ -30,6 +43,7 @@ export default class Internationalization extends Vue {
     { text: "Spanish VE", value: "es-ve" },
   ];
   language = "";
+  loading = false;
 
   selectLanguage(language: string) {
     this.language = language;
@@ -37,18 +51,28 @@ export default class Internationalization extends Vue {
   }
 
   getTranslate() {
-    this.$store.dispatch("internationalization/getTranslate", {
-      lang: this.language,
-    });
+    this.loading = true;
+    this.$store
+      .dispatch("internationalization/getTranslate", {
+        lang: this.language,
+      })
+      .then(() => {
+        this.loading = false;
+      });
   }
 
   mounted() {
+    this.loading = true;
     this.language = this.$store.getters[
       "internationalization/getPreferredLanguage"
     ];
-    this.$store.dispatch("internationalization/getTranslate", {
-      lang: this.$store.getters["internationalization/getPreferredLanguage"],
-    });
+    this.$store
+      .dispatch("internationalization/getTranslate", {
+        lang: this.language,
+      })
+      .then(() => {
+        this.loading = false;
+      });
   }
 
   @Watch("preferredLanguage")

@@ -19,7 +19,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col class="d-flex justify-space-around flex-wrap">
+      <v-col class="d-flex justify-center flex-wrap">
         <v-card
           class="mx-3 my-3 amber darken-3"
           width="250"
