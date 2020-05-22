@@ -21,12 +21,7 @@ export default {
   actions: {
     getCouponsForOrder: async (context: any, payload: any) => {
       const coupons = await couponService.getUserCouponsForOrder(150);
-      console.log("cuponesss", coupons.data.coupons);
       context.commit("setUserCouponsForOrder", coupons.data.coupons);
     },
-    /*
-    deleteShoppingCartProducts: async (context: any, payload: any) => {
-      await shoppingCartService.deleteProduct(payload.productId);
-    },*/
   },
 };

@@ -22,4 +22,11 @@ export default {
       },
     });
   },
+  payOrder(payload: any) {
+    return API_URL.post(`/payment/payOrder`, payload, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  },
 };
