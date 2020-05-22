@@ -99,7 +99,6 @@ export default class Products extends Vue {
   }
 
   get categoryPaths() {
-    console.log(this.$store.getters["category/getActualPath"]);
     return this.$store.getters["category/getActualPath"];
   }
 }

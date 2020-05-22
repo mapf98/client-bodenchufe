@@ -107,15 +107,22 @@ export default class FilterSideProducts extends Vue {
   }
 
   goToCategory(categoryId: number, categoryName: string) {
+    const categories = this.$store.getters["category/getCategories"];
     this.$store
-      .dispatch("product/getProductByCategory", {
+      .dispatch("category/setActualPath", {
         categoryId: categoryId,
-        name: categoryName,
-      })
-      .then(() => {
-        this.$store.dispatch("category/setActualPath", {
+        categories: categories,
+      }).then(()=>{
+        this.$store.dispatch("category/getChildCategories", {
           categoryId: categoryId,
-          categories: this.$store.getters["category/getCategories"],
+          categories: categories,
+        }).then(()=>{
+          this.$store
+          .dispatch("product/getProductByCategory", {
+            categoryId: categoryId,
+            name: categoryName,
+            childCategories: this.$store.getters["category/getChildCategories"],
+          });
         });
       });
   }

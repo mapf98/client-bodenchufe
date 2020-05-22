@@ -48,6 +48,22 @@ function getPathInfoID(id: number, categories: any[]) {
   return pathInfo;
 }
 
+function getChildCategories(id: number, categories: any[]) {
+  let childCategories: any = [];
+  for (let index = 0; index < categories.length; index++) {
+    if (id == categories[index].category_id) {
+      childCategories = categories[index].category_child;
+      index = categories.length;
+    }else{
+      childCategories = getChildCategories(id, categories[index].category_child);
+      if(childCategories.length > 0){
+        index = categories.length;
+      }
+    }
+  }
+  return childCategories;
+}
+
 function getFinalPaths(id: number, categories: any[]) {
   const fkPaths = getFKPaths(id, categories).reverse();
   const finalPaths: any[] = [];
@@ -72,12 +88,14 @@ export default {
     // Aqui van los atributos
     categories: [],
     actualPath: [],
+    childCategories: [],
   },
   // -----------------------------------------------------------------
   getters: {
     // getters and computed props
     getCategories: (state: any) => state.categories,
     getActualPath: (state: any) => state.actualPath,
+    getChildCategories: (state: any) => state.childCategories,
   },
   // -----------------------------------------------------------------
   mutations: {
@@ -87,6 +105,9 @@ export default {
     },
     setActualPath(state: {}, actualPath: []) {
       Vue.set(state, "actualPath", actualPath);
+    },
+    setChildCategories(state: {}, childCategories: []) {
+      Vue.set(state, "childCategories", childCategories);
     },
   },
   // -----------------------------------------------------------------
@@ -106,6 +127,10 @@ export default {
         const paths = getFinalPaths(payload.categoryId, payload.categories);
         context.commit("setActualPath", paths);
       }
+    },
+    getChildCategories: async (context: any, payload: any) => {
+      const childCategories = getChildCategories(payload.categoryId, payload.categories);
+      context.commit("setChildCategories", childCategories);
     },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
