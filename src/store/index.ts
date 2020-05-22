@@ -11,6 +11,8 @@ import address from "./modules/addressModule";
 import coupon from "./modules/couponModule";
 import checkout from "./modules/checkoutModule";
 import profile from "./modules/profileModule";
+import category from "./modules/categoryModule";
+import product from "./modules/productModule";
 
 Vue.use(Vuex);
 
@@ -25,5 +27,7 @@ export default new Vuex.Store({
     coupon,
     checkout,
     profile,
+    category,
+    product,
   },
 });

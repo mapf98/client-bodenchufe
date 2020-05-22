@@ -6,21 +6,27 @@ export default {
   // -----------------------------------------------------------------
   state: {
     products: [],
+    productsBadge: 0,
   },
   // -----------------------------------------------------------------
   getters: {
     getProducts: (state: any) => state.products,
+    getProductsBadge: (state: any) => state.productsBadge,
   },
   // -----------------------------------------------------------------
   mutations: {
     setShoppingCartProducts(state: any, products: any) {
       Vue.set(state, "products", products);
     },
+    setProductsBadge(state: any, quantity: any) {
+      Vue.set(state, "productsBadge", quantity);
+    },
   },
   // -----------------------------------------------------------------
   actions: {
     getShoppingCartProducts: async (context: any, payload: any) => {
       const products = await shoppingCartService.getShoppingCart();
+      context.commit("setProductsBadge", products.data.results);
       context.commit("setShoppingCartProducts", products.data.shoppingCart);
     },
     deleteShoppingCartProducts: async (context: any, payload: any) => {

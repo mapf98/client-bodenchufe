@@ -160,7 +160,7 @@ export default class AddDeliveryForm extends Vue {
           this.errors.splice(0);
           this.errors.push(this.addressSuccessfullyAddedText);
           this.showErrors(this.errors);
-          this.$router.push("/delivery");
+          this.$router.push("/delivery/all");
         }
       });
   }

@@ -28,7 +28,13 @@
               </v-img>
             </v-avatar>
             <p class="body-2 mb-0 mx-3">{{ userName }}</p>
-            <v-badge color="amber darken-3" content="10" overlap class="mx-3">
+            <v-badge
+              color="amber darken-3"
+              :content="userProducts"
+              overlap
+              class="mx-3"
+              :value="userProducts"
+            >
               <v-icon color="indigo">
                 mdi-cart-minus
               </v-icon>
@@ -63,7 +69,7 @@
             </template>
           </v-img>
         </v-avatar>
-        <v-badge color="amber darken-3" content="10" overlap>
+        <v-badge color="amber darken-3" content="1" overlap>
           <v-icon color="indigo" large>
             mdi-cart-minus
           </v-icon>
@@ -124,7 +130,12 @@ export default class NavbarUser extends Vue {
     this.$router.push(route);
   }
 
+  // created(){
+  //   this.$store.dispatch("shoppingCart/getShoppingCartProducts");
+  // }
+
   mounted() {
+    this.$store;
     const userData: any = localStorage.getItem("userData");
     this.userPhoto =
       JSON.parse(userData).userPhoto == "photo"
@@ -171,6 +182,10 @@ export default class NavbarUser extends Vue {
 
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
+  get userProducts() {
+    return this.$store.getters["shoppingCart/getProductsBadge"];
   }
 }
 </script>
