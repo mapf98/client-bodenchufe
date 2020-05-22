@@ -29,7 +29,9 @@
           outlined
           v-for="category in categoriesFilter()"
           :key="category.category_id"
-          @click="productsByCategory(category.category_id, category.category_name)"
+          @click="
+            productsByCategory(category.category_id, category.category_name)
+          "
         >
           <v-list-item three-line>
             <v-list-item-content
@@ -89,13 +91,13 @@ export default class DashboardHomeCategories extends Vue {
         this.$store.dispatch("category/getCategories").then(() => {
           const categories = this.$store.getters["category/getCategories"];
           this.$store
-          .dispatch("category/setActualPath", {
-            categoryId: categoryId,
-            categories: categories,
-          })
-          .then(() => {
-            this.$router.push("/products");
-          });
+            .dispatch("category/setActualPath", {
+              categoryId: categoryId,
+              categories: categories,
+            })
+            .then(() => {
+              this.$router.push("/products");
+            });
         });
       });
   }

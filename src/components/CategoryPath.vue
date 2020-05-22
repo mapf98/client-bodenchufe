@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-row class="d-flex justify-center align-center grey pa-5 white--text">
+    <v-row
+      class="d-flex justify-center align-center grey pa-5 white--text"
+      v-if="productPath.type == `category`"
+    >
       <p
         v-for="category in categoryPaths"
         :key="category.categoryId"
@@ -11,7 +14,7 @@
       </p>
     </v-row>
     <v-row class="d-flex justify-center align-center indigo pa-5 white--text">
-      <p class="mb-0">{{ productPath }}</p>
+      <p class="mb-0">{{ productPath.pathName }}</p>
     </v-row>
     <v-row class="d-flex indigo">
       <v-divider class="amber"></v-divider>
@@ -26,7 +29,6 @@ import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class CategoryPath extends Vue {
-
   goToCategory(categoryId: number, categoryName: string) {
     this.$store
       .dispatch("product/getProductByCategory", {

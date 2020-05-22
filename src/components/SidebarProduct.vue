@@ -16,7 +16,7 @@ import FilterSideProducts from "./FilterSideProducts.vue";
   components: {
     CategoryPath,
     FilterSideProducts,
-  }
+  },
 })
 export default class SidebarProduct extends Vue {
   sheet = false;

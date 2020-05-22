@@ -100,8 +100,12 @@ export default {
       });
     },
     setActualPath: (context: any, payload: any) => {
-      const paths = getFinalPaths(payload.categoryId, payload.categories);
-      context.commit("setActualPath", paths);
+      if (payload.clear) {
+        context.commit("setActualPath", []);
+      } else {
+        const paths = getFinalPaths(payload.categoryId, payload.categories);
+        context.commit("setActualPath", paths);
+      }
     },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION

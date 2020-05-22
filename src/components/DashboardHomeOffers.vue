@@ -30,7 +30,7 @@
           outlined
           v-for="offer in OffersFilter()"
           :key="offer.offer_id"
-          @click="productsByCategory(offer.offer_id)"
+          @click="productsByOffer(offer.offer_id, offer.offer_rate)"
         >
           <p class="display-4 amber--text font-weight-bold text-center">
             {{ offer.offer_rate }}
@@ -76,9 +76,21 @@ export default class DashboardHomeOffers extends Vue {
     });
   }
 
-  productsByOffer(offer: number) {
-    //Busqueda de productos por offerta
-    console.log(offer);
+  productsByOffer(offerId: number, offerRate: string) {
+    this.$store
+      .dispatch("product/getProductByOffer", {
+        offerId: offerId,
+        name: offerRate,
+      })
+      .then(() => {
+        this.$store
+          .dispatch("category/setActualPath", {
+            clear: true,
+          })
+          .then(() => {
+            this.$router.push("/products");
+          });
+      });
   }
 
   get translator() {

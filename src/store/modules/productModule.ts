@@ -7,7 +7,7 @@ export default {
   state: {
     // Aqui van los atributos
     products: [],
-    productsPath: "",
+    productsPath: {},
     productDetail: {},
   },
   // -----------------------------------------------------------------
@@ -20,10 +20,10 @@ export default {
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
-    setProductByCategory(state: {}, products: []) {
+    setProducts(state: {}, products: []) {
       Vue.set(state, "products", products);
     },
-    setProductsPath(state: {}, path: []) {
+    setProductsPath(state: {}, path: {}) {
       Vue.set(state, "productsPath", path);
     },
     setProductDetail(state: {}, productDetail: {}) {
@@ -39,8 +39,33 @@ export default {
       await productService
         .getProductByCategory(payload.categoryId)
         .then((response: any) => {
-          context.commit("setProductByCategory", response.data.products);
-          context.commit("setProductsPath", payload.name);
+          context.commit("setProducts", response.data.products);
+          context.commit("setProductsPath", {
+            pathName: payload.name,
+            type: "category",
+          });
+        });
+    },
+    getProductByProvider: async (context: any, payload: any) => {
+      await productService
+        .getProductByProvider(payload.providerId)
+        .then((response: any) => {
+          context.commit("setProducts", response.data.products);
+          context.commit("setProductsPath", {
+            pathName: payload.name,
+            type: "provider",
+          });
+        });
+    },
+    getProductByOffer: async (context: any, payload: any) => {
+      await productService
+        .getProductByOffer(payload.offerId)
+        .then((response: any) => {
+          context.commit("setProducts", response.data.products);
+          context.commit("setProductsPath", {
+            pathName: payload.name,
+            type: "offer",
+          });
         });
     },
     getProductDetail: async (context: any, payload: any) => {

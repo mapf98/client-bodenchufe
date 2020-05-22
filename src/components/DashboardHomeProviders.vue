@@ -30,7 +30,9 @@
           outlined
           v-for="provider in providersFilter()"
           :key="provider.provider_id"
-          @click="productsByProvider(provider.provider_id)"
+          @click="
+            productsByProvider(provider.provider_id, provider.provider_name)
+          "
         >
           <v-list-item three-line>
             <v-list-item-content>
@@ -83,9 +85,21 @@ export default class DashboardHomeProviders extends Vue {
     });
   }
 
-  productsByProvider(provider: number) {
-    //Busqueda de productos por proveedor
-    console.log(provider);
+  productsByProvider(providerId: number, providerName: string) {
+    this.$store
+      .dispatch("product/getProductByProvider", {
+        providerId: providerId,
+        name: providerName,
+      })
+      .then(() => {
+        this.$store
+          .dispatch("category/setActualPath", {
+            clear: true,
+          })
+          .then(() => {
+            this.$router.push("/products");
+          });
+      });
   }
 
   providersFilter() {
