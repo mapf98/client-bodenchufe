@@ -170,7 +170,7 @@ export default class Checkout extends Vue {
   get paymentDetail() {
     return this.$store.getters["checkout/getPaymentDetail"];
   }
-  
+
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {

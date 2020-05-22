@@ -124,7 +124,7 @@ export default class CheckoutPayment extends Vue {
     this.$store
       .dispatch("checkout/payOrder", {
         couponRate: this.couponRate,
-        couponId: this.couponId,
+        couponId: this.couponId == -1 ? null : this.couponId,
         deliveryAddressId: this.addressId,
       })
       .then(() => {

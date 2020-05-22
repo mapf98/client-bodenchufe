@@ -20,7 +20,7 @@ export default {
   // -----------------------------------------------------------------
   actions: {
     getCouponsForOrder: async (context: any, payload: any) => {
-      const coupons = await couponService.getUserCouponsForOrder(150);
+      const coupons = await couponService.getUserCouponsForOrder(5150);
       context.commit("setUserCouponsForOrder", coupons.data.coupons);
     },
   },
