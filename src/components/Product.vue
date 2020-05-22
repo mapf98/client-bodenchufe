@@ -66,7 +66,7 @@ export default class Product extends Vue {
       .dispatch("product/getProductDetail", { postId: postId })
       .then(() => {
         this.loading = false;
-        console.log(this.$store.getters["product/getProductDetail"]);
+        //console.log(this.$store.getters["product/getProductDetail"]);
       });
   }
 

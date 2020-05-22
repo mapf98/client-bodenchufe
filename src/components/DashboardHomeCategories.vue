@@ -29,7 +29,7 @@
           outlined
           v-for="category in categoriesFilter()"
           :key="category.category_id"
-          @click="productsByCategory(category.category_id)"
+          @click="productsByCategory(category.category_id, category.category_name)"
         >
           <v-list-item three-line>
             <v-list-item-content
@@ -79,9 +79,25 @@ export default class DashboardHomeCategories extends Vue {
     });
   }
 
-  productsByCategory(category: number) {
-    //Busqueda de productos por categoría
-    console.log(category);
+  productsByCategory(categoryId: number, categoryName: string) {
+    this.$store
+      .dispatch("product/getProductByCategory", {
+        categoryId: categoryId,
+        name: categoryName,
+      })
+      .then(() => {
+        this.$store.dispatch("category/getCategories").then(() => {
+          const categories = this.$store.getters["category/getCategories"];
+          this.$store
+          .dispatch("category/setActualPath", {
+            categoryId: categoryId,
+            categories: categories,
+          })
+          .then(() => {
+            this.$router.push("/products");
+          });
+        });
+      });
   }
 
   categoriesFilter() {

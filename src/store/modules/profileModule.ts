@@ -28,7 +28,6 @@ async function upImage(userId: any, imageFile: any) {
         finalSnapshot = snapshot.state;
       },
       (error) => {
-        console.log(error);
         reject();
       },
       async () => {

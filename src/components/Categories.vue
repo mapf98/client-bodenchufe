@@ -47,7 +47,6 @@ export default class Categories extends Vue {
   getProductsByCategory() {
     if (this.selection[0] !== undefined) {
       const categoryId = this.selection[0].id;
-      console.log(this.selection);
       this.$store
         .dispatch("product/getProductByCategory", {
           categoryId: categoryId,
