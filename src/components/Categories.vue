@@ -12,11 +12,11 @@
           v-for="cat in categories"
           :key="cat.id"
           elevation="5"
+          width="250"
           class="ma-5 pa-5"
         >
           <p class="indigo--text title">{{ cat.name }}</p>
           <v-treeview
-            open-on-click
             selectable
             return-object
             open-all
@@ -47,6 +47,7 @@ export default class Categories extends Vue {
   getProductsByCategory() {
     if (this.selection[0] !== undefined) {
       const categoryId = this.selection[0].id;
+      console.log(this.selection);
       this.$store
         .dispatch("product/getProductByCategory", {
           categoryId: categoryId,

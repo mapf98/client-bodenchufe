@@ -18,7 +18,9 @@ import FilterSideProducts from "./FilterSideProducts.vue";
     FilterSideProducts,
   }
 })
-export default class SidebarProduct extends Vue {}
+export default class SidebarProduct extends Vue {
+  sheet = false;
+}
 </script>
 
 <style lang="scss"></style>

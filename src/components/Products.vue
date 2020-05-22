@@ -11,24 +11,25 @@
           v-bind:product="product"
         />
         <div v-if="products.length == 0 ? true : false" class="mt-12">
-          <p class="mb-0 mt-12 indigo--text title text-center">
-            {{ noResults }}
-          </p>
-          <v-icon
-            class="d-flex justify-center mt-6 mb-12"
-            color="indigo"
-            x-large
-          >
-            mdi-magnify-remove-outline
-          </v-icon>
-          <div
-            class="d-flex justify-center mt-6"
-            v-if="categoryPaths.length == 0"
-          >
-            <v-btn color="amber" @click="goToCategories()">
-              {{ toCategories }}
-            </v-btn>
-          </div>
+            <p class="mb-0 mt-12 indigo--text title text-center">
+              {{ noResults }}
+            </p>
+            <div class="d-flex justify-center mt-6 mb-12">
+              <v-icon
+                color="indigo"
+                x-large
+              >
+                mdi-magnify-remove-outline
+              </v-icon>
+            </div>
+            <div
+              class="d-flex justify-center mt-6"
+              v-if="categoryPaths.length == 0"
+            >
+              <v-btn color="amber" @click="goToCategories()">
+                {{ toCategories }}
+              </v-btn>
+            </div>
         </div>
       </v-col>
     </v-row>
@@ -59,6 +60,11 @@ export default class Products extends Vue {
   responsivePanel() {
     const { xs, sm } = this.$vuetify.breakpoint;
     return xs || sm ? 12 : 3;
+  }
+
+  responsivePanelProducts() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 9;
   }
 
   @Watch("translator")
