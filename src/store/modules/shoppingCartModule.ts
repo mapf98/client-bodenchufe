@@ -24,7 +24,7 @@ export default {
   },
   // -----------------------------------------------------------------
   actions: {
-    getShoppingCartProducts: async (context: any, payload: any) => {
+    getShoppingCartProducts: async (context: any) => {
       const products = await shoppingCartService.getShoppingCart();
       context.commit("setProductsBadge", products.data.results);
       context.commit("setShoppingCartProducts", products.data.shoppingCart);
@@ -41,6 +41,11 @@ export default {
       await shoppingCartService.updateProductStatus(payload.productId, {
         status: payload.status,
       });
+    },
+    addProduct: async (context: any, payload: any) => {
+      await shoppingCartService.addProduct(payload.postId, payload.quantity);
+      const products = await shoppingCartService.getShoppingCart();
+      context.commit("setProductsBadge", products.data.results);
     },
   },
 };

@@ -18,11 +18,13 @@
             >
           </v-list-item-content>
 
-          <v-list-item-avatar tile size="80" color="grey"></v-list-item-avatar>
+          <v-list-item-avatar tile size="80">
+            <v-img :src="product.product_photo"></v-img>
+          </v-list-item-avatar>
         </v-list-item>
 
         <v-card-actions>
-          <v-rating v-model="avg" readonly></v-rating>
+          <v-rating v-model="avg" readonly color="amber" background-color="amber lighten-1"></v-rating>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -41,23 +43,7 @@ export default class Product extends Vue {
   loading = false;
 
   mounted() {
-    this.translate();
     this.avg = Math.round(this.product.avg_qualification_stars);
-  }
-
-  @Watch("translator")
-  translate() {
-    this.translator.forEach((term: any) => {
-      switch (term.termName) {
-        // case "categoriesTitle": {
-        //   this.categoriesTitle = term.termTranslation;
-        //   break;
-        // }
-        default: {
-          break;
-        }
-      }
-    });
   }
 
   goToDetail(postId: number) {
@@ -66,12 +52,8 @@ export default class Product extends Vue {
       .dispatch("product/getProductDetail", { postId: postId })
       .then(() => {
         this.loading = false;
-        //console.log(this.$store.getters["product/getProductDetail"]);
+        this.$router.push("/detail");
       });
-  }
-
-  get translator() {
-    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>

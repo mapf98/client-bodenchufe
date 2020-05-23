@@ -16,6 +16,7 @@ import DeliveryAddress from "../views/DeliveryAddress.vue";
 import AllDeliveries from "../components/AllDeliveries.vue";
 import AddDelivery from "../components/AddDelivery.vue";
 import AfterPay from "../views/AfterPay.vue";
+import ProductDetail from "../components/ProductDetail.vue";
 import Coupons from "../views/Coupons.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
@@ -72,6 +73,16 @@ const routes: Array<RouteConfig> = [
         path: "/products",
         name: "Products",
         component: Products,
+        meta: {
+          requiresAuth: false,
+          hideBasicComponents: false,
+          applyBackground: false,
+        },
+      },
+      {
+        path: "/detail",
+        name: "Detail",
+        component: ProductDetail,
         meta: {
           requiresAuth: false,
           hideBasicComponents: false,
@@ -214,7 +225,10 @@ router.beforeEach((to, from, next) => {
   to.matched.some((route) => {
     if (route.meta.requiresAuth) {
       const yourToken: any = localStorage.getItem("token");
-      if (jwt.isExpired(yourToken)) {
+      const tokenData: any = jwt.decodeToken(yourToken);
+      const tokenExp = new Date(tokenData.exp);
+      const actualDate = Date.now();
+      if (tokenExp.getDate() > actualDate) {
         localStorage.clear();
         next({ path: "/login" });
       } else {
