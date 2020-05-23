@@ -30,16 +30,27 @@ import { Watch } from "vue-property-decorator";
 @Component({})
 export default class CategoryPath extends Vue {
   goToCategory(categoryId: number, categoryName: string) {
+    const categories = this.$store.getters["category/getCategories"];
     this.$store
-      .dispatch("product/getProductByCategory", {
+      .dispatch("category/setActualPath", {
         categoryId: categoryId,
-        name: categoryName.split(" ")[0],
+        categories: categories,
       })
       .then(() => {
-        this.$store.dispatch("category/setActualPath", {
-          categoryId: categoryId,
-          categories: this.$store.getters["category/getCategories"],
-        });
+        this.$store
+          .dispatch("category/getChildCategories", {
+            categoryId: categoryId,
+            categories: categories,
+          })
+          .then(() => {
+            this.$store.dispatch("product/getProductByCategory", {
+              categoryId: categoryId,
+              name: categoryName.split(" ")[0],
+              childCategories: this.$store.getters[
+                "category/getChildCategories"
+              ],
+            });
+          });
       });
   }
 

@@ -42,34 +42,8 @@ import DashboardHomeProviders from "../components/DashboardHomeProviders.vue";
 })
 export default class DashboardHome extends Vue {
   mounted() {
-    this.translate();
-  }
-
-  @Watch("translator")
-  translate() {
-    this.translator.forEach((term: any) => {
-      switch (term.termName) {
-        // case "navbarCategories": {
-        //   this.navbarCategories = term.termTranslation;
-        //   break;
-        // }
-        // case "navbarLogin": {
-        //   this.navbarLogin = term.termTranslation;
-        //   break;
-        // }
-        // case "navbarSingUp": {
-        //   this.navbarSingUp = term.termTranslation;
-        //   break;
-        // }
-        default: {
-          break;
-        }
-      }
-    });
-  }
-
-  get translator() {
-    return this.$store.getters["internationalization/getLanguageTexts"];
+    window.scrollTo(0,0);
+    this.$store.dispatch("shoppingCart/getShoppingCartProducts");
   }
 }
 </script>

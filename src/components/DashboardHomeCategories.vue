@@ -60,6 +60,7 @@ export default class DashboardHomeCategories extends Vue {
   mounted() {
     this.translate();
     this.$store.dispatch("home/getMainCategories");
+    this.$store.dispatch("category/getCategories");
   }
 
   @Watch("translator")
@@ -82,23 +83,31 @@ export default class DashboardHomeCategories extends Vue {
   }
 
   productsByCategory(categoryId: number, categoryName: string) {
+    const categories = this.$store.getters["category/getCategories"];
     this.$store
-      .dispatch("product/getProductByCategory", {
+      .dispatch("category/setActualPath", {
         categoryId: categoryId,
-        name: categoryName,
+        categories: categories,
       })
       .then(() => {
-        this.$store.dispatch("category/getCategories").then(() => {
-          const categories = this.$store.getters["category/getCategories"];
-          this.$store
-            .dispatch("category/setActualPath", {
-              categoryId: categoryId,
-              categories: categories,
-            })
-            .then(() => {
-              this.$router.push("/products");
-            });
-        });
+        this.$store
+          .dispatch("category/getChildCategories", {
+            categoryId: categoryId,
+            categories: categories,
+          })
+          .then(() => {
+            this.$store
+              .dispatch("product/getProductByCategory", {
+                categoryId: categoryId,
+                name: categoryName,
+                childCategories: this.$store.getters[
+                  "category/getChildCategories"
+                ],
+              })
+              .then(() => {
+                this.$router.push("/products");
+              });
+          });
       });
   }
 

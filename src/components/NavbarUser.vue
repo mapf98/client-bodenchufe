@@ -36,7 +36,7 @@
               :value="userProducts"
             >
               <v-icon color="indigo">
-                mdi-cart-minus
+                mdi-cart-outline
               </v-icon>
             </v-badge>
           </div>
@@ -69,9 +69,9 @@
             </template>
           </v-img>
         </v-avatar>
-        <v-badge color="amber darken-3" content="1" overlap>
+        <v-badge color="amber darken-3" :content="userProducts" :value="userProducts" overlap>
           <v-icon color="indigo" large>
-            mdi-cart-minus
+            mdi-cart-outline
           </v-icon>
         </v-badge>
       </div>

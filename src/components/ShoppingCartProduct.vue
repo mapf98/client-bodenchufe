@@ -21,7 +21,7 @@
       </v-col>
       <v-col class="col-3">
         <v-img
-          src="https://images.samsung.com/is/image/samsung/co-full-hd-j5290-un49j5290akxzl-frontblack-110509710?$PD_GALLERY_L_JPG$"
+          :src="product.product_photo"
           height="200"
           width="100%"
         ></v-img>
@@ -120,7 +120,13 @@ export default class ShoppingCart extends Vue {
   unit = "unit";
   inStock = "In stock:";
 
-  @Prop() product!: object;
+  @Prop() product!: any;
+
+  mounted(){
+    this.translate();
+    console.log(this.product);
+    window.scrollTo(0,0);
+  }
 
   @Watch("translator")
   translate() {

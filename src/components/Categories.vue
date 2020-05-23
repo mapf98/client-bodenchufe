@@ -18,8 +18,8 @@
           <p class="indigo--text title">{{ cat.name }}</p>
           <v-treeview
             selectable
-            return-object
             open-all
+            return-object
             expand-icon="mdi-chevron-down"
             on-icon="mdi-card-search-outline"
             off-icon="mdi-card-search-outline"
@@ -47,19 +47,31 @@ export default class Categories extends Vue {
   getProductsByCategory() {
     if (this.selection[0] !== undefined) {
       const categoryId = this.selection[0].id;
+      const categoryName = this.selection[0].name;
+      const categories = this.$store.getters["category/getCategories"];
       this.$store
-        .dispatch("product/getProductByCategory", {
+        .dispatch("category/setActualPath", {
           categoryId: categoryId,
-          name: this.selection[0].name,
+          categories: categories,
         })
         .then(() => {
           this.$store
-            .dispatch("category/setActualPath", {
+            .dispatch("category/getChildCategories", {
               categoryId: categoryId,
-              categories: this.$store.getters["category/getCategories"],
+              categories: categories,
             })
             .then(() => {
-              this.$router.push("/products");
+              this.$store
+                .dispatch("product/getProductByCategory", {
+                  categoryId: categoryId,
+                  name: categoryName,
+                  childCategories: this.$store.getters[
+                    "category/getChildCategories"
+                  ],
+                })
+                .then(() => {
+                  this.$router.push("/products");
+                });
             });
         });
     }
@@ -67,9 +79,7 @@ export default class Categories extends Vue {
 
   mounted() {
     this.translate();
-    this.$store.dispatch("category/getCategories").then(() => {
-      const categories = this.$store.getters["category/getCategories"];
-    });
+    this.$store.dispatch("category/getCategories");
   }
 
   @Watch("translator")

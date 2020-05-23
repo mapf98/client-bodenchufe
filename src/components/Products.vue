@@ -55,6 +55,7 @@ export default class Products extends Vue {
 
   mounted() {
     this.translate();
+    window.scrollTo(0,0);
   }
 
   responsivePanel() {
@@ -99,7 +100,6 @@ export default class Products extends Vue {
   }
 
   get categoryPaths() {
-    console.log(this.$store.getters["category/getActualPath"]);
     return this.$store.getters["category/getActualPath"];
   }
 }
