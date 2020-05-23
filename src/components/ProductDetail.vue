@@ -3,9 +3,9 @@
     <v-row class="d-flex justify-center align-center">
       <v-col :cols="detailCols()">
         <v-row class="d-flex justify-center align-center">
-          <v-col cols="2">
-            <div v-for="preview in productsUrlImages" :key="preview" class="my-1 preview d-flex justify-center" @click="showPhoto(preview)">
-              <v-img :src="preview" height="60" width="60" contain></v-img>
+          <v-col :cols="rowPreviews()" :class="rowPreview() == false ? ``:`d-flex justify-center align-center`">
+            <div v-for="preview in productsUrlImages" :key="preview" :class="rowPreview() == false ? `my-1 preview d-flex justify-center`:`mx-1 preview d-flex justify-center`" @click="showPhoto(preview)">
+              <v-img :src="preview" height="60" width="60" contain :class="preview ==  productPhoto? `selectedPreview`:``"></v-img>
             </div>
           </v-col>
           <v-col class="d-flex justify-center">
@@ -16,7 +16,7 @@
       <v-col :cols="detailCols()">
         <v-card outlined elevation="5">
           <div class="d-flex justify-center">
-            <p class="mb-0 title indigo--text my-2">{{productDetails.product_name}}</p>
+            <p class="mb-0 title indigo--text ma-2 text-center">{{productDetails.product_name}}</p>
           </div>
           <v-divider class="mx-12 amber"></v-divider>
           <v-row class="d-flex justify-center align-center mt-8" v-if="productDetails.offer_rate !== null">
@@ -34,7 +34,7 @@
             <p class="mb-0 mr-2 title amber--text font-weight-bold">{{avg}}.0</p>
             <v-rating v-model="avg" readonly dense small color="amber" background-color="amber lighten-1"></v-rating>
           </div>
-          <p class="mb-0 mt-6 text-center indigo--text font-weight-bold">Available quantity: {{productDetails.product_provider_available_quantity}}</p>
+          <p class="mb-0 mt-6 text-center indigo--text font-weight-bold">{{availableQuantity}} {{productDetails.product_provider_available_quantity}}</p>
           <v-divider class="indigo mt-3"></v-divider>
           <v-card-actions class="d-flex justify-space-around align-center py-3">
             <v-row>
@@ -62,6 +62,24 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col>
+        <v-card outlined>
+          <v-card-title>
+            <v-icon color="indigo" large>
+              mdi-storefront-outline
+            </v-icon>
+            <p class="mb-0 ml-2 headline">{{productDetails.provider_name}}</p>
+          </v-card-title>
+          <v-card-text>
+            <p class="mb-0 subtitle-1">{{productDetails.product_description}}</p>
+            <p class="mb-0 mt-6 subtitle-1">{{productLong}} {{productDetails.product_long}}</p>
+            <p class="mb-0 subtitle-1">{{productH}} {{productDetails.product_height}}</p>
+            <p class="mb-0 subtitle-1">{{productW}} {{productDetails.product_width}}</p>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -82,6 +100,10 @@ export default class ProductDetail extends Vue {
   quantity = 1;
   productsUrlImages: any = [];
   productPhoto = this.productDetails.product_photo;
+  availableQuantity = "Quantity available:";
+  productLong = "Length:";
+  productW = "Width:";
+  productH = "Heigth:";
 
   getProductImages(productId: number) {
     const storage = fs;
@@ -105,7 +127,7 @@ export default class ProductDetail extends Vue {
 
   mounted(){
     this.avg = Math.round(this.productDetails.avg_qualification_stars);
-    console.log(this.productsUrlImages);
+    this.translate();
     console.log(this.productDetails);
   }
 
@@ -130,6 +152,16 @@ export default class ProductDetail extends Vue {
     return xs || sm ? 12 : 6;
   }
 
+  rowPreview() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? true : false;
+  }
+
+  rowPreviews() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 2;
+  }
+
   totalCost(offerRate: string){
     if(offerRate !== null){
       const offer = offerRate.split('%')[0];
@@ -147,6 +179,37 @@ export default class ProductDetail extends Vue {
   get qualifications(){
     return this.$store.getters["product/getProductDetail"].qualifications;
   }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "availableQuantity": {
+          this.availableQuantity = term.termTranslation;
+          break;
+        }
+        case "productLong": {
+          this.productLong = term.termTranslation;
+          break;
+        }
+        case "productW": {
+          this.productW = term.termTranslation;
+          break;
+        }
+        case "productH": {
+          this.productH = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
+  }
 }
 </script>
 
@@ -158,5 +221,9 @@ export default class ProductDetail extends Vue {
 .preview{
   border: 1px solid gray;
   cursor: pointer;
+}
+
+.selectedPreview{
+  border: 2px solid #536DFE;
 }
 </style>
