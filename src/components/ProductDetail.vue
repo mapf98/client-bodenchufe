@@ -1,11 +1,26 @@
 <template>
   <v-container fluid>
+    <v-row>
+      <p
+        v-for="category in productPath"
+        :key="category.categoryId"
+        class="my-1 mx-1 paths text-center indigo--text"
+        @click="goToCategory(category.categoryId, category.categoryName)"
+      >
+        {{ category.categoryName }}
+      </p>
+      <p class="my-1 mx-1">> {{productDetails.product_name}}</p>
+    </v-row>
     <v-row class="d-flex justify-center align-center">
       <v-col :cols="detailCols()">
         <v-row class="d-flex justify-center align-center">
           <v-col :cols="rowPreviews()" :class="rowPreview() == false ? ``:`d-flex justify-center align-center`">
-            <div v-for="preview in productsUrlImages" :key="preview" :class="rowPreview() == false ? `my-1 preview d-flex justify-center`:`mx-1 preview d-flex justify-center`" @click="showPhoto(preview)">
-              <v-img :src="preview" height="60" width="60" contain :class="preview ==  productPhoto? `selectedPreview`:``"></v-img>
+            <div v-for="preview in productsUrlImages" 
+              :key="preview" 
+              :class="rowPreview() == false ? `my-1 preview d-flex justify-center ${preview ==  productPhoto? `selectedPreview`:``}`:`mx-1 preview d-flex justify-center ${preview ==  productPhoto? `selectedPreview`:``}`" 
+              @click="showPhoto(preview)"
+            >
+              <v-img :src="preview" height="60" width="60" contain></v-img>
             </div>
           </v-col>
           <v-col class="d-flex justify-center">
@@ -31,16 +46,16 @@
             </v-col>
           </v-row>
           <div class="d-flex justify-center align-center mt-8">
-            <p class="mb-0 mr-2 title amber--text font-weight-bold">{{avg}}.0</p>
+            <p class="mb-0 mr-2 title indigo--text font-weight-bold">{{avg}}.0</p>
             <v-rating v-model="avg" readonly dense small color="amber" background-color="amber lighten-1"></v-rating>
           </div>
           <p class="mb-0 mt-6 text-center indigo--text font-weight-bold">{{availableQuantity}} {{productDetails.product_provider_available_quantity}}</p>
           <v-divider class="indigo mt-3"></v-divider>
           <v-card-actions class="d-flex justify-space-around align-center py-3">
-            <v-row>
+            <v-row v-if="!added">
               <v-col class="d-flex justify-center align-center">
-                <v-btn color="amber darken-3" dark>
-                  Añadir al carrito
+                <v-btn color="amber darken-3" dark @click="addProduct">
+                  {{addToCart}}
                   <v-icon>
                     mdi-cart-arrow-down
                   </v-icon>
@@ -51,11 +66,19 @@
                   <v-btn icon color="indigo darken-3" @click="incrementQuantity">
                     <v-icon>mdi-cart-plus</v-icon>
                   </v-btn>
-                  <p class="mb-0 mx-2">Quantity: {{quantity}}</p>
+                  <p class="mb-0 mx-2">{{productQ}} {{quantity}}</p>
                   <v-btn icon color="indigo darken-3" @click="decrementQuantity">
                     <v-icon>mdi-cart-minus</v-icon>
                   </v-btn>
                 </div>
+              </v-col>
+            </v-row>
+            <v-row v-if="added">
+              <v-col class="d-flex justify-center">
+                <v-btn color="indigo" dark @click="goToShoppingCart">
+                  {{seeSC}}
+                  <v-icon class="ml-2">mdi-cart-outline</v-icon>
+                </v-btn>
               </v-col>
             </v-row>
           </v-card-actions>
@@ -80,6 +103,39 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col>
+        <div class="d-flex justify-start align-center mt-8">
+          <p class="mb-0 display-3 mr-2 indigo--text">{{avg}}.0</p>
+          <v-rating v-model="avg" readonly dense color="amber" background-color="amber lighten-1"></v-rating>
+        </div>
+        <div class="d-flex mt-1 justify-start align-center">
+          <p class="mb-0 ml-2 subtitle-1">{{qualifications.length}} {{detailQualification}}</p>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-card
+          outlined
+          dark
+          class="my-3 pa-3 indigo"
+          v-for="qualification in qualifications"
+          :key="qualification.qualification_id"
+        >
+          <p class="mb-0 ml-1">{{qualification.qualification_commentary}}</p>
+          <v-rating v-model="qualification.qualification_stars" readonly dense color="amber" background-color="amber lighten-1" small></v-rating>
+        </v-card>
+        <div v-if="qualifications.length == 0">
+          <p class="mb-0 title text-center mt-2">{{detailOpinions}}</p>
+          <div class="d-flex justify-center mt-2">
+            <v-icon large color="indigo">
+              mdi-information-outline
+            </v-icon>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -98,12 +154,21 @@ import { fs } from "../firebase";
 export default class ProductDetail extends Vue {
   avg = 0;
   quantity = 1;
+  added = false;
+  productQ = "Quantity:";
   productsUrlImages: any = [];
+  productPath: any = [];
   productPhoto = this.productDetails.product_photo;
   availableQuantity = "Quantity available:";
   productLong = "Length:";
   productW = "Width:";
   productH = "Heigth:";
+  detailQualification = "opinions";
+  detailOpinions = "No opinions registered";
+  addToCart = "Add to shopping cart";
+  seeSC = "Go to shopping cart";
+  productsOnShoppingCart: any = [];
+
 
   getProductImages(productId: number) {
     const storage = fs;
@@ -126,13 +191,51 @@ export default class ProductDetail extends Vue {
   }
 
   mounted(){
+    this.$store.dispatch("shoppingCart/getShoppingCartProducts").then(()=>{
+      this.productsOnShoppingCart = this.$store.getters["shoppingCart/getProducts"];
+      this.productsOnShoppingCart.forEach((product: any) => {
+        if(product.fk_product_provider_id == this.productDetails.post_id){
+          this.added = true;
+        }
+      });
+    });
     this.avg = Math.round(this.productDetails.avg_qualification_stars);
     this.translate();
-    console.log(this.productDetails);
   }
 
   created(){
     this.getProductImages(this.productDetails.product_id);
+    const categories = this.$store.getters["category/getCategories"];
+    this.$store
+        .dispatch("category/setActualPath", {
+          categoryId: this.productDetails.category_id,
+          categories: categories,
+        }).then(()=>{
+          this.productPath = this.$store.getters["category/getActualPath"];
+        });
+  }
+
+  goToCategory(categoryId: number, categoryName: string) {
+    const categories = this.$store.getters["category/getCategories"];
+    this.$store
+      .dispatch("category/setActualPath", {
+        categoryId: categoryId,
+        categories: categories,
+      }).then(()=>{
+        this.$store.dispatch("category/getChildCategories", {
+          categoryId: categoryId,
+          categories: categories,
+        }).then(()=>{
+          this.$store
+          .dispatch("product/getProductByCategory", {
+            categoryId: categoryId,
+            name: categoryName.split(" ")[0],
+            childCategories: this.$store.getters["category/getChildCategories"],
+          }).then(()=>{
+            this.$router.push("/products");
+          });
+        });
+      });
   }
 
   incrementQuantity(){
@@ -170,7 +273,17 @@ export default class ProductDetail extends Vue {
     }else{
       return this.productDetails.product_provider_price;
     }
-  } 
+  }
+  
+  addProduct(){
+    this.$store.dispatch("shoppingCart/addProduct", {postId: this.productDetails.post_id, quantity: this.quantity}).then(()=>{
+      this.added = true;
+    });
+  }
+
+  goToShoppingCart(){
+    this.$router.push("/shoppingCart");
+  }
 
   get productDetails(){
     return this.$store.getters["product/getProductDetail"].details[0];
@@ -200,6 +313,26 @@ export default class ProductDetail extends Vue {
           this.productH = term.termTranslation;
           break;
         }
+        case "detailQualification": {
+          this.detailQualification = term.termTranslation;
+          break;
+        }
+        case "detailOpinions": {
+          this.detailOpinions = term.termTranslation;
+          break;
+        }
+        case "addToCart": {
+          this.addToCart = term.termTranslation;
+          break;
+        }
+        case "productQ": {
+          this.productQ = term.termTranslation;
+          break;
+        }
+        case "seeSC": {
+          this.seeSC = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -224,6 +357,14 @@ export default class ProductDetail extends Vue {
 }
 
 .selectedPreview{
-  border: 2px solid #536DFE;
+  border: 1px solid #536DFE;
+}
+
+.paths {
+  cursor: pointer;
+}
+
+.paths:hover {
+  text-decoration: underline;
 }
 </style>
