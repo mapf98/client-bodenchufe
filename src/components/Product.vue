@@ -24,7 +24,12 @@
         </v-list-item>
 
         <v-card-actions>
-          <v-rating v-model="avg" readonly color="amber" background-color="amber lighten-1"></v-rating>
+          <v-rating
+            v-model="avg"
+            readonly
+            color="amber"
+            background-color="amber lighten-1"
+          ></v-rating>
         </v-card-actions>
       </v-card>
     </v-col>

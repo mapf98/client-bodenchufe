@@ -31,15 +31,17 @@ export default {
     });
   },
   addProduct(postId: any, quantity: any) {
-    return API_URL.post(`/user/shoppingCart`, 
-    {
-      "fk_product_provider_id": postId, 
-      "product_provider_order_quantity": quantity
-    }, 
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-    });
+    return API_URL.post(
+      `/user/shoppingCart`,
+      {
+        fk_product_provider_id: postId,
+        product_provider_order_quantity: quantity,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
   },
 };

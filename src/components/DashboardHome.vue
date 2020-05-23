@@ -42,7 +42,7 @@ import DashboardHomeProviders from "../components/DashboardHomeProviders.vue";
 })
 export default class DashboardHome extends Vue {
   mounted() {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     this.$store.dispatch("shoppingCart/getShoppingCartProducts");
   }
 }
