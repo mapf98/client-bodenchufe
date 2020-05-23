@@ -17,6 +17,7 @@ import AllDeliveries from "../components/AllDeliveries.vue";
 import AddDelivery from "../components/AddDelivery.vue";
 import AfterPay from "../views/AfterPay.vue";
 import ProductDetail from "../components/ProductDetail.vue";
+import Coupons from "../views/Coupons.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -199,6 +200,16 @@ const routes: Array<RouteConfig> = [
     meta: {
       requiresAuth: true,
       hideBasicComponents: true,
+      applyBackground: false,
+    },
+  },
+  {
+    path: "/coupons",
+    name: "Coupons",
+    component: Coupons,
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
       applyBackground: false,
     },
   },

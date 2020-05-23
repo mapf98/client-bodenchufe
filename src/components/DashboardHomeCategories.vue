@@ -88,20 +88,26 @@ export default class DashboardHomeCategories extends Vue {
       .dispatch("category/setActualPath", {
         categoryId: categoryId,
         categories: categories,
-      }).then(()=>{
-        this.$store.dispatch("category/getChildCategories", {
-          categoryId: categoryId,
-          categories: categories,
-        }).then(()=>{
-          this.$store
-          .dispatch("product/getProductByCategory", {
+      })
+      .then(() => {
+        this.$store
+          .dispatch("category/getChildCategories", {
             categoryId: categoryId,
-            name: categoryName,
-            childCategories: this.$store.getters["category/getChildCategories"],
-          }).then(()=>{
-            this.$router.push("/products");
+            categories: categories,
+          })
+          .then(() => {
+            this.$store
+              .dispatch("product/getProductByCategory", {
+                categoryId: categoryId,
+                name: categoryName,
+                childCategories: this.$store.getters[
+                  "category/getChildCategories"
+                ],
+              })
+              .then(() => {
+                this.$router.push("/products");
+              });
           });
-        });
       });
   }
 
