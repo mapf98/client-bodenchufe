@@ -36,7 +36,7 @@
               :value="userProducts"
             >
               <v-icon color="indigo">
-                mdi-cart-minus
+                mdi-cart-outline
               </v-icon>
             </v-badge>
           </div>
