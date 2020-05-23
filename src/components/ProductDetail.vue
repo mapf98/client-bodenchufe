@@ -191,16 +191,19 @@ export default class ProductDetail extends Vue {
   }
 
   mounted(){
-    this.$store.dispatch("shoppingCart/getShoppingCartProducts").then(()=>{
-      this.productsOnShoppingCart = this.$store.getters["shoppingCart/getProducts"];
-      this.productsOnShoppingCart.forEach((product: any) => {
-        if(product.fk_product_provider_id == this.productDetails.post_id){
-          this.added = true;
-        }
+    if(localStorage.getItem("token") !== null){
+      this.$store.dispatch("shoppingCart/getShoppingCartProducts").then(()=>{
+        this.productsOnShoppingCart = this.$store.getters["shoppingCart/getProducts"];
+        this.productsOnShoppingCart.forEach((product: any) => {
+          if(product.fk_product_provider_id == this.productDetails.post_id){
+            this.added = true;
+          }
+        });
       });
-    });
+    }
     this.avg = Math.round(this.productDetails.avg_qualification_stars);
     this.translate();
+    window.scrollTo(0,0);
   }
 
   created(){
@@ -276,9 +279,13 @@ export default class ProductDetail extends Vue {
   }
   
   addProduct(){
-    this.$store.dispatch("shoppingCart/addProduct", {postId: this.productDetails.post_id, quantity: this.quantity}).then(()=>{
-      this.added = true;
-    });
+    if(localStorage.getItem("token") !== null){
+      this.$store.dispatch("shoppingCart/addProduct", {postId: this.productDetails.post_id, quantity: this.quantity}).then(()=>{
+        this.added = true;
+      });
+    }else{
+      this.$router.push("/login");
+    }
   }
 
   goToShoppingCart(){

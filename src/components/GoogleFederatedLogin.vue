@@ -60,13 +60,21 @@ export default class GoogleFederatedLogin extends Vue {
             this.$store
               .dispatch("internationalization/setUserLanguage")
               .then(() => {
-                this.$router.push("/home");
+                if(this.productDetails.details !== undefined){
+                  this.$router.push("/detail");
+                }else{
+                  this.$router.push("/home");
+                }
               });
           } else {
             this.$emit("showErrors", this.errors);
           }
         });
     }
+  }
+
+  get productDetails(){
+    return this.$store.getters["product/getProductDetail"];
   }
 
   mounted() {
