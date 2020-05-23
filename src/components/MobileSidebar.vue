@@ -100,6 +100,10 @@ export default class MobileSidebar extends Vue {
     this.$router.push("/categories");
   }
 
+  goToCoupons() {
+    this.$router.push("/coupons");
+  }
+
   mounted() {
     this.showUser = localStorage.getItem("userData") == null ? false : true;
     this.translate();
