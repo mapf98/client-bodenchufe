@@ -112,18 +112,22 @@ export default class FilterSideProducts extends Vue {
       .dispatch("category/setActualPath", {
         categoryId: categoryId,
         categories: categories,
-      }).then(()=>{
-        this.$store.dispatch("category/getChildCategories", {
-          categoryId: categoryId,
-          categories: categories,
-        }).then(()=>{
-          this.$store
-          .dispatch("product/getProductByCategory", {
+      })
+      .then(() => {
+        this.$store
+          .dispatch("category/getChildCategories", {
             categoryId: categoryId,
-            name: categoryName,
-            childCategories: this.$store.getters["category/getChildCategories"],
+            categories: categories,
+          })
+          .then(() => {
+            this.$store.dispatch("product/getProductByCategory", {
+              categoryId: categoryId,
+              name: categoryName,
+              childCategories: this.$store.getters[
+                "category/getChildCategories"
+              ],
+            });
           });
-        });
       });
   }
 

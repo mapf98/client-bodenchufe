@@ -54,9 +54,12 @@ function getChildCategories(id: number, categories: any[]) {
     if (id == categories[index].category_id) {
       childCategories = categories[index].category_child;
       index = categories.length;
-    }else{
-      childCategories = getChildCategories(id, categories[index].category_child);
-      if(childCategories.length > 0){
+    } else {
+      childCategories = getChildCategories(
+        id,
+        categories[index].category_child
+      );
+      if (childCategories.length > 0) {
         index = categories.length;
       }
     }
@@ -129,7 +132,10 @@ export default {
       }
     },
     getChildCategories: async (context: any, payload: any) => {
-      const childCategories = getChildCategories(payload.categoryId, payload.categories);
+      const childCategories = getChildCategories(
+        payload.categoryId,
+        payload.categories
+      );
       context.commit("setChildCategories", childCategories);
     },
     // update: (context, bankData) => {

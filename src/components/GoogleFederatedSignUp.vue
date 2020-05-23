@@ -71,11 +71,19 @@ export default class GoogleFederatedSignUp extends Vue {
             this.$store
               .dispatch("internationalization/setUserLanguage")
               .then(() => {
-                this.$router.push("/home");
+                if(this.productDetails.details !== undefined){
+                  this.$router.push("/detail");
+                }else{
+                  this.$router.push("/home");
+                }
               });
           }
         });
     }
+  }
+
+  get productDetails(){
+    return this.$store.getters["product/getProductDetail"];
   }
 
   mounted() {
