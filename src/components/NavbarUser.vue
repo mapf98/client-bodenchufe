@@ -52,6 +52,12 @@
               <p class="mb-0">{{ item.title }}</p></v-list-item-title
             >
           </v-list-item>
+          <v-list-item @click="logOut">
+            <v-list-item-title class="d-flex justify-start align-center">
+              <v-icon class="mr-1" color="error">mdi-logout</v-icon>
+              <p class="mb-0 error--text">Log out</p>
+            </v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </div>
@@ -94,6 +100,12 @@
             <p class="mb-0">{{ item.title }}</p></v-list-item-title
           >
         </v-list-item>
+        <v-list-item @click="logOut">
+          <v-list-item-title class="d-flex justify-start align-center">
+            <v-icon class="mr-1" color="error">mdi-logout</v-icon>
+            <p class="mb-0 error--text">Log out</p>
+          </v-list-item-title>
+        </v-list-item>
       </v-list>
     </div>
   </div>
@@ -135,9 +147,13 @@ export default class NavbarUser extends Vue {
     this.$router.push(route);
   }
 
-  // created(){
-  //   this.$store.dispatch("shoppingCart/getShoppingCartProducts");
-  // }
+  logOut() {
+    localStorage.clear();
+    this.$router.currentRoute.path != "/home"
+      ? this.$router.push("/home")
+      : false;
+    location.reload();
+  }
 
   mounted() {
     this.$store;
