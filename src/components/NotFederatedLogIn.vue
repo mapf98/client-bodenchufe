@@ -103,8 +103,8 @@ export default class NotFederatedLogin extends Vue {
           if (this.errors.length == 0) {
             this.$store
               .dispatch("internationalization/setUserLanguage")
-              .then(() => {;
-                if(this.productDetails.details !== undefined){
+              .then(() => {
+                if (this.productDetails.details !== undefined) {
                   this.$router.push("/detail");
                 }else{
                   this.$router.push("/home");
