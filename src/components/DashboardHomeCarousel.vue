@@ -12,7 +12,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
 
 @Component({
   components: {},

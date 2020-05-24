@@ -20,11 +20,7 @@
         </v-btn>
       </v-col>
       <v-col class="col-3">
-        <v-img
-          :src="product.product_photo"
-          height="200"
-          width="100%"
-        ></v-img>
+        <v-img :src="product.product_photo" height="200" width="100%"></v-img>
       </v-col>
       <v-col class="col-5">
         <v-card-title class="display-1">{{
@@ -122,10 +118,10 @@ export default class ShoppingCart extends Vue {
 
   @Prop() product!: any;
 
-  mounted(){
+  mounted() {
     this.translate();
     console.log(this.product);
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }
 
   @Watch("translator")

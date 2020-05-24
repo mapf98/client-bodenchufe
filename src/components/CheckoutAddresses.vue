@@ -65,7 +65,7 @@ export default class CheckoutAddresses extends Vue {
   select = "Select";
   isAddressSelected = false;
 
-  @Prop() address!: object;
+  @Prop() address!: any;
   @Prop() addressIdSelected!: number;
 
   setAddress(id: number) {
