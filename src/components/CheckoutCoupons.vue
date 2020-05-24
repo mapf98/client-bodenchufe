@@ -33,7 +33,7 @@ export default class CheckoutCoupons extends Vue {
   select = "Select";
   isCouponSelected = false;
 
-  @Prop() coupon!: object;
+  @Prop() coupon!: any;
   @Prop() couponIdSelected!: number;
 
   setCoupon(id: number, rate: string) {

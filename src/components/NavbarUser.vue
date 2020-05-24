@@ -69,7 +69,12 @@
             </template>
           </v-img>
         </v-avatar>
-        <v-badge color="amber darken-3" :content="userProducts" :value="userProducts" overlap>
+        <v-badge
+          color="amber darken-3"
+          :content="userProducts"
+          :value="userProducts"
+          overlap
+        >
           <v-icon color="indigo" large>
             mdi-cart-outline
           </v-icon>

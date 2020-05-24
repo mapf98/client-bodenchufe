@@ -20,13 +20,13 @@ export default {
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
-    setMainProviders(state: {}, providers: []) {
+    setMainProviders(state: any, providers: []) {
       Vue.set(state, "providers", providers);
     },
-    setMainCategories(state: {}, categories: []) {
+    setMainCategories(state: any, categories: []) {
       Vue.set(state, "categories", categories);
     },
-    setOffers(state: {}, offers: []) {
+    setOffers(state: any, offers: []) {
       Vue.set(state, "offers", offers);
     },
   },

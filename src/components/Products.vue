@@ -55,7 +55,7 @@ export default class Products extends Vue {
 
   mounted() {
     this.translate();
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }
 
   responsivePanel() {
