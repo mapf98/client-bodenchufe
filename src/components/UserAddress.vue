@@ -153,7 +153,7 @@ export default class UserAddress extends Vue {
 
   edit = false;
   update = false;
-  allFields = false;
+  allFields = true;
   primaryLineText = "Primary Line";
   secondaryLineText = "Secondary Line";
   cityText = "City";
@@ -194,8 +194,7 @@ export default class UserAddress extends Vue {
   @Watch("address.delivery_address_zip_code")
   disableChangeInfoButton() {
     if (
-      this.address.delivery_address_zip_code.toString().length > 5 ||
-      this.address.delivery_address_zip_code.toString().length < 5 ||
+      this.address.delivery_address_zip_code.toString().length != 5 ||
       this.address.delivery_address_state.length == 0 ||
       this.address.delivery_address_city.length == 0 ||
       this.address.delivery_address_primary_line.length == 0
