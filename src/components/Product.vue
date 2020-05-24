@@ -18,7 +18,7 @@
             >
           </v-list-item-content>
 
-          <v-list-item-avatar tile size="80">
+          <v-list-item-avatar tile size="130">
             <v-img :src="product.product_photo"></v-img>
           </v-list-item-avatar>
         </v-list-item>
