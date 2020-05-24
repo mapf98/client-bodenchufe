@@ -179,11 +179,9 @@ export default class UserAddress extends Vue {
   mounted() {
     this.translate();
     if (this.userAddress.delivery_address_aditional_info == "null") {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       this.userAddress.delivery_address_aditional_info = "";
     }
     if (this.userAddress.delivery_address_secondary_line == "null") {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       this.userAddress.delivery_address_secondary_line = "";
     }
   }

@@ -26,7 +26,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
 import DashboardHomeCarousel from "../components/DashboardHomeCarousel.vue";
 import DashboardHomeCategories from "../components/DashboardHomeCategories.vue";
 import DashboardHomeOffers from "../components/DashboardHomeOffers.vue";
@@ -42,7 +41,7 @@ import DashboardHomeProviders from "../components/DashboardHomeProviders.vue";
 })
 export default class DashboardHome extends Vue {
   mounted() {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     this.$store.dispatch("shoppingCart/getShoppingCartProducts");
   }
 }

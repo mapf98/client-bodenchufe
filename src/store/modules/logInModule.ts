@@ -19,10 +19,10 @@ export default {
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
-    setUser(state: {}, user: any) {
+    setUser(state: any, user: any) {
       Vue.set(state, "user", user);
     },
-    setStatus(state: {}, status: any) {
+    setStatus(state: any, status: any) {
       Vue.set(state, "status", status);
     },
   },

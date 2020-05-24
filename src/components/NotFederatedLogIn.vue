@@ -78,7 +78,7 @@ export default class NotFederatedLogin extends Vue {
     if (this.errors.length == 0) {
       this.$store
         .dispatch("logIn/notFederatedLogIn", { user: this.user })
-        .then((res: any) => {
+        .then(() => {
           if (
             this.getStatus.validated == false &&
             this.getStatus.blocked == false &&
@@ -103,10 +103,10 @@ export default class NotFederatedLogin extends Vue {
           if (this.errors.length == 0) {
             this.$store
               .dispatch("internationalization/setUserLanguage")
-              .then(() => {;
-                if(this.productDetails.details !== undefined){
+              .then(() => {
+                if (this.productDetails.details !== undefined) {
                   this.$router.push("/detail");
-                }else{
+                } else {
                   this.$router.push("/home");
                 }
               });
@@ -122,7 +122,7 @@ export default class NotFederatedLogin extends Vue {
     this.translate();
   }
 
-  get productDetails(){
+  get productDetails() {
     return this.$store.getters["product/getProductDetail"];
   }
 
