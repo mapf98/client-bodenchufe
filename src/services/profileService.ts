@@ -23,10 +23,14 @@ export default {
     });
   },
   updateLanguage(languageName: any) {
-    return API_URL.put(`user/language`, {languageName: languageName}, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    return API_URL.put(
+      `user/language`,
+      { languageName: languageName },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
   },
 };

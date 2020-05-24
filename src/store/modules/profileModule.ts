@@ -113,11 +113,11 @@ export default {
       await profileService.updateLanguage(payload.languageName).then((res) => {
         if (res.data.updated == true) {
           const userStorageString: any = localStorage.getItem("userData");
-          const userStorage = JSON.parse(userStorageString)
+          const userStorage = JSON.parse(userStorageString);
           userStorage.userLanguage = res.data.language;
           localStorage.setItem("userData", JSON.stringify(userStorage));
         }
-      })
-    }
+      });
+    },
   },
 };
