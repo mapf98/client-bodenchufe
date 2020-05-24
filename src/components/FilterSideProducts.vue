@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row
-      class="d-flex justify-start indigo pa-5 white--text"
+      class="d-flex justify-start indigo px-5 py-2 white--text"
       v-if="filterCategory.categoryChild.length != 0"
     >
       <v-col>
@@ -22,6 +22,75 @@
           >
             {{ otherCategories }}
           </p>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
+      <v-col>
+        <div>
+          <p class="mb-0 title">Price</p>
+          <div class="d-flex justify-start align-center">
+            <v-icon color="white" class="ml-6 mr-2">
+              mdi-sort-descending
+            </v-icon>
+            <p class="mb-0 body-2 paths" @click="priceDESC">
+              Expensive to cheap
+            </p>
+          </div>
+          <div class="d-flex justify-start align-center">
+            <v-icon color="white" class="ml-6 mr-2">
+              mdi-sort-ascending
+            </v-icon>
+            <p class="mb-0 body-2 paths" @click="priceASCE">
+              Cheap to expensive
+            </p>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
+      <v-col>
+        <div>
+          <p class="mb-0 title">Qualification</p>
+          <div class="d-flex justify-start align-center">
+            <v-icon color="white" class="ml-6 mr-2">
+              mdi-sort-descending
+            </v-icon>
+            <p class="mb-0 body-2 paths" @click="qualificationDESC">
+              5 stars to 0 stars
+            </p>
+          </div>
+          <div class="d-flex justify-start align-center">
+            <v-icon color="white" class="ml-6 mr-2">
+              mdi-sort-ascending
+            </v-icon>
+            <p class="mb-0 body-2 paths" @click="qualificationASCE">
+              0 stars to 5 stars
+            </p>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
+      <v-col>
+        <div>
+          <p class="mb-0 title">Alphabetic</p>
+          <div class="d-flex justify-start align-center">
+            <v-icon color="white" class="ml-6 mr-2">
+              mdi-sort-descending
+            </v-icon>
+            <p class="mb-0 body-2 paths" @click="alphabeticDESC">
+              A to Z
+            </p>
+          </div>
+          <div class="d-flex justify-start align-center">
+            <v-icon color="white" class="ml-6 mr-2">
+              mdi-sort-ascending
+            </v-icon>
+            <p class="mb-0 body-2 paths" @click="alphabeticASCE">
+              Z to A
+            </p>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -84,6 +153,92 @@ export default class FilterSideProducts extends Vue {
   otherCategories = "Other categories";
   sheet = false;
 
+  priceDESC() {
+    const items = this.products;
+    items.sort(function (a: any, b: any) {
+      if (a.product_provider_price < b.product_provider_price) {
+        return 1;
+      }
+      if (a.product_provider_price > b.product_provider_price) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  priceASCE() {
+    const items = this.products;
+    items.sort(function (a: any, b: any) {
+      if (a.product_provider_price > b.product_provider_price) {
+        return 1;
+      }
+      if (a.product_provider_price < b.product_provider_price) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  qualificationDESC() {
+    const items = this.products;
+    items.sort(function (a: any, b: any) {
+      let valueA =
+        a.avg_qualification_stars == null ? 0 : a.avg_qualification_stars;
+      let valueB =
+        b.avg_qualification_stars == null ? 0 : b.avg_qualification_stars;
+      if (valueA < valueB) {
+        return 1;
+      }
+      if (valueA > valueB) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  qualificationASCE() {
+    const items = this.products;
+    items.sort(function (a: any, b: any) {
+      let valueA =
+        a.avg_qualification_stars == null ? 0 : a.avg_qualification_stars;
+      let valueB =
+        b.avg_qualification_stars == null ? 0 : b.avg_qualification_stars;
+      if (valueA > valueB) {
+        return 1;
+      }
+      if (valueA < valueB) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  alphabeticDESC() {
+    const items = this.products;
+    items.sort(function (a: any, b: any) {
+      if (a.product_name > b.product_name) {
+        return 1;
+      }
+      if (a.product_name < b.product_name) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  alphabeticASCE() {
+    const items = this.products;
+    items.sort(function (a: any, b: any) {
+      if (a.product_name < b.product_name) {
+        return 1;
+      }
+      if (a.product_name > b.product_name) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
   responsivePanel() {
     const { xs, sm } = this.$vuetify.breakpoint;
     return xs || sm ? true : false;
@@ -133,6 +288,7 @@ export default class FilterSideProducts extends Vue {
 
   mounted() {
     this.translate();
+    console.log(this.products);
   }
 
   @Watch("translator")
