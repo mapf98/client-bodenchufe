@@ -26,7 +26,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
 import DashboardHomeCarousel from "../components/DashboardHomeCarousel.vue";
 import DashboardHomeCategories from "../components/DashboardHomeCategories.vue";
 import DashboardHomeOffers from "../components/DashboardHomeOffers.vue";

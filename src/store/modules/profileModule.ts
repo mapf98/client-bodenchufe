@@ -8,9 +8,15 @@ async function deleteImage(imageUrl: any) {
     const storage = fs;
     const storageUrlPath = storage.refFromURL(imageUrl);
     const storageRef = storage.ref(storageUrlPath.fullPath);
-    storageRef.delete().catch((error) => {
-      return error;
-    });
+    storageRef
+      .delete()
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        reject();
+        return error;
+      });
   });
 }
 
@@ -28,7 +34,7 @@ async function upImage(userId: any, imageFile: any) {
         finalSnapshot = snapshot.state;
       },
       (error) => {
-        reject();
+        reject(error);
       },
       async () => {
         await uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
@@ -62,8 +68,8 @@ export default {
   },
   // -----------------------------------------------------------------
   actions: {
-    userData: async (context: any, payload: any) => {
-      const user = await profileService.getUserById().then((response: any) => {
+    userData: async (context: any) => {
+      await profileService.getUserById().then((response: any) => {
         context.commit("setUserData", response.data.user[0]);
       });
     },

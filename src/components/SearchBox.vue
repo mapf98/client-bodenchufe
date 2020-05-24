@@ -28,7 +28,7 @@ export default class SearchBox extends Vue {
     { name: "New York", abbr: "NY", id: 5 },
   ];
 
-  customFilter(item: any, queryText: any, itemText: any) {
+  customFilter(item: any, queryText: any) {
     const textOne = item.name.toLowerCase();
     const textTwo = item.abbr.toLowerCase();
     const searchText = queryText.toLowerCase();

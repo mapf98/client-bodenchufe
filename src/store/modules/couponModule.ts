@@ -24,11 +24,15 @@ export default {
   },
   // -----------------------------------------------------------------
   actions: {
-    getCouponsForOrder: async (context: any, payload: any) => {
+    getCouponsForOrder: async (context: any) => {
       const coupons = await couponService.getUserCouponsForOrder(5150);
       context.commit("setUserCouponsForOrder", coupons.data.coupons);
     },
+<<<<<<< HEAD
     getUserCoupon: async (context: any, payload: any) => {
+=======
+    getUserCoupon: async (context: any) => {
+>>>>>>> 7697e52d7f2d3a6ec04373a1f524120bdc6d6e10
       await couponService.getUserCoupons().then((res: any) => {
         context.commit("setUserCoupons", res.data.coupons);
       });

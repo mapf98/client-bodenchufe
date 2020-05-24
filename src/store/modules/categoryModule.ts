@@ -103,13 +103,13 @@ export default {
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
-    setCategories(state: {}, categories: []) {
+    setCategories(state: any, categories: []) {
       Vue.set(state, "categories", categories);
     },
-    setActualPath(state: {}, actualPath: []) {
+    setActualPath(state: any, actualPath: []) {
       Vue.set(state, "actualPath", actualPath);
     },
-    setChildCategories(state: {}, childCategories: []) {
+    setChildCategories(state: any, childCategories: []) {
       Vue.set(state, "childCategories", childCategories);
     },
   },

@@ -44,13 +44,13 @@ export default {
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
-    setProducts(state: {}, products: []) {
+    setProducts(state: any, products: []) {
       Vue.set(state, "products", products);
     },
-    setProductsPath(state: {}, path: {}) {
+    setProductsPath(state: any, path: any) {
       Vue.set(state, "productsPath", path);
     },
-    setProductDetail(state: {}, productDetail: {}) {
+    setProductDetail(state: any, productDetail: any) {
       Vue.set(state, "productDetail", productDetail);
     },
   },

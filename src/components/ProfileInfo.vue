@@ -207,7 +207,7 @@ export default class ProfileInfo extends Vue {
 
   userData: any;
   userDataString: any;
-  userDataProp!: object;
+  userDataProp!: any;
   userUrlPhoto = "";
   newPhoto: any;
   getdate: any = "";
@@ -391,7 +391,6 @@ export default class ProfileInfo extends Vue {
     this.$store.dispatch("profile/userData").then(() => {
       this.user = this.getUser;
       this.getdate = this.user.user_birthdate.split("T");
-      // eslint-disable-next-line @typescript-eslint/camelcase
       this.user.user_birthdate = this.getdate[0];
     });
   }
