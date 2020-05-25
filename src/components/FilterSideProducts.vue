@@ -49,7 +49,7 @@
     </v-row>
     <v-row
       class="d-flex justify-start indigo px-5 py-2 white--text"
-      v-if="!responsivePanel() && (products.length > 1 || price > 0)"
+      v-if="!responsivePanel()"
     >
       <v-col>
         <div>
@@ -84,7 +84,7 @@
                 dark
                 dense
                 type="number"
-                min="1"
+                min="0"
                 v-model="price"
                 :disabled="disableFilter"
               ></v-text-field>
@@ -99,7 +99,7 @@
                 dark
                 class="mr-2"
                 @click="resetPrice(true)"
-                v-if="price > 0"
+                v-if="parseInt(price) > 0"
               >
                 <v-icon color="error">
                   mdi-close
@@ -111,7 +111,7 @@
                 dark
                 dense
                 type="number"
-                min="1"
+                min="0"
                 v-model="minPrice"
                 :disabled="disableFilter"
               ></v-text-field>
@@ -120,7 +120,7 @@
                 dark
                 dense
                 type="number"
-                min="1"
+                min="0"
                 v-model="maxPrice"
                 :disabled="disableFilter"
               ></v-text-field>
@@ -140,7 +140,11 @@
                 dark
                 class="mr-2"
                 @click="resetPriceRange(true)"
-                v-if="minPrice > 0 && maxPrice > 0"
+                v-if="
+                  parseInt(minPrice) > 0 &&
+                  parseInt(maxPrice) > 0 &&
+                  parseInt(this.maxPrice) > parseInt(this.minPrice)
+                "
               >
                 <v-icon color="error">
                   mdi-close
@@ -153,7 +157,7 @@
     </v-row>
     <v-row
       class="d-flex justify-start indigo px-5 py-2 white--text"
-      v-if="!responsivePanel() && products.length > 1"
+      v-if="!responsivePanel()"
     >
       <v-col>
         <div>
@@ -209,14 +213,14 @@
               dark
               class="mr-2"
               @click="resetQualification(true)"
-              v-if="stars > 0"
+              v-if="stars >= 0"
             >
               <v-icon color="error">
                 mdi-close
               </v-icon>
             </v-btn>
           </div>
-          <div class="d-flex justify-space-between align-center">
+          <div class="d-flex justify-space-around align-center">
             <div>
               <v-rating
                 v-model="minStars"
@@ -261,7 +265,7 @@
     </v-row>
     <v-row
       class="d-flex justify-start indigo px-5 py-2 white--text"
-      v-if="!responsivePanel() && products.length > 1"
+      v-if="!responsivePanel()"
     >
       <v-col>
         <div>
@@ -285,7 +289,7 @@
         </div>
       </v-col>
     </v-row>
-    <v-row v-if="responsivePanel() && products.length > 1">
+    <v-row v-if="responsivePanel()">
       <v-col>
         <div class="d-flex justify-center">
           <v-bottom-sheet v-model="sheet">
@@ -300,7 +304,18 @@
                 v-on="on"
                 color="amber darken-4"
               >
-                <v-icon>mdi-filter-variant</v-icon>
+                <v-badge
+                  color="blue accent-3"
+                  content="!"
+                  dark
+                  v-if="disableFilter || disableStarsFilter"
+                >
+                  <v-icon>mdi-filter-variant</v-icon>
+                </v-badge>
+                <v-icon
+                  v-if="disableFilter == false && disableStarsFilter == false"
+                  >mdi-filter-variant</v-icon
+                >
               </v-btn>
             </template>
             <v-sheet height="auto">
@@ -310,22 +325,111 @@
                 >
                   <v-col>
                     <div>
-                      <p class="mb-0 subtitle font-weight-bold">Price</p>
-                      <div class="d-flex justify-start align-center">
-                        <v-icon color="white" class="ml-6 mr-2">
+                      <p class="mb-0 subtitle font-weight-bold">
+                        {{ priceFilterTitle }}
+                      </p>
+                      <div class="d-flex justify-start align-center mt-1">
+                        <v-icon color="white">
                           mdi-sort-descending
                         </v-icon>
                         <p class="mb-0 body-2 paths" @click="priceDESC">
-                          {{ fiveToZero }}
+                          {{ expToCheap }}
                         </p>
                       </div>
-                      <div class="d-flex justify-start align-center">
-                        <v-icon color="white" class="ml-6 mr-2">
+                      <div class="d-flex justify-start align-center mt-1">
+                        <v-icon color="white">
                           mdi-sort-ascending
                         </v-icon>
                         <p class="mb-0 body-2 paths" @click="priceASCE">
-                          {{ zeroToFive }}
+                          {{ cheapToExp }}
                         </p>
+                      </div>
+                      <div class="mt-1">
+                        <div class="d-flex justify-center align-center">
+                          <v-select
+                            :items="items"
+                            dark
+                            dense
+                            v-model="priceFilterType"
+                            class="mr-2"
+                            :disabled="disableFilter"
+                          ></v-select>
+                          <v-text-field
+                            dark
+                            dense
+                            type="number"
+                            min="0"
+                            v-model="price"
+                            :disabled="disableFilter"
+                          ></v-text-field>
+                          <p class="mb-0 ml-3 mr-1">$</p>
+                          <v-btn
+                            icon
+                            dark
+                            @click="filterByPrice"
+                            :disabled="disableFilter"
+                          >
+                            <v-icon>
+                              mdi-filter-variant
+                            </v-icon>
+                          </v-btn>
+                          <v-btn
+                            icon
+                            dark
+                            class="mr-2"
+                            @click="resetPrice(true)"
+                            v-if="parseInt(price) > 0"
+                          >
+                            <v-icon color="error">
+                              mdi-close
+                            </v-icon>
+                          </v-btn>
+                        </div>
+                        <div class="d-flex justify-center align-center">
+                          <v-text-field
+                            dark
+                            dense
+                            type="number"
+                            min="0"
+                            v-model="minPrice"
+                            :disabled="disableFilter"
+                          ></v-text-field>
+                          <p class="mb-0 mx-2">{{ filterCon }}</p>
+                          <v-text-field
+                            dark
+                            dense
+                            type="number"
+                            min="0"
+                            v-model="maxPrice"
+                            :disabled="disableFilter"
+                          ></v-text-field>
+                          <p class="mb-0 mr-1">$</p>
+                          <v-btn
+                            icon
+                            dark
+                            @click="filterByPriceRange"
+                            :disabled="disableFilter"
+                          >
+                            <v-icon>
+                              mdi-filter-variant
+                            </v-icon>
+                          </v-btn>
+                          <v-btn
+                            icon
+                            dark
+                            class="mr-2"
+                            @click="resetPriceRange(true)"
+                            v-if="
+                              parseInt(minPrice) > 0 &&
+                              parseInt(maxPrice) > 0 &&
+                              parseInt(this.maxPrice) > parseInt(this.minPrice)
+                            "
+                          >
+                            <v-icon color="error">
+                              mdi-close
+                            </v-icon>
+                          </v-btn>
+                        </div>
                       </div>
                     </div>
                   </v-col>
@@ -336,23 +440,103 @@
                   <v-col>
                     <div>
                       <p class="mb-0 subtitle font-weight-bold">
-                        Qualification
+                        {{ qualificationFilterTitle }}
                       </p>
-                      <div class="d-flex justify-start align-center">
-                        <v-icon color="white" class="ml-6 mr-2">
+                      <div class="d-flex justify-start align-center mt-1">
+                        <v-icon color="white">
                           mdi-sort-descending
                         </v-icon>
                         <p class="mb-0 body-2 paths" @click="qualificationDESC">
-                          5 stars to 0 stars
+                          {{ fiveToZero }}
                         </p>
                       </div>
-                      <div class="d-flex justify-start align-center">
-                        <v-icon color="white" class="ml-6 mr-2">
+                      <div class="d-flex justify-start align-center mt-1">
+                        <v-icon color="white">
                           mdi-sort-ascending
                         </v-icon>
                         <p class="mb-0 body-2 paths" @click="qualificationASCE">
                           {{ zeroToFive }}
                         </p>
+                      </div>
+                    </div>
+                    <div class="mt-1">
+                      <div class="d-flex justify-center align-center">
+                        <v-select
+                          :items="items"
+                          dark
+                          dense
+                          v-model="starsFilterType"
+                          class="mr-2"
+                          :disabled="disableStarsFilter"
+                        ></v-select>
+                        <v-rating
+                          v-model="stars"
+                          :readonly="disableStarsFilter"
+                          dense
+                          small
+                          color="amber"
+                        ></v-rating>
+                        <v-btn
+                          icon
+                          dark
+                          @click="filterByQualification"
+                          :disabled="disableStarsFilter"
+                        >
+                          <v-icon>
+                            mdi-filter-variant
+                          </v-icon>
+                        </v-btn>
+                        <v-btn
+                          icon
+                          dark
+                          class="mr-2"
+                          @click="resetQualification(true)"
+                          v-if="stars >= 0"
+                        >
+                          <v-icon color="error">
+                            mdi-close
+                          </v-icon>
+                        </v-btn>
+                      </div>
+                      <div class="d-flex justify-space-around align-center">
+                        <div>
+                          <v-rating
+                            v-model="minStars"
+                            :readonly="disableStarsFilter"
+                            dense
+                            small
+                            color="amber"
+                          ></v-rating>
+                          <p class="mb-0 text-center">{{ filterCon }}</p>
+                          <v-rating
+                            v-model="maxStars"
+                            :readonly="disableStarsFilter"
+                            dense
+                            small
+                            color="amber"
+                          ></v-rating>
+                        </div>
+                        <v-btn
+                          icon
+                          dark
+                          @click="filterByQualificationRange"
+                          :disabled="disableFilter"
+                        >
+                          <v-icon>
+                            mdi-filter-variant
+                          </v-icon>
+                        </v-btn>
+                        <v-btn
+                          icon
+                          dark
+                          class="mr-2"
+                          @click="resetQualificationRange(true)"
+                          v-if="minStars >= 0 && maxStars > 0"
+                        >
+                          <v-icon color="error">
+                            mdi-close
+                          </v-icon>
+                        </v-btn>
                       </div>
                     </div>
                   </v-col>
@@ -368,7 +552,7 @@
                           mdi-sort-descending
                         </v-icon>
                         <p class="mb-0 body-2 paths" @click="alphabeticDESC">
-                          A to Z
+                          {{ aToZ }}
                         </p>
                       </div>
                       <div class="d-flex justify-start align-center">
@@ -376,7 +560,7 @@
                           mdi-sort-ascending
                         </v-icon>
                         <p class="mb-0 body-2 paths" @click="alphabeticASCE">
-                          Z to A
+                          {{ zToA }}
                         </p>
                       </div>
                     </div>
@@ -384,7 +568,9 @@
                 </v-row>
               </div>
               <div class="mt-3 d-flex justify-center">
-                <v-btn text color="error" @click="sheet = !sheet">close</v-btn>
+                <v-btn text color="error" @click="sheet = !sheet">{{
+                  filterClose
+                }}</v-btn>
               </div>
             </v-sheet>
           </v-bottom-sheet>
@@ -410,6 +596,7 @@ export default class FilterSideProducts extends Vue {
   mainCategoriesTitle = "Main categories";
   aToZ = "A to Z";
   zToA = "Z to A";
+  filterClose = "Close";
   sheet = false;
   expToCheap = "Expensive to cheap";
   cheapToExp = "Cheap to expensive";
@@ -418,20 +605,20 @@ export default class FilterSideProducts extends Vue {
   priceFilterTitle = "Price";
   providersTitle = "Providers";
   filterCon = "to";
-  price = 0;
-  minPrice = 0;
-  maxPrice = 0;
+  price = "0";
+  minPrice = "0";
+  maxPrice = "0";
   items = [
     {
       text: "=",
       value: "equal",
     },
     {
-      text: ">",
+      text: ">=",
       value: "mayor",
     },
     {
-      text: "<",
+      text: "<=",
       value: "minor",
     },
   ];
@@ -443,7 +630,7 @@ export default class FilterSideProducts extends Vue {
 
   resetPrice(newSearch: boolean) {
     this.disableFilter = false;
-    this.price = 0;
+    this.price = "0";
     this.priceFilterType = this.items[0].value;
     if (newSearch) {
       this.categoryNewCall();
@@ -452,11 +639,15 @@ export default class FilterSideProducts extends Vue {
 
   resetPriceRange(newSearch: boolean) {
     this.disableFilter = false;
-    this.minPrice = 0;
-    this.maxPrice = 0;
+    this.minPrice = "0";
+    this.maxPrice = "0";
     if (newSearch) {
       this.categoryNewCall();
     }
+  }
+
+  closeFilterResponsive() {
+    this.responsivePanel() ? (this.sheet = !this.sheet) : (this.sheet = false);
   }
 
   resetQualification(newSearch: boolean) {
@@ -488,31 +679,28 @@ export default class FilterSideProducts extends Vue {
 
   filterByPrice() {
     this.disableFilter = true;
-    if (this.price > 0) {
+    if (parseInt(this.price) > 0) {
       const items = this.products;
       let filterItems: any[];
       switch (this.priceFilterType) {
         case "equal": {
           filterItems = items.filter((product: any) => {
-            return product.product_provider_price == this.price;
+            return product.product_provider_price == parseInt(this.price);
           });
-          console.log(filterItems);
           this.$store.commit("product/setProducts", filterItems);
           break;
         }
         case "minor": {
           filterItems = items.filter((product: any) => {
-            return product.product_provider_price < this.price;
+            return product.product_provider_price <= parseInt(this.price);
           });
-          console.log(filterItems);
           this.$store.commit("product/setProducts", filterItems);
           break;
         }
         case "mayor": {
           filterItems = items.filter((product: any) => {
-            return product.product_provider_price > this.price;
+            return product.product_provider_price >= parseInt(this.price);
           });
-          console.log(filterItems);
           this.$store.commit("product/setProducts", filterItems);
           break;
         }
@@ -520,6 +708,7 @@ export default class FilterSideProducts extends Vue {
           break;
         }
       }
+      this.closeFilterResponsive();
     } else {
       this.resetPrice(true);
     }
@@ -527,7 +716,7 @@ export default class FilterSideProducts extends Vue {
 
   filterByQualification() {
     this.disableStarsFilter = true;
-    if (this.stars > 0) {
+    if (this.stars >= 0) {
       const items = this.products;
       let filterItems: any[];
       switch (this.starsFilterType) {
@@ -535,23 +724,24 @@ export default class FilterSideProducts extends Vue {
           filterItems = items.filter((product: any) => {
             return Math.round(product.avg_qualification_stars) == this.stars;
           });
-          console.log(filterItems);
           this.$store.commit("product/setProducts", filterItems);
           break;
         }
         case "minor": {
-          filterItems = items.filter((product: any) => {
-            return Math.round(product.avg_qualification_stars) < this.stars;
-          });
-          console.log(filterItems);
-          this.$store.commit("product/setProducts", filterItems);
+          if (this.stars != 0) {
+            filterItems = items.filter((product: any) => {
+              return Math.round(product.avg_qualification_stars) <= this.stars;
+            });
+            this.$store.commit("product/setProducts", filterItems);
+          } else {
+            this.resetQualification(true);
+          }
           break;
         }
         case "mayor": {
           filterItems = items.filter((product: any) => {
-            return Math.round(product.avg_qualification_stars) > this.stars;
+            return Math.round(product.avg_qualification_stars) >= this.stars;
           });
-          console.log(filterItems);
           this.$store.commit("product/setProducts", filterItems);
           break;
         }
@@ -559,6 +749,7 @@ export default class FilterSideProducts extends Vue {
           break;
         }
       }
+      this.closeFilterResponsive();
     } else {
       this.resetQualification(true);
     }
@@ -567,18 +758,19 @@ export default class FilterSideProducts extends Vue {
   filterByPriceRange() {
     this.disableFilter = true;
     if (
-      this.minPrice > 0 &&
-      this.maxPrice > 0 &&
-      this.maxPrice > this.minPrice
+      parseInt(this.minPrice) > 0 &&
+      parseInt(this.maxPrice) > 0 &&
+      parseInt(this.maxPrice) > parseInt(this.minPrice)
     ) {
       const items = this.products;
       const filterItems = items.filter((product: any) => {
         return (
-          product.product_provider_price >= this.minPrice &&
-          product.product_provider_price <= this.maxPrice
+          product.product_provider_price >= parseInt(this.minPrice) &&
+          product.product_provider_price <= parseInt(this.maxPrice)
         );
       });
       this.$store.commit("product/setProducts", filterItems);
+      this.closeFilterResponsive();
     } else {
       this.resetPriceRange(true);
     }
@@ -599,6 +791,7 @@ export default class FilterSideProducts extends Vue {
         );
       });
       this.$store.commit("product/setProducts", filterItems);
+      this.closeFilterResponsive();
     } else {
       this.resetQualificationRange(true);
     }
@@ -615,9 +808,7 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
-    this.responsivePanel() && this.products.length > 1
-      ? (this.sheet = !this.sheet)
-      : (this.sheet = false);
+    this.closeFilterResponsive();
   }
 
   priceASCE() {
@@ -631,9 +822,7 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
-    this.responsivePanel() && this.products.length > 1
-      ? (this.sheet = !this.sheet)
-      : (this.sheet = false);
+    this.closeFilterResponsive();
   }
 
   qualificationDESC() {
@@ -651,9 +840,7 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
-    this.responsivePanel() && this.products.length > 1
-      ? (this.sheet = !this.sheet)
-      : (this.sheet = false);
+    this.closeFilterResponsive();
   }
 
   qualificationASCE() {
@@ -671,9 +858,7 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
-    this.responsivePanel() && this.products.length > 1
-      ? (this.sheet = !this.sheet)
-      : (this.sheet = false);
+    this.closeFilterResponsive();
   }
 
   alphabeticDESC() {
@@ -687,9 +872,7 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
-    this.responsivePanel() && this.products.length > 1
-      ? (this.sheet = !this.sheet)
-      : (this.sheet = false);
+    this.closeFilterResponsive();
   }
 
   alphabeticASCE() {
@@ -703,9 +886,7 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
-    this.responsivePanel() && this.products.length > 1
-      ? (this.sheet = !this.sheet)
-      : (this.sheet = false);
+    this.closeFilterResponsive();
   }
 
   responsivePanel() {
@@ -731,12 +912,20 @@ export default class FilterSideProducts extends Vue {
   }
 
   goToCategory(categoryId: number, categoryName: string) {
-    this.resetPrice(false);
-    this.resetPriceRange(false);
-    this.resetQualification(false);
-    this.resetQualificationRange(false);
-    console.log(categoryId);
-    console.log(categoryName);
+    if (this.disableFilter == false) {
+      this.resetPrice(false);
+      this.resetPriceRange(false);
+    }
+
+    if (this.disableStarsFilter == false) {
+      this.resetQualification(false);
+      this.resetQualificationRange(false);
+    }
+
+    if (this.disableStarsFilter == false && this.disableFilter == false) {
+      this.closeFilterResponsive();
+    }
+
     const categories = this.$store.getters["category/getCategories"];
     this.$store
       .dispatch("category/setActualPath", {
@@ -750,13 +939,31 @@ export default class FilterSideProducts extends Vue {
             categories: categories,
           })
           .then(() => {
-            this.$store.dispatch("product/getProductByCategory", {
-              categoryId: categoryId,
-              name: categoryName,
-              childCategories: this.$store.getters[
-                "category/getChildCategories"
-              ],
-            });
+            this.$store
+              .dispatch("product/getProductByCategory", {
+                categoryId: categoryId,
+                name: categoryName,
+                childCategories: this.$store.getters[
+                  "category/getChildCategories"
+                ],
+              })
+              .then(() => {
+                if (this.disableFilter == true) {
+                  if (parseInt(this.price) > 0) {
+                    this.filterByPrice();
+                  } else {
+                    this.filterByPriceRange();
+                  }
+                }
+
+                if (this.disableStarsFilter == true) {
+                  if (this.stars >= 0) {
+                    this.filterByQualification();
+                  } else {
+                    this.filterByQualificationRange();
+                  }
+                }
+              });
           });
       });
   }
@@ -764,7 +971,6 @@ export default class FilterSideProducts extends Vue {
   mounted() {
     this.translate();
     this.$store.dispatch("home/getMainCategories");
-    console.log(this.products);
   }
 
   get products() {
@@ -800,7 +1006,7 @@ export default class FilterSideProducts extends Vue {
           break;
         }
         case "cheapToExp": {
-          this.expToCheap = term.termTranslation;
+          this.cheapToExp = term.termTranslation;
           break;
         }
         case "fiveToZero": {
@@ -821,6 +1027,10 @@ export default class FilterSideProducts extends Vue {
         }
         case "qualificationFilterTitle": {
           this.qualificationFilterTitle = term.termTranslation;
+          break;
+        }
+        case "filterClose": {
+          this.filterClose = term.termTranslation;
           break;
         }
         default: {

@@ -15,8 +15,8 @@ export default {
   mutations: {
     setUserOrders(state: any, orders: any) {
       Vue.set(state, "orders", orders);
-    }
     },
+  },
   // -----------------------------------------------------------------
   actions: {
     getOrders: async (context: any) => {
@@ -25,6 +25,6 @@ export default {
     },
     createRating: async (contex: any, payload: any) => {
       await orderHistoryService.rateProduct(payload);
-    }
+    },
   },
 };
