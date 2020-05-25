@@ -8,7 +8,11 @@ export default {
       },
     });
   },
-  getDiscount(){
-    return API_URL.get(`/product/:productProviderId/discount`)
+  rateProduct(rating: any) {
+    return API_URL.post(`/user/product/${rating.productId}/qualification`, rating , {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
   }
 };

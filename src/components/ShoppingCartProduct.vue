@@ -120,11 +120,14 @@ export default class ShoppingCart extends Vue {
 
   productPrice() {
     if (this.product.discount == null)
-      return this.product.product_provider_price;
+      return Math.round(this.product.product_provider_price * 100) / 100;
     else
       return (
-        this.product.product_provider_price *
-        (1 - this.product.discount.split("%")[0] / 100)
+        Math.round(
+          this.product.product_provider_price *
+            (1 - this.product.discount.split("%")[0] / 100) *
+            100
+        ) / 100
       );
   }
 

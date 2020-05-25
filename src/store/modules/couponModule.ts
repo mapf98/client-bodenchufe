@@ -25,7 +25,9 @@ export default {
   // -----------------------------------------------------------------
   actions: {
     getCouponsForOrder: async (context: any, payload: any) => {
-      const coupons = await couponService.getUserCouponsForOrder(payload.orderTotal);
+      const coupons = await couponService.getUserCouponsForOrder(
+        payload.orderTotal
+      );
       context.commit("setUserCouponsForOrder", coupons.data.coupons);
     },
     getUserCoupon: async (context: any) => {
