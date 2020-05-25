@@ -32,7 +32,7 @@
           :key="offer.offer_id"
           @click="productsByOffer(offer.offer_id, offer.offer_rate)"
         >
-          <p class="display-4 amber--text font-weight-bold text-center">
+          <p class="display-4 mb-0 amber--text font-weight-bold text-center">
             {{ offer.offer_rate }}
           </p>
         </v-card>

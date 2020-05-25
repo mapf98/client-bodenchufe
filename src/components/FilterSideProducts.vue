@@ -6,10 +6,29 @@
     >
       <v-col>
         <div>
-          <p class="mb-0 title">{{ filterCategories }}</p>
+          <p class="mb-0 subtitle font-weight-bold">
+            {{ filterCategory.categoryName }} ({{ filterCategories }})
+          </p>
           <p
             class="mb-0 ml-6 body-2 paths"
             v-for="cat in filterCategory.categoryChild"
+            :key="cat.category_id"
+            @click="goToCategory(cat.category_id, cat.category_name)"
+          >
+            {{ cat.category_name }}
+          </p>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
+      <v-col>
+        <div>
+          <p class="mb-0 subtitle font-weight-bold">
+            {{ mainCategoriesTitle }}
+          </p>
+          <p
+            class="mb-0 ml-6 body-2 paths"
+            v-for="cat in mainCategories"
             :key="cat.category_id"
             @click="goToCategory(cat.category_id, cat.category_name)"
           >
@@ -25,10 +44,13 @@
         </div>
       </v-col>
     </v-row>
+    <v-row class="d-flex indigo">
+      <v-divider class="amber"></v-divider>
+    </v-row>
     <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
       <v-col>
         <div>
-          <p class="mb-0 title">Price</p>
+          <p class="mb-0 subtitle font-weight-bold">Price</p>
           <div class="d-flex justify-start align-center">
             <v-icon color="white" class="ml-6 mr-2">
               mdi-sort-descending
@@ -51,7 +73,7 @@
     <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
       <v-col>
         <div>
-          <p class="mb-0 title">Qualification</p>
+          <p class="mb-0 subtitle font-weight-bold">Qualification</p>
           <div class="d-flex justify-start align-center">
             <v-icon color="white" class="ml-6 mr-2">
               mdi-sort-descending
@@ -74,7 +96,7 @@
     <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
       <v-col>
         <div>
-          <p class="mb-0 title">Alphabetic</p>
+          <p class="mb-0 subtitle font-weight-bold">Alphabetic</p>
           <div class="d-flex justify-start align-center">
             <v-icon color="white" class="ml-6 mr-2">
               mdi-sort-descending
@@ -148,10 +170,12 @@ import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class FilterSideProducts extends Vue {
-  filterCategories = "Categories";
+  filterCategories = "categories";
   rootCategory = false;
   otherCategories = "Other categories";
+  mainCategoriesTitle = "Main categories";
   sheet = false;
+  providersTitle = "Providers";
 
   priceDESC() {
     const items = this.products;
@@ -288,7 +312,11 @@ export default class FilterSideProducts extends Vue {
 
   mounted() {
     this.translate();
-    console.log(this.products);
+    this.$store.dispatch("home/getMainCategories");
+  }
+
+  get products() {
+    return this.$store.getters["product/getProducts"];
   }
 
   @Watch("translator")
@@ -303,6 +331,10 @@ export default class FilterSideProducts extends Vue {
           this.otherCategories = term.termTranslation;
           break;
         }
+        case "mainCategoriesTitle": {
+          this.mainCategoriesTitle = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -310,8 +342,8 @@ export default class FilterSideProducts extends Vue {
     });
   }
 
-  get products() {
-    return this.$store.getters["product/getProducts"];
+  get mainCategories() {
+    return this.$store.getters["home/getMainCategories"];
   }
 
   get translator() {

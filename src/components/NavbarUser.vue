@@ -55,7 +55,7 @@
           <v-list-item @click="logOut">
             <v-list-item-title class="d-flex justify-start align-center">
               <v-icon class="mr-1" color="error">mdi-logout</v-icon>
-              <p class="mb-0 error--text">Log out</p>
+              <p class="mb-0 error--text">{{ signOffText }}</p>
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -103,7 +103,7 @@
         <v-list-item @click="logOut">
           <v-list-item-title class="d-flex justify-start align-center">
             <v-icon class="mr-1" color="error">mdi-logout</v-icon>
-            <p class="mb-0 error--text">Log out</p>
+            <p class="mb-0 error--text">{{ signOffText }}</p>
           </v-list-item-title>
         </v-list-item>
       </v-list>
@@ -120,6 +120,7 @@ import { Watch } from "vue-property-decorator";
 export default class NavbarUser extends Vue {
   userPhoto = "";
   userName = "";
+  signOffText = "Log out";
   placeHolcerImg =
     "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2FFotofinal.png?alt=media&token=d9d54e10-3ad2-4906-8986-890b38a27d38";
 
@@ -192,6 +193,10 @@ export default class NavbarUser extends Vue {
         }
         case "userDeliveryAddress": {
           this.items[4].title = term.termTranslation;
+          break;
+        }
+        case "signOffText": {
+          this.signOffText = term.termTranslation;
           break;
         }
         default: {
