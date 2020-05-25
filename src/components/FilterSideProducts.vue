@@ -125,7 +125,12 @@
                 :disabled="disableFilter"
               ></v-text-field>
               <p class="mb-0 mr-1">$</p>
-              <v-btn icon dark @click="filterByRange" :disabled="disableFilter">
+              <v-btn
+                icon
+                dark
+                @click="filterByPriceRange"
+                :disabled="disableFilter"
+              >
                 <v-icon>
                   mdi-filter-variant
                 </v-icon>
@@ -182,8 +187,19 @@
               class="mr-2"
               :disabled="disableStarsFilter"
             ></v-select>
-            <v-rating v-model="stars" :readonly="disableStarsFilter" dense small color="amber"></v-rating>
-            <v-btn icon dark @click="filterByQualification" :disabled="disableStarsFilter">
+            <v-rating
+              v-model="stars"
+              :readonly="disableStarsFilter"
+              dense
+              small
+              color="amber"
+            ></v-rating>
+            <v-btn
+              icon
+              dark
+              @click="filterByQualification"
+              :disabled="disableStarsFilter"
+            >
               <v-icon>
                 mdi-filter-variant
               </v-icon>
@@ -200,25 +216,30 @@
               </v-icon>
             </v-btn>
           </div>
-          <div class="d-flex justify-center align-center">
-            <v-text-field
+          <div class="d-flex justify-space-between align-center">
+            <div>
+              <v-rating
+                v-model="minStars"
+                :readonly="disableStarsFilter"
+                dense
+                small
+                color="amber"
+              ></v-rating>
+              <p class="mb-0 text-center">{{ filterCon }}</p>
+              <v-rating
+                v-model="maxStars"
+                :readonly="disableStarsFilter"
+                dense
+                small
+                color="amber"
+              ></v-rating>
+            </div>
+            <v-btn
+              icon
               dark
-              dense
-              type="number"
-              min="1"
-              v-model="minPrice"
+              @click="filterByQualificationRange"
               :disabled="disableFilter"
-            ></v-text-field>
-            <p class="mb-0 mx-2">{{ filterCon }}</p>
-            <v-text-field
-              dark
-              dense
-              type="number"
-              min="1"
-              v-model="maxPrice"
-              :disabled="disableFilter"
-            ></v-text-field>
-            <v-btn icon dark @click="filterByRange" :disabled="disableFilter">
+            >
               <v-icon>
                 mdi-filter-variant
               </v-icon>
@@ -227,8 +248,8 @@
               icon
               dark
               class="mr-2"
-              @click="resetPriceRange(true)"
-              v-if="minPrice > 0 && maxPrice > 0"
+              @click="resetQualificationRange(true)"
+              v-if="minStars >= 0 && maxStars > 0"
             >
               <v-icon color="error">
                 mdi-close
@@ -504,7 +525,7 @@ export default class FilterSideProducts extends Vue {
     }
   }
 
-  filterByQualification(){
+  filterByQualification() {
     this.disableStarsFilter = true;
     if (this.stars > 0) {
       const items = this.products;
@@ -543,7 +564,8 @@ export default class FilterSideProducts extends Vue {
     }
   }
 
-  filterByRange() {
+  filterByPriceRange() {
+    this.disableFilter = true;
     if (
       this.minPrice > 0 &&
       this.maxPrice > 0 &&
@@ -559,6 +581,26 @@ export default class FilterSideProducts extends Vue {
       this.$store.commit("product/setProducts", filterItems);
     } else {
       this.resetPriceRange(true);
+    }
+  }
+
+  filterByQualificationRange() {
+    this.disableStarsFilter = true;
+    if (
+      this.minStars >= 0 &&
+      this.maxStars > 0 &&
+      this.maxStars > this.minStars
+    ) {
+      const items = this.products;
+      const filterItems = items.filter((product: any) => {
+        return (
+          Math.round(product.avg_qualification_stars) >= this.minStars &&
+          Math.round(product.avg_qualification_stars) <= this.maxStars
+        );
+      });
+      this.$store.commit("product/setProducts", filterItems);
+    } else {
+      this.resetQualificationRange(true);
     }
   }
 
@@ -692,6 +734,7 @@ export default class FilterSideProducts extends Vue {
     this.resetPrice(false);
     this.resetPriceRange(false);
     this.resetQualification(false);
+    this.resetQualificationRange(false);
     console.log(categoryId);
     console.log(categoryName);
     const categories = this.$store.getters["category/getCategories"];
