@@ -36,6 +36,27 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on }">
+              <v-btn color="indigo" dark v-on="on" :width="buttonCols()">
+                <v-icon class="mr-4">mdi-translate</v-icon>
+                {{ languageName }}
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="item in items"
+                :key="item.value"
+                @click="updateLanguage(item.value)"
+              >
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col class="text-center d-flex justify-center">
           <v-btn
             class="white--text"
@@ -166,6 +187,14 @@ export default class ProfileInfo extends Vue {
   saveChangeText = "Save your changes";
   saveChangeSuccefullyText = "Your changes has been saved";
 
+  items = [
+    { text: "English US", value: "en-us" },
+    { text: "Spanish VE", value: "es-ve" },
+  ];
+  languageName = "";
+
+  btnLanguage = "Select your preferred language";
+
   snackbarError = false;
   errors: Array<string> = [];
   valid = true;
@@ -228,6 +257,7 @@ export default class ProfileInfo extends Vue {
     this.showImageIfExist();
     this.getUserData();
     this.translate();
+    this.getUserLanguage();
   }
 
   @Watch("user.user_first_name")
@@ -279,11 +309,51 @@ export default class ProfileInfo extends Vue {
           this.saveChangeSuccefullyText = term.termTranslation;
           break;
         }
+        case "btnLanguage": {
+          this.btnLanguage = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
       }
     });
+  }
+
+  getUserLanguage() {
+    const userStorageString: any = localStorage.getItem("userData");
+    const userStorage = JSON.parse(userStorageString).userLanguage;
+    this.languageName = userStorage;
+  }
+
+  getTranslate() {
+    console.log(this.languageName);
+    this.$store.dispatch("internationalization/getTranslate", {
+      lang: this.languageName,
+    });
+  }
+
+  @Watch("preferredLanguage")
+  translateLanguage() {
+    this.languageName = this.preferredLanguage;
+    this.$store.dispatch("internationalization/getTranslate", {
+      lang: this.languageName,
+    });
+  }
+
+  get preferredLanguage() {
+    return this.$store.getters["internationalization/getPreferredLanguage"];
+  }
+
+  updateLanguage(language: string) {
+    this.languageName = language;
+    this.$store
+      .dispatch("profile/updateLanguage", {
+        languageName: this.languageName,
+      })
+      .then(() => {
+        this.getTranslate();
+      });
   }
 
   updateUserInfo() {
