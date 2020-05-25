@@ -40,7 +40,7 @@
           </v-card-text>
         </v-card-text>
         <v-card-text class="white--text font-weight-thin mt-n12">
-          (1.75% + 2.5$)
+          (1.75% + 0.25$)
         </v-card-text>
         <v-divider class="amber"></v-divider>
         <v-card-text
@@ -131,7 +131,6 @@ export default class CheckoutPayment extends Vue {
       .then(() => {
         this.loading = false;
         window.close();
-        localStorage.setItem("checkingPay", "true");
         window.open(this.$store.getters["checkout/getUrlPaymentGateway"]);
       });
   }

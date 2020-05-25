@@ -72,7 +72,7 @@
       <v-col class="col-3">
         <v-card-text
           class="display-1 d-flex justify-end font-weight-bold indigo--text"
-          >{{ product.total }} $</v-card-text
+          >{{ productPrice() }} $</v-card-text
         >
         <v-card-text
           v-if="product.discount != null"
@@ -117,6 +117,19 @@ export default class ShoppingCart extends Vue {
   inStock = "In stock:";
 
   @Prop() product!: any;
+
+  productPrice() {
+    if (this.product.discount == null)
+      return Math.round(this.product.product_provider_price * 100) / 100;
+    else
+      return (
+        Math.round(
+          this.product.product_provider_price *
+            (1 - this.product.discount.split("%")[0] / 100) *
+            100
+        ) / 100
+      );
+  }
 
   mounted() {
     this.translate();

@@ -14,13 +14,13 @@
       {{ address.delivery_address_primary_line }}
     </v-card-text>
     <v-card-text
-      v-if="address.delivery_address_secondary_line != null"
+      v-if="address.delivery_address_secondary_line != 'null'"
       class="subtitle-1 white--text mt-n6 font-weight-black"
     >
       {{ secondaryLine }}
     </v-card-text>
     <v-card-text
-      v-if="address.delivery_address_secondary_line != null"
+      v-if="address.delivery_address_secondary_line != 'null'"
       class="mt-n9 white--text font-weight-thin"
     >
       {{ address.delivery_address_secondary_line }}
