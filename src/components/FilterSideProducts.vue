@@ -47,7 +47,10 @@
     <v-row class="d-flex indigo">
       <v-divider class="amber"></v-divider>
     </v-row>
-    <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
+    <v-row
+      class="d-flex justify-start indigo px-5 py-2 white--text"
+      v-if="!responsivePanel() && products.length > 1"
+    >
       <v-col>
         <div>
           <p class="mb-0 subtitle font-weight-bold">Price</p>
@@ -70,7 +73,10 @@
         </div>
       </v-col>
     </v-row>
-    <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
+    <v-row
+      class="d-flex justify-start indigo px-5 py-2 white--text"
+      v-if="!responsivePanel() && products.length > 1"
+    >
       <v-col>
         <div>
           <p class="mb-0 subtitle font-weight-bold">Qualification</p>
@@ -93,7 +99,10 @@
         </div>
       </v-col>
     </v-row>
-    <v-row class="d-flex justify-start indigo px-5 py-2 white--text">
+    <v-row
+      class="d-flex justify-start indigo px-5 py-2 white--text"
+      v-if="!responsivePanel() && products.length > 1"
+    >
       <v-col>
         <div>
           <p class="mb-0 subtitle font-weight-bold">Alphabetic</p>
@@ -119,7 +128,7 @@
     <v-row v-if="responsivePanel() && products.length > 1">
       <v-col>
         <div class="d-flex justify-center">
-          <v-bottom-sheet v-model="sheet" persistent>
+          <v-bottom-sheet v-model="sheet">
             <template v-slot:activator="{ on }">
               <v-btn
                 fixed
@@ -134,25 +143,87 @@
                 <v-icon>mdi-filter-variant</v-icon>
               </v-btn>
             </template>
-            <v-sheet height="300" class="d-flex justify-center align-center">
-              <div class="mx-5">
-                <div class="my-1">
-                  <v-btn>
-                    Price
-                  </v-btn>
-                </div>
-                <div class="my-1">
-                  <v-btn>
-                    Stars
-                  </v-btn>
-                </div>
-                <div class="my-1">
-                  <v-btn>
-                    Order
-                  </v-btn>
-                </div>
+            <v-sheet height="auto">
+              <div>
+                <v-row
+                  class="d-flex justify-start indigo px-5 py-2 white--text"
+                >
+                  <v-col>
+                    <div>
+                      <p class="mb-0 subtitle font-weight-bold">Price</p>
+                      <div class="d-flex justify-start align-center">
+                        <v-icon color="white" class="ml-6 mr-2">
+                          mdi-sort-descending
+                        </v-icon>
+                        <p class="mb-0 body-2 paths" @click="priceDESC">
+                          Expensive to cheap
+                        </p>
+                      </div>
+                      <div class="d-flex justify-start align-center">
+                        <v-icon color="white" class="ml-6 mr-2">
+                          mdi-sort-ascending
+                        </v-icon>
+                        <p class="mb-0 body-2 paths" @click="priceASCE">
+                          Cheap to expensive
+                        </p>
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row
+                  class="d-flex justify-start indigo px-5 py-2 white--text"
+                >
+                  <v-col>
+                    <div>
+                      <p class="mb-0 subtitle font-weight-bold">
+                        Qualification
+                      </p>
+                      <div class="d-flex justify-start align-center">
+                        <v-icon color="white" class="ml-6 mr-2">
+                          mdi-sort-descending
+                        </v-icon>
+                        <p class="mb-0 body-2 paths" @click="qualificationDESC">
+                          5 stars to 0 stars
+                        </p>
+                      </div>
+                      <div class="d-flex justify-start align-center">
+                        <v-icon color="white" class="ml-6 mr-2">
+                          mdi-sort-ascending
+                        </v-icon>
+                        <p class="mb-0 body-2 paths" @click="qualificationASCE">
+                          0 stars to 5 stars
+                        </p>
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row
+                  class="d-flex justify-start indigo px-5 py-2 white--text"
+                >
+                  <v-col>
+                    <div>
+                      <p class="mb-0 subtitle font-weight-bold">Alphabetic</p>
+                      <div class="d-flex justify-start align-center">
+                        <v-icon color="white" class="ml-6 mr-2">
+                          mdi-sort-descending
+                        </v-icon>
+                        <p class="mb-0 body-2 paths" @click="alphabeticDESC">
+                          A to Z
+                        </p>
+                      </div>
+                      <div class="d-flex justify-start align-center">
+                        <v-icon color="white" class="ml-6 mr-2">
+                          mdi-sort-ascending
+                        </v-icon>
+                        <p class="mb-0 body-2 paths" @click="alphabeticASCE">
+                          Z to A
+                        </p>
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
               </div>
-              <div class="mx-5">
+              <div class="mt-3 d-flex justify-center">
                 <v-btn text color="error" @click="sheet = !sheet">close</v-btn>
               </div>
             </v-sheet>
@@ -188,6 +259,9 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
+    this.responsivePanel() && this.products.length > 1
+      ? (this.sheet = !this.sheet)
+      : (this.sheet = false);
   }
 
   priceASCE() {
@@ -201,6 +275,9 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
+    this.responsivePanel() && this.products.length > 1
+      ? (this.sheet = !this.sheet)
+      : (this.sheet = false);
   }
 
   qualificationDESC() {
@@ -218,6 +295,9 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
+    this.responsivePanel() && this.products.length > 1
+      ? (this.sheet = !this.sheet)
+      : (this.sheet = false);
   }
 
   qualificationASCE() {
@@ -235,6 +315,9 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
+    this.responsivePanel() && this.products.length > 1
+      ? (this.sheet = !this.sheet)
+      : (this.sheet = false);
   }
 
   alphabeticDESC() {
@@ -248,6 +331,9 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
+    this.responsivePanel() && this.products.length > 1
+      ? (this.sheet = !this.sheet)
+      : (this.sheet = false);
   }
 
   alphabeticASCE() {
@@ -261,6 +347,9 @@ export default class FilterSideProducts extends Vue {
       }
       return 0;
     });
+    this.responsivePanel() && this.products.length > 1
+      ? (this.sheet = !this.sheet)
+      : (this.sheet = false);
   }
 
   responsivePanel() {
