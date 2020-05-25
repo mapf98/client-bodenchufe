@@ -121,7 +121,7 @@ export default class NavbarUser extends Vue {
     {
       title: "My orders",
       icon: "mdi-package-variant-closed",
-      route: "/orders",
+      route: "/orderHistory",
     },
     { title: "My coupons", icon: "mdi-wallet-giftcard", route: "/coupons" },
     {
