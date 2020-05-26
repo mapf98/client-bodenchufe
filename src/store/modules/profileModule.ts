@@ -22,7 +22,6 @@ async function deleteImage(imageUrl: any) {
 
 async function upImage(userId: any, imageFile: any) {
   return new Promise(function (resolve, reject) {
-    let finalSnapshot;
     const storageRef = fb
       .storage()
       .ref("images/user/" + userId + "/" + imageFile.name);
@@ -30,9 +29,7 @@ async function upImage(userId: any, imageFile: any) {
 
     uploadTask.on(
       "state_changed",
-      async (snapshot: any) => {
-        finalSnapshot = snapshot.state;
-      },
+      null,
       (error) => {
         reject(error);
       },
@@ -51,11 +48,13 @@ export default {
   state: {
     user: {},
     passwordStatus: {},
+    newUserPhoto: false,
   },
   // -----------------------------------------------------------------
   getters: {
     getUserData: (state: any) => state.user,
     getPasswordStatus: (state: any) => state.passwordStatus,
+    getNewUserPhoto: (state: any) => state.newUserPhoto,
   },
   // -----------------------------------------------------------------
   mutations: {
@@ -64,6 +63,9 @@ export default {
     },
     setPasswordStatus(state: any, status: any) {
       Vue.set(state, "passwordStatus", status);
+    },
+    setNewUserPhoto(state: any, newUserPhoto: boolean) {
+      Vue.set(state, "newUserPhoto", newUserPhoto);
     },
   },
   // -----------------------------------------------------------------
@@ -90,9 +92,13 @@ export default {
           userData.userPhoto = newImageUrl;
           localStorage.setItem("userData", JSON.stringify(userData));
         });
+      context.commit("setNewUserPhoto", true);
     },
     updateUserInfo: async (context: any, payload: any) => {
       await profileService.updateUserInfo(payload.user);
+    },
+    newUserPhoto: async (context: any, payload: any) => {
+      context.commit("setNewUserPhoto", payload);
     },
     changePassword: async (context: any, payload: any) => {
       await profileService

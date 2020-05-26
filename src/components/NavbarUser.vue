@@ -213,6 +213,19 @@ export default class NavbarUser extends Vue {
   get userProducts() {
     return this.$store.getters["shoppingCart/getProductsBadge"];
   }
+
+  @Watch("userNewPhoto")
+  updatePhoto() {
+    const userData: any = localStorage.getItem("userData");
+    this.userPhoto =
+      JSON.parse(userData).userPhoto == "photo"
+        ? this.placeHolcerImg
+        : JSON.parse(userData).userPhoto;
+  }
+
+  get userNewPhoto() {
+    return this.$store.getters["profile/getNewUserPhoto"];
+  }
 }
 </script>
 

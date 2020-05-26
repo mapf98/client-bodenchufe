@@ -11,6 +11,30 @@
       </p>
       <p class="my-1 mx-1">> {{ productDetails.product_name }}</p>
     </v-row>
+    <v-row>
+      <v-chip
+        class="ma-2"
+        color="primary"
+        v-if="productDetails.offer_rate !== null"
+        @click="
+          productsByOffer(productDetails.offer_id, productDetails.offer_rate)
+        "
+      >
+        {{ chipOffer1 }} {{ productDetails.offer_rate }} {{ chipOffer2 }}
+      </v-chip>
+      <v-chip
+        class="ma-2"
+        color="primary"
+        @click="
+          productsByProvider(
+            productDetails.provider_id,
+            productDetails.provider_name
+          )
+        "
+      >
+        {{ chipProviderDetail }} {{ productDetails.provider_name }}
+      </v-chip>
+    </v-row>
     <v-row class="d-flex justify-center align-center">
       <v-col :cols="detailCols()">
         <v-row class="d-flex justify-center align-center">
@@ -91,7 +115,12 @@
           <v-card-actions class="d-flex justify-space-around align-center py-3">
             <v-row v-if="!added">
               <v-col class="d-flex justify-center align-center">
-                <v-btn color="amber darken-3" dark @click="addProduct">
+                <v-btn
+                  color="amber darken-3"
+                  dark
+                  @click="addProduct"
+                  :loading="addProductLoading"
+                >
                   {{ addToCart }}
                   <v-icon>
                     mdi-cart-arrow-down
@@ -223,12 +252,16 @@ export default class ProductDetail extends Vue {
   avg = 0;
   quantity = 1;
   added = false;
+  addProductLoading = false;
   productQ = "Quantity:";
   productsUrlImages: any = [];
   productPath: any = [];
   productPhoto = this.productDetails.product_photo;
   availableQuantity = "Quantity available:";
   productLong = "Length:";
+  chipProviderDetail = "Provider";
+  chipOffer1 = "Products with";
+  chipOffer2 = "discount";
   productW = "Width:";
   productH = "Heigth:";
   detailQualification = "opinions";
@@ -250,6 +283,40 @@ export default class ProductDetail extends Vue {
             this.productsUrlImages.push(downloadUrl);
           });
         });
+      });
+  }
+
+  productsByProvider(providerId: number, providerName: string) {
+    this.$store
+      .dispatch("product/getProductByProvider", {
+        providerId: providerId,
+        name: providerName,
+      })
+      .then(() => {
+        this.$store
+          .dispatch("category/setActualPath", {
+            clear: true,
+          })
+          .then(() => {
+            this.$router.push("/products");
+          });
+      });
+  }
+
+  productsByOffer(offerId: number, offerRate: string) {
+    this.$store
+      .dispatch("product/getProductByOffer", {
+        offerId: offerId,
+        name: offerRate,
+      })
+      .then(() => {
+        this.$store
+          .dispatch("category/setActualPath", {
+            clear: true,
+          })
+          .then(() => {
+            this.$router.push("/products");
+          });
       });
   }
 
@@ -358,6 +425,7 @@ export default class ProductDetail extends Vue {
   }
 
   addProduct() {
+    this.addProductLoading = true;
     if (localStorage.getItem("token") !== null) {
       this.$store
         .dispatch("shoppingCart/addProduct", {
@@ -366,8 +434,10 @@ export default class ProductDetail extends Vue {
         })
         .then(() => {
           this.added = true;
+          this.addProductLoading = false;
         });
     } else {
+      this.addProductLoading = false;
       this.$router.push("/login");
     }
   }
@@ -377,6 +447,7 @@ export default class ProductDetail extends Vue {
   }
 
   get productDetails() {
+    console.log(this.$store.getters["product/getProductDetail"].details[0]);
     return this.$store.getters["product/getProductDetail"].details[0];
   }
 
@@ -422,6 +493,18 @@ export default class ProductDetail extends Vue {
         }
         case "seeSC": {
           this.seeSC = term.termTranslation;
+          break;
+        }
+        case "chipProviderDetail": {
+          this.chipProviderDetail = term.termTranslation;
+          break;
+        }
+        case "chipOffer1": {
+          this.chipOffer1 = term.termTranslation;
+          break;
+        }
+        case "chipOffer2": {
+          this.chipOffer2 = term.termTranslation;
           break;
         }
         default: {

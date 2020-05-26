@@ -48,6 +48,19 @@
       <v-divider class="amber"></v-divider>
     </v-row>
     <v-row
+      class="d-flex indigo"
+      v-if="
+        (disableFilter == true || disableStarsFilter == true) &&
+        !responsivePanel()
+      "
+    >
+      <v-col>
+        <v-alert type="info" dense>
+          {{ activeFilter }}
+        </v-alert>
+      </v-col>
+    </v-row>
+    <v-row
       class="d-flex justify-start indigo px-5 py-2 white--text"
       v-if="!responsivePanel()"
     >
@@ -213,14 +226,14 @@
               dark
               class="mr-2"
               @click="resetQualification(true)"
-              v-if="stars >= 0"
+              v-if="stars > 0"
             >
               <v-icon color="error">
                 mdi-close
               </v-icon>
             </v-btn>
           </div>
-          <div class="d-flex justify-space-around align-center">
+          <div class="d-flex justify-space-between align-center">
             <div>
               <v-rating
                 v-model="minStars"
@@ -242,7 +255,7 @@
               icon
               dark
               @click="filterByQualificationRange"
-              :disabled="disableFilter"
+              :disabled="disableStarsFilter"
             >
               <v-icon>
                 mdi-filter-variant
@@ -583,7 +596,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
+import { Watch, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class FilterSideProducts extends Vue {
@@ -591,6 +604,7 @@ export default class FilterSideProducts extends Vue {
   disableFilter = false;
   disableStarsFilter = false;
   rootCategory = false;
+  activeFilter = "Active filter";
   qualificationFilterTitle = "Qualification";
   otherCategories = "Other categories";
   mainCategoriesTitle = "Main categories";
@@ -627,6 +641,26 @@ export default class FilterSideProducts extends Vue {
   minStars = 0;
   maxStars = 0;
   starsFilterType = this.items[0].value;
+  @Prop() reset!: boolean;
+
+  @Watch("reset")
+  filterReset() {
+    if (this.disableFilter == true) {
+      if (parseInt(this.price) > 0) {
+        this.filterByPrice();
+      } else {
+        this.filterByPriceRange();
+      }
+    }
+
+    if (this.disableStarsFilter == true) {
+      if (this.stars >= 0) {
+        this.filterByQualification();
+      } else {
+        this.filterByQualificationRange();
+      }
+    }
+  }
 
   resetPrice(newSearch: boolean) {
     this.disableFilter = false;
@@ -716,7 +750,7 @@ export default class FilterSideProducts extends Vue {
 
   filterByQualification() {
     this.disableStarsFilter = true;
-    if (this.stars >= 0) {
+    if (this.stars > 0) {
       const items = this.products;
       let filterItems: any[];
       switch (this.starsFilterType) {
@@ -1031,6 +1065,10 @@ export default class FilterSideProducts extends Vue {
         }
         case "filterClose": {
           this.filterClose = term.termTranslation;
+          break;
+        }
+        case "activeFilter": {
+          this.activeFilter = term.termTranslation;
           break;
         }
         default: {
