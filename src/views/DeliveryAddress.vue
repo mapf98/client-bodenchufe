@@ -8,6 +8,18 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col class="d-flex justify-center text-center">
+        <v-btn
+          text
+          color="indigo"
+          class="white--text text-center"
+          @click="goToProfile()"
+          ><v-icon class="mr-2">mdi-backspace-outline</v-icon
+          >{{ profileText }}</v-btn
+        >
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col>
         <DeliveryBar />
       </v-col>
@@ -30,7 +42,12 @@ import DeliveryBar from "../components/DeliveryBar.vue";
     DeliveryBar,
   },
 })
-export default class DeliveryAddress extends Vue {}
+export default class DeliveryAddress extends Vue {
+  profileText = "Back to profile";
+  goToProfile() {
+    this.$router.push("/profile");
+  }
+}
 </script>
 
 <style lang="scss"></style>

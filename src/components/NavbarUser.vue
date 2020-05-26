@@ -140,7 +140,7 @@ export default class NavbarUser extends Vue {
     {
       title: "My delivery addresses",
       icon: "mdi-truck-delivery-outline",
-      route: "/delivery",
+      route: "/delivery/all",
     },
   ];
 
