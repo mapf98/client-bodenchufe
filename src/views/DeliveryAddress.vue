@@ -36,6 +36,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import DeliveryBar from "../components/DeliveryBar.vue";
+import { Watch } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -46,6 +47,29 @@ export default class DeliveryAddress extends Vue {
   profileText = "Back to profile";
   goToProfile() {
     this.$router.push("/profile");
+  }
+
+  mounted() {
+    this.translate();
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "profileText": {
+          this.profileText = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 }
 </script>
