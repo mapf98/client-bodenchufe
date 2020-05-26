@@ -5,7 +5,6 @@ import { fa, fb, providerGoogle, providerFacebook } from "../../firebase";
 
 async function uploadTaskPromise(userId: any, imageFile: any) {
   return new Promise(function (resolve, reject) {
-    let finalSnapshot;
     const storageRef = fb
       .storage()
       .ref("images/user/" + userId + "/" + imageFile.name);
@@ -13,9 +12,7 @@ async function uploadTaskPromise(userId: any, imageFile: any) {
 
     uploadTask.on(
       "state_changed",
-      async (snapshot: any) => {
-        finalSnapshot = snapshot.state;
-      },
+      null,
       (error) => {
         reject(error);
       },

@@ -76,13 +76,13 @@
         >
         <v-card-text
           v-if="product.discount != null"
-          class="d-flex justify-end font-weight-light body-1 indigo--text mt-n5"
+          class="d-flex justify-end font-weight-light body-1 success--text mt-n5"
         >
           {{ product.discount }} {{ discount }}
         </v-card-text>
         <v-card-text
           v-if="product.discount != null"
-          class="d-flex justify-end font-weight-light body-1 indigo--text mt-n9"
+          class="d-flex justify-end font-weight-light body-1 success--text mt-n9"
         >
           {{ included }}
         </v-card-text>

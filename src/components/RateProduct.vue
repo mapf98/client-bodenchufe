@@ -40,9 +40,7 @@
         ></v-rating>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="indigo" text @click="closeModal">{{
-            closeText
-          }}</v-btn>
+          <v-btn color="indigo" text @click="closeModal">{{ closeText }}</v-btn>
           <v-btn color="indigo" text @click="createRating">{{
             addReviewText
           }}</v-btn>

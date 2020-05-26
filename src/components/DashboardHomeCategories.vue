@@ -53,7 +53,7 @@ import { Watch } from "vue-property-decorator";
 
 @Component({})
 export default class DashboardHomeCategories extends Vue {
-  categoriesTitle = "Principal categories";
+  categoriesTitle = "Main categories";
   showCategories = "Show all categories";
   showAll = false;
 

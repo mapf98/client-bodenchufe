@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
-    <CategoryPath />
-    <FilterSideProducts />
+    <CategoryPath @resetFilter="resetFilter" />
+    <FilterSideProducts :reset="resetVar" />
   </v-container>
 </template>
 
@@ -19,6 +19,11 @@ import FilterSideProducts from "./FilterSideProducts.vue";
 })
 export default class SidebarProduct extends Vue {
   sheet = false;
+  resetVar = false;
+
+  resetFilter() {
+    this.resetVar = !this.resetVar;
+  }
 }
 </script>
 

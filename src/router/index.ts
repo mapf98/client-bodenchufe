@@ -19,6 +19,7 @@ import AfterPay from "../views/AfterPay.vue";
 import ProductDetail from "../components/ProductDetail.vue";
 import Coupons from "../views/Coupons.vue";
 import OrderHistory from "../views/OrderHistory.vue";
+import NotFound from "../views/NotFound.vue";
 
 import { VueEasyJwt } from "vue-easy-jwt";
 const jwt = new VueEasyJwt();
@@ -118,15 +119,6 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: "/shoppingCart",
-    name: "ShoppingCart",
-    component: ShoppingCart,
-    meta: {
-      requiresAuth: true,
-      hideBasicComponents: false,
-    },
-  },
-  {
     path: "/checkout",
     name: "Checkout",
     component: Checkout,
@@ -222,6 +214,15 @@ const routes: Array<RouteConfig> = [
       requiresAuth: true,
       hideBasicComponents: false,
       applyBackground: false,
+    },
+  },
+  {
+    path: "*",
+    component: NotFound,
+    meta: {
+      requiresAuth: false,
+      hideBasicComponents: true,
+      applyBackground: true,
     },
   },
 ];

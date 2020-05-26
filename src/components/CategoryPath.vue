@@ -42,13 +42,17 @@ export default class CategoryPath extends Vue {
             categories: categories,
           })
           .then(() => {
-            this.$store.dispatch("product/getProductByCategory", {
-              categoryId: categoryId,
-              name: categoryName.split(" ")[0],
-              childCategories: this.$store.getters[
-                "category/getChildCategories"
-              ],
-            });
+            this.$store
+              .dispatch("product/getProductByCategory", {
+                categoryId: categoryId,
+                name: categoryName.split(" ")[0],
+                childCategories: this.$store.getters[
+                  "category/getChildCategories"
+                ],
+              })
+              .then(() => {
+                this.$emit("resetFilter");
+              });
           });
       });
   }

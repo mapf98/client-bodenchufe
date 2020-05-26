@@ -36,7 +36,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col>
+        <v-col class="d-flex justify-center">
           <v-menu offset-y>
             <template v-slot:activator="{ on }">
               <v-btn color="indigo" dark v-on="on" :width="buttonCols()">
@@ -371,17 +371,19 @@ export default class ProfileInfo extends Vue {
       const files = event.target.files[0] || event.dataTransfer.files;
       this.newPhoto = files;
       this.loading = true;
-      this.$store
-        .dispatch("profile/updateImage", {
-          imageUrl: this.userUrlPhoto,
-          imageData: this.newPhoto,
-          userId: this.user.user_id,
-        })
-        .then(() => {
-          this.loading = false;
-          const user: any = localStorage.getItem("userData");
-          this.userUrlPhoto = JSON.parse(user).userPhoto;
-        });
+      this.$store.dispatch("profile/newUserPhoto", false).then(() => {
+        this.$store
+          .dispatch("profile/updateImage", {
+            imageUrl: this.userUrlPhoto,
+            imageData: this.newPhoto,
+            userId: this.user.user_id,
+          })
+          .then(() => {
+            this.loading = false;
+            const user: any = localStorage.getItem("userData");
+            this.userUrlPhoto = JSON.parse(user).userPhoto;
+          });
+      });
     } else {
       this.agregado = false;
     }
