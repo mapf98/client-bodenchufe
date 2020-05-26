@@ -36,7 +36,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col>
+        <v-col class="d-flex justify-center">
           <v-menu offset-y>
             <template v-slot:activator="{ on }">
               <v-btn color="indigo" dark v-on="on" :width="buttonCols()">
