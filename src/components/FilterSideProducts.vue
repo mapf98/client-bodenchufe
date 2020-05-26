@@ -504,7 +504,7 @@
                           dark
                           class="mr-2"
                           @click="resetQualification(true)"
-                          v-if="stars >= 0"
+                          v-if="stars > 0"
                         >
                           <v-icon color="error">
                             mdi-close
@@ -681,7 +681,11 @@ export default class FilterSideProducts extends Vue {
   }
 
   closeFilterResponsive() {
-    this.responsivePanel() ? (this.sheet = !this.sheet) : (this.sheet = false);
+    this.responsivePanel()
+      ? this.sheet == false
+        ? (this.sheet = false)
+        : (this.sheet = !this.sheet)
+      : (this.sheet = false);
   }
 
   resetQualification(newSearch: boolean) {
