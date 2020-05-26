@@ -3,39 +3,36 @@
     <v-row>
       <v-card width="100%" color="#3949AB" tile>
         <v-row>
-          <v-card-text class="white--text display-1 ml-10">{{
-            myShoppingCart
-          }}</v-card-text>
+          <v-col>
+            <v-card-text class="white--text display-1 ml-5">{{
+              myShoppingCart
+            }}</v-card-text>
+          </v-col>
         </v-row>
         <v-row>
-          <v-col class="col-3">
-            <v-card-text class="white--text title ml-10 d-block"
-              >Subtotal</v-card-text
-            >
-            <v-card-text
-              class="white--text display-1 ml-10 d-block font-weight-thin mt-n8"
+          <v-col :class="flexCols()">
+            <v-card-text class="white--text title ml-4">Subtotal</v-card-text>
+            <v-card-text :class="responsiveDetails()"
               >{{ totals.subtotal }}$</v-card-text
             >
           </v-col>
-          <v-col class="col-3">
-            <v-card-text class="white--text title">{{
+          <v-col :class="flexCols()">
+            <v-card-text class="white--text title ml-4">{{
               totalWeight
             }}</v-card-text>
-            <v-card-text
-              class="white--text display-1 d-block font-weight-thin mt-n8"
+            <v-card-text :class="responsiveDetails()"
               >{{ totals.weight }} KG</v-card-text
             >
           </v-col>
-          <v-col class="col-3">
-            <v-card-text class="white--text title">{{
+          <v-col :class="flexCols()">
+            <v-card-text class="white--text title ml-4">{{
               productsQuantity
             }}</v-card-text>
-            <v-card-text
-              class="white--text display-1 d-block font-weight-thin mt-n8"
-              >{{ totals.quantity }}</v-card-text
-            >
+            <v-card-text :class="responsiveDetails()">{{
+              totals.quantity
+            }}</v-card-text>
           </v-col>
-          <v-col class="col-3">
+          <v-col>
             <v-col class="d-flex justify-center">
               <v-btn x-large v-if="totals.quantity > 0" @click="goToCheckout">{{
                 checkout
@@ -45,7 +42,7 @@
         </v-row>
       </v-card>
     </v-row>
-    <v-row class="justify-center mt-10">
+    <v-row class="justify-center mt-10 mb-6">
       <v-col
         v-for="product in products"
         :key="product.product_provider_order_id"
@@ -56,6 +53,17 @@
         <shoppingCartProduct :product="product" />
       </v-col>
     </v-row>
+    <v-snackbar
+      v-model="snackbarError"
+      color="amber darken-4 px-3"
+      class="mb-5 my-5"
+      top
+    >
+      {{ noAddressess }}
+      <v-btn @click="goToAddress()" small>
+        Agregar
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -80,6 +88,21 @@ export default class ShoppingCart extends Vue {
     weight: 0,
     quantity: 0,
   };
+  snackbarError = false;
+  noAddressess =
+    "Necesitas tener alguna direccion creada para poder hacer checkout";
+
+  flexCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? "d-flex align-center" : "";
+  }
+
+  responsiveDetails() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    const flex = "white--text headline font-weight-thin ml-4";
+    const block = "white--text display-1 font-weight-thin mt-n8 ml-4";
+    return xs || sm ? flex : block;
+  }
 
   mounted() {
     this.getProducts();
@@ -149,9 +172,20 @@ export default class ShoppingCart extends Vue {
   }
 
   goToCheckout() {
-    this.$store.dispatch("checkout/createCheckout").then(() => {
-      this.$router.push("/checkout");
+    this.$store.dispatch("address/getUserAddresses").then(() => {
+      const addresses = this.$store.getters["address/getAddresses"];
+      if (addresses.length != 0) {
+        this.snackbarError = true;
+        return;
+      }
+      this.$store.dispatch("checkout/createCheckout").then(() => {
+        this.$router.push("/checkout");
+      });
     });
+  }
+
+  goToAddress() {
+    this.$router.push("/delivery");
   }
 }
 </script>

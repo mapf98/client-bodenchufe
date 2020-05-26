@@ -1,10 +1,10 @@
 <template>
-  <v-card>
-    <div class="d-flex">
-      <v-col class="col-1">
+  <v-card class="pl-3">
+    <v-row>
+      <v-col :cols="selectButtonResponsive()">
         <v-btn
-          height="100%"
           width="100%"
+          height="100%"
           x-small
           color="amber darken-4"
           @click="
@@ -19,10 +19,12 @@
           >
         </v-btn>
       </v-col>
-      <v-col class="col-3">
-        <v-img :src="product.product_photo" height="200" width="100%"></v-img>
+      <v-col :cols="2" class="d-flex align-center">
+        <v-list-item-avatar tile size="130">
+          <v-img :src="product.product_photo"></v-img>
+        </v-list-item-avatar>
       </v-col>
-      <v-col class="col-5">
+      <v-col :cols="productDetailResponsive()">
         <v-card-title class="display-1">{{
           product.product_name
         }}</v-card-title>
@@ -69,36 +71,34 @@
           {{ inStock }} {{ product.product_provider_available_quantity }}
         </v-card-text>
       </v-col>
-      <v-col class="col-3">
-        <v-card-text
-          class="display-1 d-flex justify-end font-weight-bold indigo--text"
-          >{{ productPrice() }} $</v-card-text
-        >
-        <v-card-text
-          v-if="product.discount != null"
-          class="d-flex justify-end font-weight-light body-1 success--text mt-n5"
-        >
-          {{ product.discount }} {{ discount }}
-        </v-card-text>
-        <v-card-text
-          v-if="product.discount != null"
-          class="d-flex justify-end font-weight-light body-1 success--text mt-n9"
-        >
-          {{ included }}
-        </v-card-text>
-        <v-row class="d-flex justify-end">
-          <v-btn
-            class="ma-2 mt-12 mr-5"
-            text
-            icon
-            color="red lighten-1"
-            @click="deleteProduct(product.product_provider_order_id)"
-          >
-            <v-icon x-large>mdi-delete-circle</v-icon>
-          </v-btn>
+      <v-col class="mt-n6">
+        <v-row>
+          <v-col :cols="productPriceResponsive()">
+            <v-card-text
+              class="display-1 d-flex justify-end font-weight-bold indigo--text ml-n4"
+              >{{ productPrice() }} $</v-card-text
+            >
+            <v-card-text
+              v-if="product.discount != null"
+              class="d-flex justify-end font-weight-light body-1 success--text mt-n5"
+            >
+              {{ product.discount }} {{ discount }} {{ included }}
+            </v-card-text>
+          </v-col>
+          <v-col class="d-flex align-center justify-end">
+            <v-btn
+              :class="deleteButtonResponsive()"
+              text
+              icon
+              color="red lighten-1"
+              @click="deleteProduct(product.product_provider_order_id)"
+            >
+              <v-icon x-large>mdi-delete-circle</v-icon>
+            </v-btn>
+          </v-col>
         </v-row>
       </v-col>
-    </div>
+    </v-row>
   </v-card>
 </template>
 
@@ -118,6 +118,31 @@ export default class ShoppingCart extends Vue {
 
   @Prop() product!: any;
 
+  selectButtonResponsive() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 3 : 1;
+  }
+
+  productDetailResponsive() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 6;
+  }
+
+  productPriceResponsive() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 8 : 12;
+  }
+
+  productPriceDiscountResponsive() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 4 : 12;
+  }
+
+  deleteButtonResponsive() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? "mr-5" : "mr-5 mt-12";
+  }
+
   productPrice() {
     if (this.product.discount == null)
       return Math.round(this.product.product_provider_price * 100) / 100;
@@ -133,7 +158,6 @@ export default class ShoppingCart extends Vue {
 
   mounted() {
     this.translate();
-    console.log(this.product);
     window.scrollTo(0, 0);
   }
 
