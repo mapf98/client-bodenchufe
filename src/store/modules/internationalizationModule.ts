@@ -18,10 +18,10 @@ export default {
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
-    setLanguageTexts(state: {}, languagesTexts: []) {
+    setLanguageTexts(state: any, languagesTexts: []) {
       Vue.set(state, "languagesTexts", languagesTexts);
     },
-    setPreferredLanguage(state: {}, language: string) {
+    setPreferredLanguage(state: any, language: string) {
       Vue.set(state, "preferredLanguage", language);
     },
   },

@@ -60,9 +60,9 @@ export default class GoogleFederatedLogin extends Vue {
             this.$store
               .dispatch("internationalization/setUserLanguage")
               .then(() => {
-                if(this.productDetails.details !== undefined){
+                if (this.productDetails.details !== undefined) {
                   this.$router.push("/detail");
-                }else{
+                } else {
                   this.$router.push("/home");
                 }
               });
@@ -73,7 +73,7 @@ export default class GoogleFederatedLogin extends Vue {
     }
   }
 
-  get productDetails(){
+  get productDetails() {
     return this.$store.getters["product/getProductDetail"];
   }
 

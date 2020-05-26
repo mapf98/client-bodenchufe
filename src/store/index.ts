@@ -13,6 +13,7 @@ import checkout from "./modules/checkoutModule";
 import profile from "./modules/profileModule";
 import category from "./modules/categoryModule";
 import product from "./modules/productModule";
+import orderHistory from "./modules/orderHistoryModule";
 
 Vue.use(Vuex);
 
@@ -29,5 +30,6 @@ export default new Vuex.Store({
     profile,
     category,
     product,
+    orderHistory,
   },
 });

@@ -1,14 +1,13 @@
 <template>
   <v-container fluid>
-    <CategoryPath />
-    <FilterSideProducts />
+    <CategoryPath @resetFilter="resetFilter" />
+    <FilterSideProducts :reset="resetVar" />
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
 import CategoryPath from "./CategoryPath.vue";
 import FilterSideProducts from "./FilterSideProducts.vue";
 
@@ -20,6 +19,11 @@ import FilterSideProducts from "./FilterSideProducts.vue";
 })
 export default class SidebarProduct extends Vue {
   sheet = false;
+  resetVar = false;
+
+  resetFilter() {
+    this.resetVar = !this.resetVar;
+  }
 }
 </script>
 

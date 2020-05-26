@@ -112,7 +112,7 @@ export default class Profile extends Vue {
   couponsButtonText = "Coupons";
   shoppingCartButtonText = "Shopping Cart";
   changePasswordButtonText = "Change your password";
-  signOffText = "Sign off";
+  signOffText = "Log out";
   userDataProp = {};
   accountType = "";
   isfederated = false;

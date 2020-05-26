@@ -8,15 +8,20 @@ async function deleteImage(imageUrl: any) {
     const storage = fs;
     const storageUrlPath = storage.refFromURL(imageUrl);
     const storageRef = storage.ref(storageUrlPath.fullPath);
-    storageRef.delete().catch((error) => {
-      return error;
-    });
+    storageRef
+      .delete()
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        reject();
+        return error;
+      });
   });
 }
 
 async function upImage(userId: any, imageFile: any) {
   return new Promise(function (resolve, reject) {
-    let finalSnapshot;
     const storageRef = fb
       .storage()
       .ref("images/user/" + userId + "/" + imageFile.name);
@@ -24,11 +29,9 @@ async function upImage(userId: any, imageFile: any) {
 
     uploadTask.on(
       "state_changed",
-      async (snapshot: any) => {
-        finalSnapshot = snapshot.state;
-      },
+      null,
       (error) => {
-        reject();
+        reject(error);
       },
       async () => {
         await uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
@@ -45,11 +48,13 @@ export default {
   state: {
     user: {},
     passwordStatus: {},
+    newUserPhoto: false,
   },
   // -----------------------------------------------------------------
   getters: {
     getUserData: (state: any) => state.user,
     getPasswordStatus: (state: any) => state.passwordStatus,
+    getNewUserPhoto: (state: any) => state.newUserPhoto,
   },
   // -----------------------------------------------------------------
   mutations: {
@@ -59,11 +64,14 @@ export default {
     setPasswordStatus(state: any, status: any) {
       Vue.set(state, "passwordStatus", status);
     },
+    setNewUserPhoto(state: any, newUserPhoto: boolean) {
+      Vue.set(state, "newUserPhoto", newUserPhoto);
+    },
   },
   // -----------------------------------------------------------------
   actions: {
-    userData: async (context: any, payload: any) => {
-      const user = await profileService.getUserById().then((response: any) => {
+    userData: async (context: any) => {
+      await profileService.getUserById().then((response: any) => {
         context.commit("setUserData", response.data.user[0]);
       });
     },
@@ -84,9 +92,13 @@ export default {
           userData.userPhoto = newImageUrl;
           localStorage.setItem("userData", JSON.stringify(userData));
         });
+      context.commit("setNewUserPhoto", true);
     },
     updateUserInfo: async (context: any, payload: any) => {
       await profileService.updateUserInfo(payload.user);
+    },
+    newUserPhoto: async (context: any, payload: any) => {
+      context.commit("setNewUserPhoto", payload);
     },
     changePassword: async (context: any, payload: any) => {
       await profileService
@@ -102,6 +114,16 @@ export default {
             context.commit("setPasswordStatus", { correct: true });
           }
         });
+    },
+    updateLanguage: async (context: any, payload: any) => {
+      await profileService.updateLanguage(payload.languageName).then((res) => {
+        if (res.data.updated == true) {
+          const userStorageString: any = localStorage.getItem("userData");
+          const userStorage = JSON.parse(userStorageString);
+          userStorage.userLanguage = res.data.language;
+          localStorage.setItem("userData", JSON.stringify(userStorage));
+        }
+      });
     },
   },
 };

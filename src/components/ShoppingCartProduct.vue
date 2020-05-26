@@ -20,11 +20,7 @@
         </v-btn>
       </v-col>
       <v-col class="col-3">
-        <v-img
-          :src="product.product_photo"
-          height="200"
-          width="100%"
-        ></v-img>
+        <v-img :src="product.product_photo" height="200" width="100%"></v-img>
       </v-col>
       <v-col class="col-5">
         <v-card-title class="display-1">{{
@@ -76,17 +72,17 @@
       <v-col class="col-3">
         <v-card-text
           class="display-1 d-flex justify-end font-weight-bold indigo--text"
-          >{{ product.total }} $</v-card-text
+          >{{ productPrice() }} $</v-card-text
         >
         <v-card-text
           v-if="product.discount != null"
-          class="d-flex justify-end font-weight-light body-1 indigo--text mt-n5"
+          class="d-flex justify-end font-weight-light body-1 success--text mt-n5"
         >
           {{ product.discount }} {{ discount }}
         </v-card-text>
         <v-card-text
           v-if="product.discount != null"
-          class="d-flex justify-end font-weight-light body-1 indigo--text mt-n9"
+          class="d-flex justify-end font-weight-light body-1 success--text mt-n9"
         >
           {{ included }}
         </v-card-text>
@@ -122,10 +118,23 @@ export default class ShoppingCart extends Vue {
 
   @Prop() product!: any;
 
-  mounted(){
+  productPrice() {
+    if (this.product.discount == null)
+      return Math.round(this.product.product_provider_price * 100) / 100;
+    else
+      return (
+        Math.round(
+          this.product.product_provider_price *
+            (1 - this.product.discount.split("%")[0] / 100) *
+            100
+        ) / 100
+      );
+  }
+
+  mounted() {
     this.translate();
     console.log(this.product);
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }
 
   @Watch("translator")

@@ -24,8 +24,8 @@ export default {
   },
   // -----------------------------------------------------------------
   actions: {
-    getUserAddresses: async (context: any, payload: any) => {
-      const addresses = await addressService.getUserAddresses().then((res) => {
+    getUserAddresses: async (context: any) => {
+      await addressService.getUserAddresses().then((res) => {
         context.commit("setAddresses", res.data.addresses);
       });
     },

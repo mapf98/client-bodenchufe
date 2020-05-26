@@ -20,18 +20,20 @@ export default {
     },
     setUserCoupons(state: any, userCoupons: any) {
       Vue.set(state, "userCoupons", userCoupons);
-    }
+    },
   },
   // -----------------------------------------------------------------
   actions: {
     getCouponsForOrder: async (context: any, payload: any) => {
-      const coupons = await couponService.getUserCouponsForOrder(payload.orderTotal);
+      const coupons = await couponService.getUserCouponsForOrder(
+        payload.orderTotal
+      );
       context.commit("setUserCouponsForOrder", coupons.data.coupons);
     },
-    getUserCoupon: async (context: any, payload:any) => {
-      await couponService.getUserCoupons().then((res:any) => {
+    getUserCoupon: async (context: any) => {
+      await couponService.getUserCoupons().then((res: any) => {
         context.commit("setUserCoupons", res.data.coupons);
       });
-    }
+    },
   },
 };

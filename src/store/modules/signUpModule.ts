@@ -5,7 +5,6 @@ import { fa, fb, providerGoogle, providerFacebook } from "../../firebase";
 
 async function uploadTaskPromise(userId: any, imageFile: any) {
   return new Promise(function (resolve, reject) {
-    let finalSnapshot;
     const storageRef = fb
       .storage()
       .ref("images/user/" + userId + "/" + imageFile.name);
@@ -13,11 +12,9 @@ async function uploadTaskPromise(userId: any, imageFile: any) {
 
     uploadTask.on(
       "state_changed",
-      async (snapshot: any) => {
-        finalSnapshot = snapshot.state;
-      },
+      null,
       (error) => {
-        reject();
+        reject(error);
       },
       async () => {
         await uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
@@ -45,10 +42,10 @@ export default {
   // -----------------------------------------------------------------
   mutations: {
     // Aqui se setean los atributos del state
-    setUser(state: {}, user: any) {
+    setUser(state: any, user: any) {
       Vue.set(state, "user", user);
     },
-    setStatus(state: {}, status: any) {
+    setStatus(state: any, status: any) {
       Vue.set(state, "status", status);
     },
   },
@@ -59,10 +56,8 @@ export default {
     // },
     notFederatedSignUp: async (context: any, payload: any) => {
       let userId: any;
-      let imageUrl: any;
       let userEmail: any;
       let userPassword: any;
-      let snapshotFinal;
 
       const userData: any = {
         userName: "",
@@ -138,7 +133,6 @@ export default {
     },
 
     federatedSignUp: async (context: any, payload: any) => {
-      let userEmail: string | null | undefined;
       let isRegistered: any = true;
 
       const userData: any = {
@@ -158,7 +152,7 @@ export default {
         userPhoto: "",
         userType: "federated",
       };
-      //hzhscdjpaz_1589939705@tfbnw.net
+
       let googleProfile: any;
       await fa
         .signInWithPopup(

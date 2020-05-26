@@ -52,6 +52,12 @@
               <p class="mb-0">{{ item.title }}</p></v-list-item-title
             >
           </v-list-item>
+          <v-list-item @click="logOut">
+            <v-list-item-title class="d-flex justify-start align-center">
+              <v-icon class="mr-1" color="error">mdi-logout</v-icon>
+              <p class="mb-0 error--text">{{ signOffText }}</p>
+            </v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </div>
@@ -69,7 +75,12 @@
             </template>
           </v-img>
         </v-avatar>
-        <v-badge color="amber darken-3" :content="userProducts" :value="userProducts" overlap>
+        <v-badge
+          color="amber darken-3"
+          :content="userProducts"
+          :value="userProducts"
+          overlap
+        >
           <v-icon color="indigo" large>
             mdi-cart-outline
           </v-icon>
@@ -89,6 +100,12 @@
             <p class="mb-0">{{ item.title }}</p></v-list-item-title
           >
         </v-list-item>
+        <v-list-item @click="logOut">
+          <v-list-item-title class="d-flex justify-start align-center">
+            <v-icon class="mr-1" color="error">mdi-logout</v-icon>
+            <p class="mb-0 error--text">{{ signOffText }}</p>
+          </v-list-item-title>
+        </v-list-item>
       </v-list>
     </div>
   </div>
@@ -103,6 +120,7 @@ import { Watch } from "vue-property-decorator";
 export default class NavbarUser extends Vue {
   userPhoto = "";
   userName = "";
+  signOffText = "Log out";
   placeHolcerImg =
     "https://firebasestorage.googleapis.com/v0/b/bodenchufe-client.appspot.com/o/images%2Faplication%2FFotofinal.png?alt=media&token=d9d54e10-3ad2-4906-8986-890b38a27d38";
 
@@ -116,7 +134,7 @@ export default class NavbarUser extends Vue {
     {
       title: "My orders",
       icon: "mdi-package-variant-closed",
-      route: "/orders",
+      route: "/orderHistory",
     },
     { title: "My coupons", icon: "mdi-wallet-giftcard", route: "/coupons" },
     {
@@ -130,9 +148,13 @@ export default class NavbarUser extends Vue {
     this.$router.push(route);
   }
 
-  // created(){
-  //   this.$store.dispatch("shoppingCart/getShoppingCartProducts");
-  // }
+  logOut() {
+    localStorage.clear();
+    this.$router.currentRoute.path != "/home"
+      ? this.$router.push("/home")
+      : false;
+    location.reload();
+  }
 
   mounted() {
     this.$store;
@@ -173,6 +195,10 @@ export default class NavbarUser extends Vue {
           this.items[4].title = term.termTranslation;
           break;
         }
+        case "signOffText": {
+          this.signOffText = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -186,6 +212,19 @@ export default class NavbarUser extends Vue {
 
   get userProducts() {
     return this.$store.getters["shoppingCart/getProductsBadge"];
+  }
+
+  @Watch("userNewPhoto")
+  updatePhoto() {
+    const userData: any = localStorage.getItem("userData");
+    this.userPhoto =
+      JSON.parse(userData).userPhoto == "photo"
+        ? this.placeHolcerImg
+        : JSON.parse(userData).userPhoto;
+  }
+
+  get userNewPhoto() {
+    return this.$store.getters["profile/getNewUserPhoto"];
   }
 }
 </script>

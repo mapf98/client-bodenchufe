@@ -18,13 +18,18 @@
             >
           </v-list-item-content>
 
-          <v-list-item-avatar tile size="80">
+          <v-list-item-avatar tile size="130">
             <v-img :src="product.product_photo"></v-img>
           </v-list-item-avatar>
         </v-list-item>
 
         <v-card-actions>
-          <v-rating v-model="avg" readonly color="amber" background-color="amber lighten-1"></v-rating>
+          <v-rating
+            v-model="avg"
+            readonly
+            color="amber"
+            background-color="amber lighten-1"
+          ></v-rating>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -34,7 +39,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch, Prop } from "vue-property-decorator";
+import { Prop } from "vue-property-decorator";
 
 @Component({})
 export default class Product extends Vue {
