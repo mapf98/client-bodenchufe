@@ -21,6 +21,7 @@
           x-large
           color="amber darken-2"
           class="white--text d-flex justify-center"
+          @click="goToOrders"
         >
           {{ myOrders }}
           <v-icon class="ml-4">mdi-package-variant-closed</v-icon>
@@ -63,6 +64,10 @@ export default class AfterPay extends Vue {
 
   goToHome() {
     this.$router.push("/home");
+  }
+
+  goToOrders() {
+    this.$router.push("/orderHistory");
   }
 
   @Watch("translator")
