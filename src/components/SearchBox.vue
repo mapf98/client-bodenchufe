@@ -15,7 +15,6 @@
     hide-details
     solo-inverted
     clearable
-    cache-items
     :readonly="inSearch"
   >
     <template v-slot:item="data">
@@ -70,7 +69,12 @@ export default class SearchBox extends Vue {
   @Watch("keywordSearch")
   findProductsByKeyword(val: any) {
     this.loading = true;
-    if (val !== undefined && val !== null && this.clearKeyword == false && this.inSearch == false) {
+    if (
+      val !== undefined &&
+      val !== null &&
+      this.clearKeyword == false &&
+      this.inSearch == false
+    ) {
       this.$store.dispatch("product/setClearKeyword", false);
       this.$store
         .dispatch("product/getProductByKeyword", { keyword: val })
@@ -84,7 +88,11 @@ export default class SearchBox extends Vue {
 
   @Watch("keyword")
   goToSearch(val: any) {
-    if (val !== undefined && this.clearKeyword == false && this.inSearch == false) {
+    if (
+      val !== undefined &&
+      this.clearKeyword == false &&
+      this.inSearch == false
+    ) {
       if (val.type == "product") {
         this.inSearch = true;
         this.$store
