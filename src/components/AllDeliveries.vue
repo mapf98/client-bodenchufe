@@ -9,6 +9,20 @@
         />
       </v-col>
     </v-row>
+    <v-row>
+      <v-col>
+        <div v-if="(userAddresses.length === 0)" class="mt-12">
+          <p class="mb-0 mt-12 indigo--text title text-center">
+            {{ notAddresses }}
+          </p>
+          <div class="d-flex justify-center mt-6 mb-12">
+            <v-icon color="indigo" x-large>
+              mdi-magnify-remove-outline
+            </v-icon>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -26,9 +40,29 @@ import { Watch } from "vue-property-decorator";
 export default class AllDeliveries extends Vue {
   userAddresses = [];
   update = false;
+  notAddresses = "there is no added address";
 
   get addresses() {
     return this.$store.getters["address/getAddresses"];
+  }
+
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "notAddresses": {
+          this.notAddresses = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
   }
 
   @Watch("update")
@@ -56,6 +90,7 @@ export default class AllDeliveries extends Vue {
 
   mounted() {
     this.getAllUserAddresses();
+    this.translate();
   }
 }
 </script>
