@@ -290,6 +290,7 @@ export default class ProductDetail extends Vue {
   }
 
   productsByProvider(providerId: number, providerName: string) {
+    this.$store.dispatch("product/setClearKeyword", true);
     this.$store
       .dispatch("product/getProductByProvider", {
         providerId: providerId,
@@ -301,12 +302,14 @@ export default class ProductDetail extends Vue {
             clear: true,
           })
           .then(() => {
+            this.$store.dispatch("product/setClearKeyword", false);
             this.$router.push("/products");
           });
       });
   }
 
   productsByOffer(offerId: number, offerRate: string) {
+    this.$store.dispatch("product/setClearKeyword", true);
     this.$store
       .dispatch("product/getProductByOffer", {
         offerId: offerId,
@@ -318,6 +321,7 @@ export default class ProductDetail extends Vue {
             clear: true,
           })
           .then(() => {
+            this.$store.dispatch("product/setClearKeyword", false);
             this.$router.push("/products");
           });
       });
@@ -359,6 +363,7 @@ export default class ProductDetail extends Vue {
   }
 
   goToCategory(categoryId: number, categoryName: string) {
+    this.$store.dispatch("product/setClearKeyword", true);
     const categories = this.$store.getters["category/getCategories"];
     this.$store
       .dispatch("category/setActualPath", {
@@ -381,6 +386,7 @@ export default class ProductDetail extends Vue {
                 ],
               })
               .then(() => {
+                this.$store.dispatch("product/setClearKeyword", false);
                 this.$router.push("/products");
               });
           });
@@ -452,7 +458,10 @@ export default class ProductDetail extends Vue {
   }
 
   goToShoppingCart() {
-    this.$router.push("/shoppingCart");
+    this.$store.dispatch("product/setClearKeyword", true);
+    this.$router.push("/shoppingCart").then(() => {
+      this.$store.dispatch("product/setClearKeyword", false);
+    });
   }
 
   get productDetails() {

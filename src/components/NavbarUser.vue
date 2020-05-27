@@ -145,7 +145,10 @@ export default class NavbarUser extends Vue {
   ];
 
   pushTo(route: string) {
-    this.$router.push(route);
+    this.$store.dispatch("product/setClearKeyword", true);
+    this.$router.push(route).then(() => {
+      this.$store.dispatch("product/setClearKeyword", false);
+    });
   }
 
   logOut() {
@@ -168,7 +171,10 @@ export default class NavbarUser extends Vue {
   }
 
   goToProfile() {
-    this.$router.push("/login");
+    this.$store.dispatch("product/setClearKeyword", true);
+    this.$router.push("/login").then(() => {
+      this.$store.dispatch("product/setClearKeyword", false);
+    });
   }
 
   @Watch("translator")

@@ -68,7 +68,7 @@ export default class Internationalization extends Vue {
     ];
     this.$store
       .dispatch("internationalization/getTranslate", {
-        lang: this.language,
+        lang: this.$store.getters["internationalization/getPreferredLanguage"],
       })
       .then(() => {
         this.loading = false;

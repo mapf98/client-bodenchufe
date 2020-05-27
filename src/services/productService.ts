@@ -13,4 +13,7 @@ export default {
   getProductDetail(postId: number) {
     return API_URL.get(`/product/${postId}`);
   },
+  getProductByKeyword(keyword: string) {
+    return API_URL.get(`/product/search/${keyword}`);
+  },
 };
