@@ -78,7 +78,12 @@
       </v-stepper-step>
 
       <v-stepper-content step="3">
-        <v-card color="grey lighten-2" class="mb-12" tile>
+        <v-card
+          v-if="paymentObtained"
+          color="grey lighten-2"
+          class="mb-12"
+          tile
+        >
           <CheckoutPayment
             :paymentDetail="paymentDetail"
             :addressId="addressId"
@@ -121,6 +126,7 @@ export default class Checkout extends Vue {
     quantity: 0,
   };
   e6 = 1;
+  paymentObtained = false;
 
   //Los 3 atributos de abajo se usan para almacenar la informacion pasada desde los componentes hijos
   //Si no se pasa niguna informacion se quedan con los valores establecidos e indican que no se selecciono direccion ni cupon
@@ -164,7 +170,9 @@ export default class Checkout extends Vue {
   }
 
   getPaymentDetail() {
-    this.$store.dispatch("checkout/getPaymentDetail");
+    this.$store.dispatch("checkout/getPaymentDetail").then(() => {
+      this.paymentObtained = true;
+    });
   }
 
   get paymentDetail() {
