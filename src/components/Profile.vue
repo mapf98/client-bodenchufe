@@ -44,6 +44,7 @@
               color="indigo darken-4"
               :width="buttonCols()"
               :height="heigthCols()"
+              @click="goToOrders()"
               outlined
             >
               <v-icon class="mr-2">mdi-file-multiple</v-icon
@@ -58,6 +59,7 @@
               color="indigo darken-4"
               :width="buttonCols()"
               :height="heigthCols()"
+              @click="goToCoupons()"
               outlined
             >
               <v-icon class="mr-2">mdi-tag-multiple</v-icon
@@ -184,6 +186,12 @@ export default class Profile extends Vue {
   }
   goToDeliveryAddress() {
     this.$router.push("/delivery/all");
+  }
+  goToCoupons() {
+    this.$router.push("/coupons");
+  }
+  goToOrders() {
+    this.$router.push("/orderHistory");
   }
   signOff() {
     localStorage.clear();
