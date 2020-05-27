@@ -1,7 +1,12 @@
 <template>
   <v-row>
     <v-col>
-      <v-card class="d-flex flex-wrap" outlined>
+      <v-card
+        class="d-flex flex-wrap"
+        outlined
+        :loading="loading"
+        @click="goToDetail(product.product_provider_id)"
+      >
         <v-col :cols="responsive()">
           <v-list-item-avatar tile size="130">
             <v-img :src="product.product_photo"></v-img>
@@ -44,6 +49,7 @@ import { Prop, Watch } from "vue-property-decorator";
 export default class OrderHistoryProduct extends Vue {
   @Prop() product!: any;
   quantity = "Quantity";
+  loading = false;
 
   getProductPrice() {
     if (this.product.discount != null) {
@@ -56,6 +62,16 @@ export default class OrderHistoryProduct extends Vue {
       );
     }
     return Math.round(this.product.product_provider_price * 100) / 100;
+  }
+
+  goToDetail(postId: number) {
+    this.loading = true;
+    this.$store
+      .dispatch("product/getProductDetail", { postId: postId })
+      .then(() => {
+        this.loading = false;
+        this.$router.push("/detail");
+      });
   }
 
   responsive() {

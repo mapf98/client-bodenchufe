@@ -35,7 +35,6 @@
           color="yellow darken-3"
           background-color="grey darken-1"
           empty-icon="$ratingFull"
-          half-increments
           hover
         ></v-rating>
         <v-card-actions>
@@ -64,7 +63,7 @@ export default class RateProduct extends Vue {
   reviewTextError = "You must write a review";
   ratingTextError = "You must rate the product";
   approvedTextReview =
-    "You can only make a review when the order has been approved";
+    "You can only make a review when the order has been approved or if you have previously purchased the product";
   closeText = "Close";
   addReviewText = "Add review";
   showModal = false;
@@ -111,7 +110,7 @@ export default class RateProduct extends Vue {
           productId: this.product.product_provider_id,
         })
         .then((res) => {
-          if (res == undefined) this.noAvailable = true;
+          if (!res.data.rated) this.noAvailable = true;
           else {
             this.showModal = false;
             this.emptyReview = false;
