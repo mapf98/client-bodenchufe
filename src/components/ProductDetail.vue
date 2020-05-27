@@ -425,7 +425,9 @@ export default class ProductDetail extends Vue {
       const offer = offerRate.split("%")[0];
       const discount =
         (this.productDetails.product_provider_price * parseInt(offer)) / 100;
-      return this.financial(this.productDetails.product_provider_price - discount);
+      return this.financial(
+        this.productDetails.product_provider_price - discount
+      );
     } else {
       return this.productDetails.product_provider_price;
     }
