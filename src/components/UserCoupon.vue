@@ -14,6 +14,15 @@
               {{ canBeUsedInText }}: {{ coupon.coupon_min_use }}$ -
               {{ coupon.coupon_max_use }}$
             </div>
+            <v-chip
+              outlined
+              small
+              :color="setStatusColor(this.coupon.status_name)"
+              :text-color="setStatusColor(this.coupon.status_name)"
+              class="mr-12"
+            >
+              {{ setStatusName(this.coupon.status_name) }}
+            </v-chip>
           </v-col>
         </v-row>
       </v-card-text>
@@ -33,10 +42,23 @@ export default class UserCoupons extends Vue {
 
   discountRateText = "Discount";
   canBeUsedInText = "On purchases between";
+  availableStatusText = "Available";
+  unavailableStatusText = "Not available";
+
+  setStatusColor(status: string) {
+    if (status == "AVAILABLE") return "white";
+    if (status == "UNAVAILABLE") return "red";
+  }
+
+  setStatusName(status: string) {
+    if (status == "AVAILABLE") return this.availableStatusText;
+    if (status == "UNAVAILABLE") return this.unavailableStatusText;
+  }
 
   mounted() {
     this.translate();
     this.coupon = this.userCoupon;
+    console.log(this.coupon);
   }
 
   @Watch("translator")
@@ -49,6 +71,14 @@ export default class UserCoupons extends Vue {
         }
         case "canBeUsedInText": {
           this.canBeUsedInText = term.termTranslation;
+          break;
+        }
+        case "availableStatusText": {
+          this.availableStatusText = term.termTranslation;
+          break;
+        }
+        case "unavailableStatusText": {
+          this.unavailableStatusText = term.termTranslation;
           break;
         }
         default: {
