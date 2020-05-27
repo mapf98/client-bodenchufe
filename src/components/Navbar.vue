@@ -74,26 +74,34 @@ export default class Navbar extends Vue {
   showUser = false;
 
   goToHome() {
+    this.$store.dispatch("product/setClearKeyword", true);
     this.$router.currentRoute.path != "/home"
-      ? this.$router.push("/home")
+      ? this.$router.push("/home").then(() => {
+          this.$store.dispatch("product/setClearKeyword", false);
+        })
       : false;
   }
 
   goToLogin() {
-    this.$router.push("/Login");
-  }
-
-  goToCart() {
-    this.$router.push("/shoppingCart");
+    this.$store.dispatch("product/setClearKeyword", true);
+    this.$router.push("/Login").then(() => {
+      this.$store.dispatch("product/setClearKeyword", false);
+    });
   }
 
   goToSignUp() {
-    this.$router.push("/user/signUp");
+    this.$store.dispatch("product/setClearKeyword", true);
+    this.$router.push("/user/signUp").then(() => {
+      this.$store.dispatch("product/setClearKeyword", false);
+    });
   }
 
   goToCategories() {
+    this.$store.dispatch("product/setClearKeyword", true);
     this.$router.currentRoute.path != "/categories"
-      ? this.$router.push("/categories")
+      ? this.$router.push("/categories").then(() => {
+          this.$store.dispatch("product/setClearKeyword", false);
+        })
       : false;
   }
 

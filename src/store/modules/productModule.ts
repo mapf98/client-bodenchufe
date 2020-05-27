@@ -33,6 +33,8 @@ export default {
     products: [],
     productsPath: {},
     productDetail: {},
+    productsByKeyword: [],
+    clearKeyword: false,
   },
   // -----------------------------------------------------------------
   getters: {
@@ -40,6 +42,8 @@ export default {
     getProducts: (state: any) => state.products,
     getProductsPath: (state: any) => state.productsPath,
     getProductDetail: (state: any) => state.productDetail,
+    getProductByKeyword: (state: any) => state.productsByKeyword,
+    getClearKeyword: (state: any) => state.clearKeyword,
   },
   // -----------------------------------------------------------------
   mutations: {
@@ -52,6 +56,12 @@ export default {
     },
     setProductDetail(state: any, productDetail: any) {
       Vue.set(state, "productDetail", productDetail);
+    },
+    setProductByKeyword(state: any, productsByKeyword: any) {
+      Vue.set(state, "productsByKeyword", productsByKeyword);
+    },
+    setClearKeyword(state: any, clearKeyword: any) {
+      Vue.set(state, "clearKeyword", clearKeyword);
     },
   },
   // -----------------------------------------------------------------
@@ -102,6 +112,18 @@ export default {
           };
           context.commit("setProductDetail", productDetail);
         });
+    },
+    getProductByKeyword: async (context: any, payload: any) => {
+      if (payload.keyword !== "") {
+        await productService
+          .getProductByKeyword(payload.keyword)
+          .then((response: any) => {
+            context.commit("setProductByKeyword", response.data.products);
+          });
+      }
+    },
+    setClearKeyword: async (context: any, payload: any) => {
+      context.commit("setClearKeyword", payload);
     },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION

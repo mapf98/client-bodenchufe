@@ -1,14 +1,20 @@
 <template>
   <v-autocomplete
-    :items="states"
-    :filter="customFilter"
-    color="white"
-    item-text="name"
+    :items="productsByKeyword"
     :label="searchBoxLabel"
+    v-model="keyword"
+    :search-input.sync="keywordSearch"
     flat
+    dense
+    :loading="loading"
+    item-text="text"
+    item-value="value"
     hide-no-data
+    return-object
     hide-details
     solo-inverted
+    clearable
+    cache-items
   ></v-autocomplete>
 </template>
 
@@ -20,20 +26,39 @@ import { Watch } from "vue-property-decorator";
 @Component({})
 export default class SearchBox extends Vue {
   searchBoxLabel = "Find the product you want";
-  states = [
-    { name: "Florida", abbr: "FL", id: 1 },
-    { name: "Georgia", abbr: "GA", id: 2 },
-    { name: "Nebraska", abbr: "NE", id: 3 },
-    { name: "California", abbr: "CA", id: 4 },
-    { name: "New York", abbr: "NY", id: 5 },
-  ];
+  keyword: any = {};
+  keywordSearch = "";
+  loading = false;
 
-  customFilter(item: any, queryText: any) {
-    const textOne = item.name.toLowerCase();
-    const textTwo = item.abbr.toLowerCase();
-    const searchText = queryText.toLowerCase();
+  @Watch("keywordSearch")
+  findProductsByKeyword(val: any) {
+    this.loading = true;
+    if (val !== undefined && val !== null && this.clearKeyword == false) {
+      console.log(val);
+      this.$store.dispatch("product/setClearKeyword", false);
+      this.$store
+        .dispatch("product/getProductByKeyword", { keyword: val })
+        .then(() => {
+          this.loading = false;
+        });
+    } else {
+      this.loading = false;
+    }
+  }
 
-    return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1;
+  @Watch("keyword")
+  goToProductDetail(val: any) {
+    if (val !== undefined && this.clearKeyword == false) {
+      this.$store
+        .dispatch("product/getProductDetail", { postId: val.value })
+        .then(() => {
+          this.$router.push("/detail");
+        });
+    } else {
+      if (this.clearKeyword == false) {
+        this.$router.push("/home");
+      }
+    }
   }
 
   mounted() {
@@ -54,6 +79,38 @@ export default class SearchBox extends Vue {
         }
       }
     });
+  }
+
+  @Watch("clearKeyword")
+  clearSearch() {
+    if (this.clearKeyword == true) {
+      this.keyword = {};
+      this.keywordSearch = "";
+    }
+  }
+
+  get productsByKeyword() {
+    const products = this.$store.getters["product/getProductByKeyword"];
+    let autocompleteProducts: any = [];
+
+    if (products !== undefined) {
+      products.forEach((product: any) => {
+        autocompleteProducts.push({
+          text:
+            product.product_name +
+            " (" +
+            product.product_provider_price +
+            " $)",
+          value: product.product_provider_id,
+        });
+      });
+    }
+
+    return autocompleteProducts;
+  }
+
+  get clearKeyword() {
+    return this.$store.getters["product/getClearKeyword"];
   }
 
   get translator() {
