@@ -24,7 +24,7 @@ export default {
       context.commit("setUserOrders", orders.data.orders);
     },
     createRating: async (contex: any, payload: any) => {
-      await orderHistoryService.rateProduct(payload);
+      return await orderHistoryService.rateProduct(payload);
     },
   },
 };

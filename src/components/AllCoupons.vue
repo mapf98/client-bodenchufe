@@ -12,11 +12,11 @@
         }}</v-card-text>
       </v-col>
     </v-card>
-    <v-row
-      class="d-flex justify-center">
-      <v-col :cols="separatorCols()"
-      v-for="coupon of userCoupons"
-      :key="coupon.coupon_id"
+    <v-row class="d-flex justify-center">
+      <v-col
+        :cols="separatorCols()"
+        v-for="coupon of userCoupons"
+        :key="coupon.coupon_id"
       >
         <UserCoupon :userCoupon="coupon" />
       </v-col>
