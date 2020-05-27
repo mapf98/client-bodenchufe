@@ -327,7 +327,6 @@ export default class ProfileInfo extends Vue {
   }
 
   getTranslate() {
-    console.log(this.languageName);
     this.$store.dispatch("internationalization/getTranslate", {
       lang: this.languageName,
     });
