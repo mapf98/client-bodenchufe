@@ -118,7 +118,7 @@ export default {
         await productService
           .getProductByKeyword(payload.keyword)
           .then((response: any) => {
-            context.commit("setProductByKeyword", response.data.products);
+            context.commit("setProductByKeyword", response.data);
           });
       }
     },

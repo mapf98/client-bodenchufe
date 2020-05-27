@@ -723,21 +723,21 @@ export default class FilterSideProducts extends Vue {
       switch (this.priceFilterType) {
         case "equal": {
           filterItems = items.filter((product: any) => {
-            return product.product_provider_price == parseInt(this.price);
+            return product.product_provider_price == parseFloat(this.price);
           });
           this.$store.commit("product/setProducts", filterItems);
           break;
         }
         case "minor": {
           filterItems = items.filter((product: any) => {
-            return product.product_provider_price <= parseInt(this.price);
+            return product.product_provider_price <= parseFloat(this.price);
           });
           this.$store.commit("product/setProducts", filterItems);
           break;
         }
         case "mayor": {
           filterItems = items.filter((product: any) => {
-            return product.product_provider_price >= parseInt(this.price);
+            return product.product_provider_price >= parseFloat(this.price);
           });
           this.$store.commit("product/setProducts", filterItems);
           break;
@@ -798,13 +798,13 @@ export default class FilterSideProducts extends Vue {
     if (
       parseInt(this.minPrice) > 0 &&
       parseInt(this.maxPrice) > 0 &&
-      parseInt(this.maxPrice) > parseInt(this.minPrice)
+      parseFloat(this.maxPrice) > parseFloat(this.minPrice)
     ) {
       const items = this.products;
       const filterItems = items.filter((product: any) => {
         return (
-          product.product_provider_price >= parseInt(this.minPrice) &&
-          product.product_provider_price <= parseInt(this.maxPrice)
+          product.product_provider_price >= parseFloat(this.minPrice) &&
+          product.product_provider_price <= parseFloat(this.maxPrice)
         );
       });
       this.$store.commit("product/setProducts", filterItems);
