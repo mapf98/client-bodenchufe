@@ -172,6 +172,9 @@
             <p class="mb-0 subtitle-1">
               {{ productDetails.product_description }}
             </p>
+            <p class="mb-0 subtitle-1">
+              {{ productDetails.product_provider_description }}
+            </p>
             <p class="mb-0 mt-6 subtitle-1">
               {{ productLong }} {{ productDetails.product_long }}
             </p>
@@ -413,12 +416,18 @@ export default class ProductDetail extends Vue {
     return xs || sm ? 12 : 2;
   }
 
+  financial(number: any) {
+    return Number.parseFloat(number).toFixed(2);
+  }
+
   totalCost(offerRate: string) {
     if (offerRate !== null) {
       const offer = offerRate.split("%")[0];
       const discount =
         (this.productDetails.product_provider_price * parseInt(offer)) / 100;
-      return this.productDetails.product_provider_price - discount;
+      return this.financial(
+        this.productDetails.product_provider_price - discount
+      );
     } else {
       return this.productDetails.product_provider_price;
     }
@@ -447,7 +456,6 @@ export default class ProductDetail extends Vue {
   }
 
   get productDetails() {
-    console.log(this.$store.getters["product/getProductDetail"].details[0]);
     return this.$store.getters["product/getProductDetail"].details[0];
   }
 

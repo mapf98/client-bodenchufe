@@ -16,13 +16,8 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import Footer from "../components/Footer.vue";
 
-@Component({
-  components: {
-    Footer,
-  },
-})
+@Component({})
 export default class SignUp extends Vue {}
 </script>
 
