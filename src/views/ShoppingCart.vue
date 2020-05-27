@@ -59,11 +59,25 @@
       class="mb-5 my-5"
       top
     >
-      {{ noAddressess }}
+      {{ noAddresses }}
       <v-btn @click="goToAddress()" small>
-        Agregar
+        {{ addText }}
       </v-btn>
     </v-snackbar>
+    <v-row>
+      <v-col>
+        <div v-if="products.length === 0" class="mt-12">
+          <p class="mb-0 mt-12 indigo--text title text-center">
+            {{ noProducts }}
+          </p>
+          <div class="d-flex justify-center mt-6 mb-12">
+            <v-icon color="indigo" x-large>
+              mdi-magnify-remove-outline
+            </v-icon>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -89,8 +103,9 @@ export default class ShoppingCart extends Vue {
     quantity: 0,
   };
   snackbarError = false;
-  noAddressess =
-    "Necesitas tener alguna direccion creada para poder hacer checkout";
+  noAddresses = "You need to have a registered address to make the purchase";
+  noProducts = "There are no products in the shopping cart";
+  addText = "Add";
 
   flexCols() {
     const { xs, sm } = this.$vuetify.breakpoint;
@@ -160,6 +175,18 @@ export default class ShoppingCart extends Vue {
           this.checkout = term.termTranslation;
           break;
         }
+        case "noProducts": {
+          this.noProducts = term.termTranslation;
+          break;
+        }
+        case "noAddresses": {
+          this.noAddresses = term.termTranslation;
+          break;
+        }
+        case "addText": {
+          this.addText = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
@@ -174,7 +201,7 @@ export default class ShoppingCart extends Vue {
   goToCheckout() {
     this.$store.dispatch("address/getUserAddresses").then(() => {
       const addresses = this.$store.getters["address/getAddresses"];
-      if (addresses.length != 0) {
+      if (addresses.length == 0) {
         this.snackbarError = true;
         return;
       }

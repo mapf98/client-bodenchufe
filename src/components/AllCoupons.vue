@@ -1,17 +1,23 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col class="text-center">
-        <h1 class="blue--text">{{ couponTitleText }}</h1>
-        <hr />
+    <v-card
+      class="d-flex align-center flex-wrap"
+      width="100%"
+      color="#3949AB"
+      tile
+    >
+      <v-col>
+        <v-card-text class="white--text display-1">{{
+          couponTitleText
+        }}</v-card-text>
       </v-col>
-    </v-row>
+    </v-card>
     <v-row
-      class="d-flex justify-center"
+      class="d-flex justify-center">
+      <v-col :cols="separatorCols()"
       v-for="coupon of userCoupons"
       :key="coupon.coupon_id"
-    >
-      <v-col :cols="separatorCols()">
+      >
         <UserCoupon :userCoupon="coupon" />
       </v-col>
     </v-row>
@@ -31,7 +37,7 @@ import { Watch } from "vue-property-decorator";
 })
 export default class AllCoupons extends Vue {
   coupons = [];
-  couponTitleText = "Coupons";
+  couponTitleText = "My coupons";
 
   separatorCols() {
     const { xs, sm } = this.$vuetify.breakpoint;
@@ -55,7 +61,7 @@ export default class AllCoupons extends Vue {
   translate() {
     this.translator.forEach((term: any) => {
       switch (term.termName) {
-        case "couponTitleText": {
+        case "userCoupons": {
           this.couponTitleText = term.termTranslation;
           break;
         }

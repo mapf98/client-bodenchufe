@@ -31,7 +31,7 @@
               class="title indigo--text d-flex flex-wrap"
             >
               <v-row class="mb-n6">
-                <v-col class="d-flex align-center">
+                <v-col :cols="responsiveDetail()" class="d-flex align-center">
                   <p class="font-weight-bold">
                     {{ orderText }} #{{ order.order_id }}
                   </p>
@@ -39,8 +39,8 @@
                     {{ order.order_date.split("T")[0] }}
                   </p>
                 </v-col>
-                <v-col class="d-flex justify-end">
-                  <p class="mr-12 black--text font-weight-light">
+                <v-col :cols="responsivePrice()" class="d-flex justify-end">
+                  <p class="mr-4 black--text font-weight-light">
                     {{ order.order_amount_dollars }}$
                   </p>
                   <v-chip
@@ -119,6 +119,16 @@ export default class OrderHistory extends Vue {
   year: any = "All years";
   ordersFilter = [""];
   loaded = false;
+
+  responsiveDetail() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 6;
+  }
+
+  responsivePrice() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 6;
+  }
 
   selectOrder() {
     if (this.year == "All years") return this.orders;
