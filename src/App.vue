@@ -38,11 +38,7 @@ export default class App extends Vue {
   }
 
   created() {
-    this.$store.dispatch("internationalization/setUserLanguage").then(() => {
-      this.$store.dispatch("internationalization/getTranslate", {
-        lang: this.$store.getters["internationalization/getPreferredLanguage"],
-      });
-    });
+    this.$store.dispatch("internationalization/setUserLanguage");
   }
 
   setBackground() {
