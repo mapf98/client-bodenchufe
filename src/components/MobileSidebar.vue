@@ -14,6 +14,11 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col class="d-flex justify-center ma-3">
+        <SearchBox />
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col class="d-flex justify-center">
         <v-btn
           large
@@ -63,11 +68,13 @@ import Component from "vue-class-component";
 import { Watch, Prop } from "vue-property-decorator";
 import Internationalization from "../components/Internationalization.vue";
 import NavbarUser from "../components/NavbarUser.vue";
+import SearchBox from "../components/SearchBox.vue";
 
 @Component({
   components: {
     Internationalization,
     NavbarUser,
+    SearchBox,
   },
 })
 export default class MobileSidebar extends Vue {
