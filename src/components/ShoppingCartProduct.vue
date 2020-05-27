@@ -133,7 +133,6 @@ export default class ShoppingCart extends Vue {
 
   mounted() {
     this.translate();
-    console.log(this.product);
     window.scrollTo(0, 0);
   }
 
