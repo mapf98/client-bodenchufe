@@ -28,7 +28,7 @@
             dark
             v-if="data.item.type == `product`"
           >
-            Product
+            {{ productChip }}
           </v-chip>
           <v-chip
             class="mr-3"
@@ -38,7 +38,7 @@
             dark
             v-if="data.item.type == `category`"
           >
-            Category
+            {{ categoryChip }}
           </v-chip>
           <v-list-item-content>
             <v-list-item-title v-html="data.item.text"></v-list-item-title>
@@ -62,6 +62,8 @@ import { Watch } from "vue-property-decorator";
 export default class SearchBox extends Vue {
   searchBoxLabel = "Find the product you want";
   keyword: any = {};
+  categoryChip = "Category";
+  productChip = "Product";
   keywordSearch = "";
   loading = false;
   inSearch = false;
@@ -158,6 +160,14 @@ export default class SearchBox extends Vue {
       switch (term.termName) {
         case "searchBoxLabel": {
           this.searchBoxLabel = term.termTranslation;
+          break;
+        }
+        case "categoryChip": {
+          this.categoryChip = term.termTranslation;
+          break;
+        }
+        case "productChip": {
+          this.productChip = term.termTranslation;
           break;
         }
         default: {
