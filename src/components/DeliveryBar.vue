@@ -47,12 +47,16 @@ export default class DeliveryBar extends Vue {
   goToMyAddresses() {
     this.InAddressView = true;
     this.InAddView = false;
-    this.$router.push("/delivery/all");
+    this.$router.currentRoute.path != "/delivery/all"
+      ? this.$router.push("/delivery/all")
+      : false;
   }
   goToAddAddress() {
     this.InAddView = true;
     this.InAddressView = false;
-    this.$router.push("/delivery/add");
+    this.$router.currentRoute.path != "/delivery/add"
+      ? this.$router.push("/delivery/add")
+      : false;
   }
 
   mounted() {
