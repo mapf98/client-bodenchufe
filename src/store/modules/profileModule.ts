@@ -2,6 +2,8 @@ import Vue from "vue";
 import profileService from "../../services/profileService";
 import signUpService from "../../services/signUpService";
 import { fs, fb } from "../../firebase";
+import { VueEasyJwt } from "vue-easy-jwt";
+const jwt = new VueEasyJwt();
 
 async function deleteImage(imageUrl: any) {
   return new Promise(function (resolve, reject) {
@@ -124,6 +126,17 @@ export default {
           localStorage.setItem("userData", JSON.stringify(userStorage));
         }
       });
+    },
+    checkToken: () => {
+      const yourToken: any = localStorage.getItem("token");
+      const tokenData: any = jwt.decodeToken(yourToken);
+      const tokenExp = new Date(tokenData.exp);
+      const actualDate = new Date();
+      if (tokenExp <= actualDate) {
+        return false;
+      } else {
+        return true;
+      }
     },
   },
 };
