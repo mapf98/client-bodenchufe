@@ -15,7 +15,7 @@
     hide-details
     solo-inverted
     clearable
-    :readonly="inSearch"
+    :readonly="inSearch || clearKeyword == true"
   >
     <template v-slot:item="data">
       <template>

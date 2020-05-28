@@ -107,7 +107,17 @@
               background-color="amber lighten-1"
             ></v-rating>
           </div>
-          <p class="mb-0 mt-6 text-center indigo--text font-weight-bold">
+          <p
+            class="mb-0 mt-6 text-center indigo--text font-weight-bold"
+            v-if="productDetails.product_provider_available_quantity > 0"
+          >
+            {{ availableQuantity }}
+            {{ productDetails.product_provider_available_quantity }}
+          </p>
+          <p
+            class="mb-0 mt-6 text-center error--text font-weight-bold"
+            v-if="productDetails.product_provider_available_quantity == 0"
+          >
             {{ availableQuantity }}
             {{ productDetails.product_provider_available_quantity }}
           </p>
@@ -117,9 +127,12 @@
               <v-col class="d-flex justify-center align-center">
                 <v-btn
                   color="amber darken-3"
-                  dark
+                  class="white--text"
                   @click="addProduct"
                   :loading="addProductLoading"
+                  :disabled="
+                    productDetails.product_provider_available_quantity == 0
+                  "
                 >
                   {{ addToCart }}
                   <v-icon>

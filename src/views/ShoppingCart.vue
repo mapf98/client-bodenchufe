@@ -212,7 +212,7 @@ export default class ShoppingCart extends Vue {
   }
 
   goToAddress() {
-    this.$router.push("/delivery");
+    this.$router.push("/delivery/all");
   }
 }
 </script>
