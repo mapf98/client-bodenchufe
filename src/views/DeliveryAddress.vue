@@ -21,7 +21,9 @@
     </v-row>
     <v-row>
       <v-col>
-        <DeliveryBar />
+        <v-card elevation="3">
+          <DeliveryBar />
+        </v-card>
       </v-col>
     </v-row>
     <v-row>

@@ -1,33 +1,29 @@
 <template>
   <v-container fluid>
-    <v-app-bar>
-      <v-row>
-        <v-col :cols="separatorCols()"></v-col>
-        <v-col class="d-flex justify-center text-center">
-          <v-btn
-            color="indigo"
-            class="white--text"
-            :class="{ overline: $vuetify.breakpoint.xs }"
-            :width="buttonCols()"
-            :outlined="InAddressView == true"
-            @click="goToMyAddresses()"
-            >{{ myAddressesText }}</v-btn
-          >
-        </v-col>
-        <v-col class="d-flex justify-center text-center">
-          <v-btn
-            color="indigo"
-            class="white--text text-center"
-            :class="{ overline: $vuetify.breakpoint.xs }"
-            :width="buttonCols()"
-            :outlined="InAddView == true"
-            @click="goToAddAddress()"
-            >{{ addAddresText }}</v-btn
-          >
-        </v-col>
-        <v-col :cols="separatorCols()"></v-col>
-      </v-row>
-    </v-app-bar>
+    <v-row>
+      <v-col class="d-flex justify-center text-center" :cols="separatorCols()">
+        <v-btn
+          color="indigo"
+          class="white--text"
+          width="200"
+          :class="{ overline: $vuetify.breakpoint.xs }"
+          :outlined="InAddressView == true"
+          @click="goToMyAddresses()"
+          >{{ myAddressesText }}</v-btn
+        >
+      </v-col>
+      <v-col class="d-flex justify-center text-center" :cols="separatorCols()">
+        <v-btn
+          color="indigo"
+          class="white--text text-center"
+          width="200"
+          :class="{ overline: $vuetify.breakpoint.xs }"
+          :outlined="InAddView == true"
+          @click="goToAddAddress()"
+          >{{ addAddresText }}</v-btn
+        >
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -44,13 +40,9 @@ export default class DeliveryBar extends Vue {
   addAddresText = "Add Address";
   myAddressesText = "My Addresses";
 
-  buttonCols() {
-    const { xs, sm } = this.$vuetify.breakpoint;
-    return xs ? 105 : sm ? 280 : 210;
-  }
   separatorCols() {
     const { xs, sm } = this.$vuetify.breakpoint;
-    return xs || sm ? 12 : 3;
+    return xs || sm ? 12 : 6;
   }
   goToMyAddresses() {
     this.InAddressView = true;
