@@ -362,17 +362,58 @@ export default class ProductDetail extends Vue {
     window.scrollTo(0, 0);
   }
 
-  created() {
-    this.getProductImages(this.productDetails.product_id);
-    const categories = this.$store.getters["category/getCategories"];
+  beforeCreate() {
     this.$store
-      .dispatch("category/setActualPath", {
-        categoryId: this.productDetails.category_id,
-        categories: categories,
-      })
-      .then(() => {
-        this.productPath = this.$store.getters["category/getActualPath"];
+      .dispatch("product/checkPostId", this.$route.params.productId)
+      .then((res: any) => {
+        if (res == true) {
+          if (
+            this.$store.getters["product/getProductDetail"].details ===
+            undefined
+          ) {
+            this.$store.dispatch("product/getProductDetail", {
+              postId: this.$route.params.productId,
+            });
+          }
+        } else {
+          this.$router.push("/notFound");
+        }
       });
+  }
+
+  created() {
+    if (this.productDetails.post_id != 0) {
+      this.getProductImages(this.productDetails.product_id);
+      const categories = this.$store.getters["category/getCategories"];
+      this.$store
+        .dispatch("category/setActualPath", {
+          categoryId: this.productDetails.category_id,
+          categories: categories,
+        })
+        .then(() => {
+          this.productPath = this.$store.getters["category/getActualPath"];
+        });
+    }
+  }
+
+  @Watch("productDetails")
+  refreshData() {
+    if (this.productDetails.post_id != 0) {
+      this.getProductImages(this.productDetails.product_id);
+      this.productPhoto = this.productDetails.product_photo;
+      this.avg = Math.round(this.productDetails.avg_qualification_stars);
+      this.$store.dispatch("category/getCategories").then(() => {
+        const categories = this.$store.getters["category/getCategories"];
+        this.$store
+          .dispatch("category/setActualPath", {
+            categoryId: this.productDetails.category_id,
+            categories: categories,
+          })
+          .then(() => {
+            this.productPath = this.$store.getters["category/getActualPath"];
+          });
+      });
+    }
   }
 
   goToCategory(categoryId: number, categoryName: string) {
@@ -465,8 +506,12 @@ export default class ProductDetail extends Vue {
           this.addProductLoading = false;
         });
     } else {
-      this.addProductLoading = false;
-      this.$router.push("/login");
+      this.$store
+        .dispatch("product/setLazyPostId", this.productDetails.post_id)
+        .then(() => {
+          this.addProductLoading = false;
+          this.$router.push("/login");
+        });
     }
   }
 
@@ -478,11 +523,40 @@ export default class ProductDetail extends Vue {
   }
 
   get productDetails() {
-    return this.$store.getters["product/getProductDetail"].details[0];
+    if (this.$store.getters["product/getProductDetail"].details === undefined) {
+      return {
+        product_name: "",
+        product_id: 0,
+        product_long: 0,
+        product_height: 0,
+        product_width: 0,
+        product_photo: "",
+        product_description: "",
+        provider_name: "",
+        provider_id: 0,
+        product_provider_price: 0,
+        product_provider_description: "",
+        product_provider_available_quantity: 0,
+        offer_id: 0,
+        offer_rate: "",
+        avg_qualification_stars: 0,
+        category_id: 0,
+        post_id: 0,
+      };
+    } else {
+      return this.$store.getters["product/getProductDetail"].details[0];
+    }
   }
 
   get qualifications() {
-    return this.$store.getters["product/getProductDetail"].qualifications;
+    if (
+      this.$store.getters["product/getProductDetail"].qualifications ===
+      undefined
+    ) {
+      return {};
+    } else {
+      return this.$store.getters["product/getProductDetail"].qualifications;
+    }
   }
 
   @Watch("translator")

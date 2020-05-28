@@ -58,7 +58,10 @@ export default class Product extends Vue {
       .then(() => {
         this.loading = false;
         this.$store.dispatch("product/setClearKeyword", true);
-        this.$router.push("/detail");
+        this.$router.push({
+          name: "detail",
+          params: { productId: postId.toString() },
+        });
       });
   }
 }

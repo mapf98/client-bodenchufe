@@ -82,8 +82,8 @@ const routes: Array<RouteConfig> = [
         },
       },
       {
-        path: "/detail",
-        name: "Detail",
+        path: "/detail/:productId",
+        name: "detail",
         component: ProductDetail,
         meta: {
           requiresAuth: false,
@@ -214,6 +214,15 @@ const routes: Array<RouteConfig> = [
       requiresAuth: true,
       hideBasicComponents: false,
       applyBackground: false,
+    },
+  },
+  {
+    path: "/notFound",
+    component: NotFound,
+    meta: {
+      requiresAuth: false,
+      hideBasicComponents: true,
+      applyBackground: true,
     },
   },
   {

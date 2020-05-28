@@ -100,7 +100,10 @@ export default class SearchBox extends Vue {
         this.$store
           .dispatch("product/getProductDetail", { postId: val.value })
           .then(() => {
-            this.$router.push("/detail");
+            this.$router.push({
+              name: "detail",
+              params: { productId: val.value.toString() },
+            });
           });
       }
 

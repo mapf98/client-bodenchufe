@@ -70,7 +70,10 @@ export default class OrderHistoryProduct extends Vue {
       .dispatch("product/getProductDetail", { postId: postId })
       .then(() => {
         this.loading = false;
-        this.$router.push("/detail");
+        this.$router.push({
+          name: "detail",
+          params: { productId: postId.toString() },
+        });
       });
   }
 
