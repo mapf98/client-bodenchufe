@@ -71,7 +71,6 @@ export default class OrderHistoryProduct extends Vue {
         product_id: this.product.product_provider_id,
       })
       .then((res) => {
-        console.log(res);
         this.loadRate = true;
         this.alreadyRated = res.data.alreadyRated;
       });
@@ -93,15 +92,10 @@ export default class OrderHistoryProduct extends Vue {
 
   goToDetail(postId: number) {
     this.loading = true;
-    this.$store
-      .dispatch("product/getProductDetail", { postId: postId })
-      .then(() => {
-        this.loading = false;
-        this.$router.push({
+    this.$router.push({
           name: "detail",
           params: { productId: postId.toString() },
         });
-      });
   }
 
   responsive() {
