@@ -359,25 +359,6 @@ export default class ProductDetail extends Vue {
     window.scrollTo(0, 0);
   }
 
-  beforeCreate() {
-    this.$store
-      .dispatch("product/checkPostId", this.$route.params.productId)
-      .then((res: any) => {
-        if (res == true) {
-          if (
-            this.$store.getters["product/getProductDetail"].details ===
-            undefined
-          ) {
-            this.$store.dispatch("product/getProductDetail", {
-              postId: this.$route.params.productId,
-            });
-          }
-        } else {
-          this.$router.push("/notFound");
-        }
-      });
-  }
-
   created() {
     if (this.productDetails.post_id != 0) {
       this.getProductImages(this.productDetails.product_id);
@@ -389,6 +370,23 @@ export default class ProductDetail extends Vue {
         })
         .then(() => {
           this.productPath = this.$store.getters["category/getActualPath"];
+        });
+    } else {
+      this.$store
+        .dispatch("product/checkPostId", this.$route.params.productId)
+        .then((res: any) => {
+          if (res == true) {
+            if (
+              this.$store.getters["product/getProductDetail"].details ===
+              undefined
+            ) {
+              this.$store.dispatch("product/getProductDetail", {
+                postId: this.$route.params.productId,
+              });
+            }
+          } else {
+            this.$router.push("/notFound");
+          }
         });
     }
   }
