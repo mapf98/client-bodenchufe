@@ -4,21 +4,27 @@
       color="indigo"
       @click="setCoupon(coupon.coupon_id, coupon.coupon_discount_rate)"
     >
-      <v-card-text class="subtitle-1 white--text font-weight-black">
-        {{ coupon.coupon_name }}
-        <v-icon
-          class="ml-7"
-          color="amber"
-          v-if="coupon.coupon_id === couponIdSelected"
-        >
-          mdi-checkbox-marked-circle
-        </v-icon>
-      </v-card-text>
-      <v-card-text
-        class="mt-n4 white--text display-3 font-weight-thin d-flex justify-center"
-      >
-        {{ coupon.coupon_discount_rate }}
-      </v-card-text>
+      <v-row v-if="coupon.coupon_id === couponIdSelected">
+        <v-col class="d-flex justify-center">
+          <v-icon color="amber">
+            mdi-checkbox-marked-circle
+          </v-icon>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card-text
+            class="subtitle-1 white--text font-weight-black text-center"
+          >
+            {{ coupon.coupon_name }}
+          </v-card-text>
+          <v-card-text
+            class="mt-n4 white--text display-3 font-weight-thin text-center"
+          >
+            {{ coupon.coupon_discount_rate }}
+          </v-card-text>
+        </v-col>
+      </v-row>
     </v-card>
   </v-container>
 </template>
@@ -58,6 +64,10 @@ export default class CheckoutCoupons extends Vue {
     }
     this.$emit("orderCouponId", id);
     this.$emit("orderCouponRate", rate);
+  }
+
+  mounted() {
+    this.translate();
   }
 
   @Watch("translator")

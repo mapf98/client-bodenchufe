@@ -74,7 +74,7 @@
       <v-col :cols="sideResponsive2()">
         <v-row>
           <v-col>
-            <p class="display-1 font-weight-bold indigo--text text-center">
+            <p class="headline font-weight-bold indigo--text text-center">
               {{ productPrice() }} $
             </p>
             <p
@@ -235,22 +235,22 @@ export default class ShoppingCart extends Vue {
 </script>
 
 <style lang="scss">
-.marginCard {
-  margin-left: 70px;
-  margin-right: 70px;
-}
+// .marginCard {
+//   margin-left: 70px;
+//   margin-right: 70px;
+// }
 
-@media (max-width: 575.98px) {
-  .marginCard {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-}
+// @media (max-width: 575.98px) {
+//   .marginCard {
+//     margin-left: 5px;
+//     margin-right: 5px;
+//   }
+// }
 
-@media (min-width: 576px) and (max-width: 1263px) {
-  .marginCard {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-}
+// @media (min-width: 576px) and (max-width: 1263px) {
+//   .marginCard {
+//     margin-left: 5px;
+//     margin-right: 5px;
+//   }
+// }
 </style>

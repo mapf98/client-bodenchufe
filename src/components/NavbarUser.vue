@@ -145,7 +145,7 @@ export default class NavbarUser extends Vue {
   ];
 
   pushTo(route: string) {
-    this.$router.push(route);
+    this.$router.currentRoute.path != route ? this.$router.push(route) : false;
   }
 
   logOut() {
@@ -165,10 +165,6 @@ export default class NavbarUser extends Vue {
         : JSON.parse(userData).userPhoto;
     this.userName = `${JSON.parse(userData).userName}`;
     this.translate();
-  }
-
-  goToProfile() {
-    this.$router.push("/login");
   }
 
   @Watch("translator")
