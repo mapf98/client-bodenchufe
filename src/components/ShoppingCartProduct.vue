@@ -119,15 +119,25 @@
         </v-btn>
       </v-col>
       <v-col :cols="imgResponsive()" class="d-flex justify-center">
-        <v-img :src="product.product_photo" contain height="200" width="200" ></v-img>
+        <v-img
+          :src="product.product_photo"
+          contain
+          height="200"
+          width="200"
+        ></v-img>
       </v-col>
       <v-col :cols="centerResponsive()">
         <p class="mb-0 display-1 text-center">{{ product.product_name }}</p>
         <p class="mb-0 subtitle-1 text-center">{{ product.provider_name }}</p>
         <div class="text-center">
-          <p class="mb-0 subtitle-1">{{ volumetricWeight }}: {{ product.volumetric_weight }} KG / {{ unit }}</p>
+          <p class="mb-0 subtitle-1">
+            {{ volumetricWeight }}: {{ product.volumetric_weight }} KG /
+            {{ unit }}
+          </p>
           <div class="d-flex justify-center align-center">
-            <p class="mb-0 subtitle-1">{{ quantity }}: {{ product.product_provider_order_quantity }}</p>
+            <p class="mb-0 subtitle-1">
+              {{ quantity }}: {{ product.product_provider_order_quantity }}
+            </p>
             <v-btn
               text
               icon
@@ -155,14 +165,23 @@
               <v-icon>mdi-do-not-disturb</v-icon>
             </v-btn>
           </div>
-          <p class="mb-0 mt-3 font-weight-light body-1 indigo--text">{{ inStock }} {{ product.product_provider_available_quantity }}</p>
+          <p class="mb-0 mt-3 font-weight-light body-1 indigo--text">
+            {{ inStock }} {{ product.product_provider_available_quantity }}
+          </p>
         </div>
       </v-col>
       <v-col :cols="sideResponsive2()">
         <v-row>
           <v-col>
-            <p class="display-1 font-weight-bold indigo--text text-center">{{ productPrice() }} $</p>
-            <p class="font-weight-light body-1 success--text text-center" v-if="product.discount != null">{{ product.discount }} {{ discount }} {{ included }}</p>
+            <p class="display-1 font-weight-bold indigo--text text-center">
+              {{ productPrice() }} $
+            </p>
+            <p
+              class="font-weight-light body-1 success--text text-center"
+              v-if="product.discount != null"
+            >
+              {{ product.discount }} {{ discount }} {{ included }}
+            </p>
           </v-col>
         </v-row>
         <v-row>
@@ -212,13 +231,13 @@ export default class ShoppingCart extends Vue {
     const { xs, sm } = this.$vuetify.breakpoint;
     return xs || sm ? 12 : 6;
   }
-  
-  imgResponsive(){
+
+  imgResponsive() {
     const { xs, sm } = this.$vuetify.breakpoint;
     return xs || sm ? 12 : 3;
   }
 
-  buttonH(){
+  buttonH() {
     const { xs, sm } = this.$vuetify.breakpoint;
     return xs || sm ? 50 : 250;
   }
@@ -340,41 +359,41 @@ export default class ShoppingCart extends Vue {
 </script>
 
 <style lang="scss">
-.marginCard{
+.marginCard {
   margin-left: 150px;
   margin-right: 150px;
 }
 
-@media (max-width: 575.98px) { 
-  .marginCard{
+@media (max-width: 575.98px) {
+  .marginCard {
     margin-left: 5px;
     margin-right: 5px;
   }
 }
 
-@media (min-width: 576px) and (max-width: 767.98px) { 
-  .marginCard{
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .marginCard {
     margin-left: 30px;
     margin-right: 30px;
   }
 }
 
-@media (min-width: 768px) and (max-width: 991.98px) { 
-  .marginCard{
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .marginCard {
     margin-left: 30px;
     margin-right: 30px;
   }
 }
 
-@media (min-width: 992px) and (max-width: 1199.98px) { 
-  .marginCard{
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .marginCard {
     margin-left: 60px;
     margin-right: 60px;
   }
 }
 
-@media (min-width: 1200px) and (max-width: 1263px){
-  .marginCard{
+@media (min-width: 1200px) and (max-width: 1263px) {
+  .marginCard {
     margin-left: 30px;
     margin-right: 30px;
   }

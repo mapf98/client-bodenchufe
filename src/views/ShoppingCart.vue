@@ -47,7 +47,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row 
+    <v-row
       class="justify-center mt-10 mb-6"
       v-for="product in products"
       :key="product.product_provider_order_id"
