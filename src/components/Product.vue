@@ -54,9 +54,9 @@ export default class Product extends Vue {
   goToDetail(postId: number) {
     this.loading = true;
     this.$router.push({
-          name: "detail",
-          params: { productId: postId.toString() },
-        });
+      name: "detail",
+      params: { productId: postId.toString() },
+    });
   }
 }
 </script>
