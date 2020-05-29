@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-3 marginCard" elevation="5">
+  <v-card class="pa-3 mb-n10">
     <v-row class="d-flex align-center">
       <v-col :cols="sideResponsive1()" class="d-flex justify-center">
         <v-btn
@@ -235,23 +235,4 @@ export default class ShoppingCart extends Vue {
 }
 </script>
 
-<style lang="scss">
-// .marginCard {
-//   margin-left: 70px;
-//   margin-right: 70px;
-// }
-
-// @media (max-width: 575.98px) {
-//   .marginCard {
-//     margin-left: 5px;
-//     margin-right: 5px;
-//   }
-// }
-
-// @media (min-width: 576px) and (max-width: 1263px) {
-//   .marginCard {
-//     margin-left: 5px;
-//     margin-right: 5px;
-//   }
-// }
-</style>
+<style lang="scss"></style>
