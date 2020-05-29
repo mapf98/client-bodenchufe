@@ -90,7 +90,7 @@ export default class SearchBox extends Vue {
   @Watch("keyword")
   goToSearch(val: any) {
     if (val !== undefined) {
-      if (val.type == "product") {
+      if (val.type == "product" && this.$route.params.productId != val.value) {
         this.$store
           .dispatch("product/getProductDetail", { postId: val.value })
           .then(() => {

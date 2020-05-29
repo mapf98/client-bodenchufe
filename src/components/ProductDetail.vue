@@ -395,21 +395,40 @@ export default class ProductDetail extends Vue {
 
   @Watch("productDetails")
   refreshData() {
+    this.added = false;
     if (this.productDetails.post_id != 0) {
       this.getProductImages(this.productDetails.product_id);
       this.productPhoto = this.productDetails.product_photo;
       this.avg = Math.round(this.productDetails.avg_qualification_stars);
-      this.$store.dispatch("category/getCategories").then(() => {
-        const categories = this.$store.getters["category/getCategories"];
+      if (localStorage.getItem("token") !== null) {
         this.$store
-          .dispatch("category/setActualPath", {
-            categoryId: this.productDetails.category_id,
-            categories: categories,
-          })
+          .dispatch("shoppingCart/getShoppingCartProducts")
           .then(() => {
-            this.productPath = this.$store.getters["category/getActualPath"];
+            this.productsOnShoppingCart = this.$store.getters[
+              "shoppingCart/getProducts"
+            ];
+            this.productsOnShoppingCart.forEach((product: any) => {
+              if (
+                product.fk_product_provider_id == this.productDetails.post_id
+              ) {
+                this.added = true;
+              }
+            });
+            this.$store.dispatch("category/getCategories").then(() => {
+              const categories = this.$store.getters["category/getCategories"];
+              this.$store
+                .dispatch("category/setActualPath", {
+                  categoryId: this.productDetails.category_id,
+                  categories: categories,
+                })
+                .then(() => {
+                  this.productPath = this.$store.getters[
+                    "category/getActualPath"
+                  ];
+                });
+            });
           });
-      });
+      }
     }
   }
 
