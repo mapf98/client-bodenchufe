@@ -73,6 +73,16 @@
         <v-icon class="ml-4"> mdi-bitcoin</v-icon>
         <v-icon> mdi-ethereum </v-icon>
       </v-btn>
+      <v-alert
+        width="270px"
+        color="indigo"
+        class="mt-5 caption font-weight-light"
+        dense
+        outlined
+        type="info"
+      >
+        {{ alertBeforePay }}
+      </v-alert>
     </v-col>
   </v-row>
 </template>
@@ -88,6 +98,7 @@ export default class CheckoutPayment extends Vue {
   subtotal = "Subtotal";
   total = "Total";
   payCrypto = "Pay with crypto";
+  alertBeforePay = "After payment you will be redirected to bodechufe";
   coupon = "Coupon";
   loading = false;
 
@@ -149,6 +160,10 @@ export default class CheckoutPayment extends Vue {
         }
         case "couponPay": {
           this.coupon = term.termTranslation;
+          break;
+        }
+        case "alertBeforePay": {
+          this.alertBeforePay = term.termTranslation;
           break;
         }
         default: {

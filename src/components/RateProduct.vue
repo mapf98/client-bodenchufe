@@ -90,6 +90,10 @@ export default class RateProduct extends Vue {
   }
 
   createRating() {
+    this.emptyReview = false;
+    this.emptyRating = false;
+    this.noAvailable = false;
+
     if (this.review === "" && this.rating === 0) {
       this.emptyReview = true;
       this.emptyRating = true;
