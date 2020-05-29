@@ -1,55 +1,57 @@
 <template>
   <v-row class="d-flex flex-wrap align-center">
-    <v-col cols="1"></v-col>
-    <v-col>
-      <v-card max-width="400px" color="indigo" class="flex-wrap">
-        <v-card-text
-          class="title white--text font-weight-black d-flex align-center x-10"
-        >
-          {{ subtotal }}
-          <v-card-text
-            class="white--text font-weight-thin title d-flex justify-end"
-          >
+    <v-col class="d-flex justify-center">
+      <v-card
+        min-width="210px"
+        max-width="400px"
+        color="indigo"
+        class="flex-wrap pa-2"
+      >
+        <div class="d-flex justify-space-between align-center">
+          <p class="mb-0 mr-8 white--text subtitle-1 font-weight-black">
+            {{ subtotal }}
+          </p>
+          <p class="mb-0 white--text">
             {{ paymentDetail.orderSummary.subtotal }}$
-          </v-card-text>
-        </v-card-text>
+          </p>
+        </div>
 
-        <v-card-text
+        <div
+          class="d-flex justify-space-between align-center"
           v-if="hasCoupon()"
-          class="title white--text font-weight-black d-flex align-center mt-n12 x-10"
         >
-          {{ coupon
-          }}<v-card-text class="white--text font-weight-thin ml-n3">
-            ({{ couponRate }})
-          </v-card-text>
+          <div class="d-flex justify-center align-center">
+            <p class="mb-0 mr-1 white--text subtitle-1 font-weight-black">
+              {{ coupon }}
+            </p>
+            <p class="mb-0 white--text font-weight-thin subtitle-2">
+              ({{ couponRate }})
+            </p>
+          </div>
+          <p class="mb-0 white--text">-{{ getDiscountAmount() }}$</p>
+        </div>
 
-          <v-card-text
-            class="white--text font-weight-thin title d-flex justify-end"
-          >
-            -{{ getDiscountAmount() }}$
-          </v-card-text>
-        </v-card-text>
-        <v-card-text
-          class="title white--text font-weight-black d-flex align-center mt-n12"
-        >
-          {{ commission }}
-          <v-card-text
-            class="white--text font-weight-thin d-flex justify-end title"
-          >
+        <div class="d-flex justify-space-between align-baseline mb-6">
+          <div>
+            <p class="mb-0 mr-1 white--text subtitle-1 font-weight-black">
+              {{ commission }}
+            </p>
+            <p class="mb-0 white--text font-weight-thin subtitle-2">
+              (1.75% + 0.25$)
+            </p>
+          </div>
+          <p class="mb-0 white--text">
             {{ paymentDetail.orderSummary.comissions_amount }}$
-          </v-card-text>
-        </v-card-text>
-        <v-card-text class="white--text font-weight-thin mt-n12">
-          (1.75% + 0.25$)
-        </v-card-text>
+          </p>
+        </div>
+
         <v-divider class="amber"></v-divider>
-        <v-card-text
-          class="title white--text font-weight-black d-flex align-center x-10"
-        >
-          {{ total }}
-          <v-card-text
-            class="white--text font-weight-thin title d-flex justify-end"
-          >
+
+        <div class="d-flex justify-space-between align-center">
+          <p class="mb-0 mr-1 white--text subtitle-1 font-weight-black">
+            {{ total }}
+          </p>
+          <p class="mb-0 white--text">
             {{
               `${
                 hasCoupon()
@@ -57,32 +59,36 @@
                   : paymentDetail.orderSummary.total
               }`
             }}$
-          </v-card-text>
-        </v-card-text>
+          </p>
+        </div>
       </v-card>
     </v-col>
     <v-col>
-      <v-btn
-        x-large
-        color="amber darken-2"
-        class="white--text"
-        @click="openPaymentGateway"
-        :loading="loading"
-      >
-        {{ payCrypto }}
-        <v-icon class="ml-4"> mdi-bitcoin</v-icon>
-        <v-icon> mdi-ethereum </v-icon>
-      </v-btn>
-      <v-alert
-        width="270px"
-        color="indigo"
-        class="mt-5 caption font-weight-light"
-        dense
-        outlined
-        type="info"
-      >
-        {{ alertBeforePay }}
-      </v-alert>
+      <div class="d-flex justify-center">
+        <v-btn
+          small
+          color="amber darken-2"
+          class="white--text"
+          @click="openPaymentGateway"
+          :loading="loading"
+        >
+          {{ payCrypto }}
+          <v-icon class="ml-1"> mdi-bitcoin</v-icon>
+          <v-icon> mdi-ethereum </v-icon>
+        </v-btn>
+      </div>
+      <div class="d-flex justify-center">
+        <v-alert
+          width="200px"
+          color="indigo"
+          class="mt-5 caption font-weight-light"
+          dense
+          outlined
+          type="info"
+        >
+          {{ alertBeforePay }}
+        </v-alert>
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -128,6 +134,10 @@ export default class CheckoutPayment extends Vue {
         (this.paymentDetail.orderSummary.total - this.getDiscountAmount()) * 100
       ) / 100
     );
+  }
+
+  mounted() {
+    this.translate();
   }
 
   openPaymentGateway() {

@@ -1,48 +1,52 @@
 <template>
   <v-card color="indigo" @click="setAddress(address.delivery_address_id)">
-    <v-card-text class="subtitle-1 white--text font-weight-black">
-      {{ primaryLine }}
-      <v-icon
-        color="amber"
-        class="ml-12"
-        v-if="address.delivery_address_id === addressIdSelected"
-      >
-        > mdi-checkbox-marked-circle
-      </v-icon>
-    </v-card-text>
-    <v-card-text class="mt-n9 white--text font-weight-thin">
-      {{ address.delivery_address_primary_line }}
-    </v-card-text>
-    <v-card-text
-      v-if="address.delivery_address_secondary_line != 'null'"
-      class="subtitle-1 white--text mt-n6 font-weight-black"
-    >
-      {{ secondaryLine }}
-    </v-card-text>
-    <v-card-text
-      v-if="address.delivery_address_secondary_line != 'null'"
-      class="mt-n9 white--text font-weight-thin"
-    >
-      {{ address.delivery_address_secondary_line }}
-    </v-card-text>
-    <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
-      {{ city }}
-    </v-card-text>
-    <v-card-text class="mt-n9 white--text font-weight-thin">
-      {{ address.delivery_address_city }}
-    </v-card-text>
-    <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
-      {{ state }}
-    </v-card-text>
-    <v-card-text class="mt-n9 white--text font-weight-thin">
-      {{ address.delivery_address_state }}
-    </v-card-text>
-    <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
-      {{ zipCode }}
-    </v-card-text>
-    <v-card-text class="mt-n9 white--text font-weight-thin">
-      {{ address.delivery_address_zip_code }}
-    </v-card-text>
+    <v-row v-if="address.delivery_address_id === addressIdSelected">
+      <v-col class="d-flex justify-center">
+        <v-icon color="amber">
+          > mdi-checkbox-marked-circle
+        </v-icon>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-card-text class="subtitle-1 white--text font-weight-black">
+          {{ primaryLine }}
+        </v-card-text>
+        <v-card-text class="mt-n9 white--text font-weight-thin">
+          {{ address.delivery_address_primary_line }}
+        </v-card-text>
+        <v-card-text
+          v-if="address.delivery_address_secondary_line != 'null'"
+          class="subtitle-1 white--text mt-n6 font-weight-black"
+        >
+          {{ secondaryLine }}
+        </v-card-text>
+        <v-card-text
+          v-if="address.delivery_address_secondary_line != 'null'"
+          class="mt-n9 white--text font-weight-thin"
+        >
+          {{ address.delivery_address_secondary_line }}
+        </v-card-text>
+        <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
+          {{ city }}
+        </v-card-text>
+        <v-card-text class="mt-n9 white--text font-weight-thin">
+          {{ address.delivery_address_city }}
+        </v-card-text>
+        <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
+          {{ state }}
+        </v-card-text>
+        <v-card-text class="mt-n9 white--text font-weight-thin">
+          {{ address.delivery_address_state }}
+        </v-card-text>
+        <v-card-text class="subtitle-1 white--text mt-n6 font-weight-black">
+          {{ zipCode }}
+        </v-card-text>
+        <v-card-text class="mt-n9 white--text font-weight-thin">
+          {{ address.delivery_address_zip_code }}
+        </v-card-text>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -120,6 +124,10 @@ export default class CheckoutAddresses extends Vue {
         }
       }
     });
+  }
+
+  mounted() {
+    this.translate();
   }
 
   get translator() {
