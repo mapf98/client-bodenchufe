@@ -33,8 +33,8 @@ export default class AddDeliveries extends Vue {
     this.translate();
   }
 
-  //Match para incluir los terminos de poeditor en el modulo
-  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
+  //Match para incluir los terminos de poeditor en el módulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicación
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
