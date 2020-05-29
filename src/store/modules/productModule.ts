@@ -1,6 +1,7 @@
 import Vue from "vue";
 import productService from "../../services/productService";
 
+//Obtiene todos los productos en base a la categoría y el arreglo de hijos de la misma.
 async function getAllProducts(categoryId: number, child: any) {
   const totalProducts: any = [];
   let childProducts: any = [];
@@ -27,27 +28,21 @@ async function getAllProducts(categoryId: number, child: any) {
 
 export default {
   namespaced: true,
-  // -----------------------------------------------------------------
   state: {
-    // Aqui van los atributos
     products: [],
     productsPath: {},
     productDetail: {},
     productsByKeyword: [],
     lazyPost: 0,
   },
-  // -----------------------------------------------------------------
   getters: {
-    // getters and computed props
     getProducts: (state: any) => state.products,
     getProductsPath: (state: any) => state.productsPath,
     getProductDetail: (state: any) => state.productDetail,
     getProductByKeyword: (state: any) => state.productsByKeyword,
     getLazyPostId: (state: any) => state.lazyPost,
   },
-  // -----------------------------------------------------------------
   mutations: {
-    // Aqui se setean los atributos del state
     setProducts(state: any, products: []) {
       Vue.set(state, "products", products);
     },
@@ -64,11 +59,7 @@ export default {
       Vue.set(state, "lazyPost", lazyPost);
     },
   },
-  // -----------------------------------------------------------------
   actions: {
-    // create: (context, bankData) => {
-    //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
-    // },
     getProductByCategory: async (context: any, payload: any) => {
       const allProducts = await getAllProducts(
         payload.categoryId,
@@ -132,11 +123,5 @@ export default {
       });
       return exists;
     },
-    // update: (context, bankData) => {
-    //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
-    // },
-    // delete: context => {
-    //   // stuff to erase bank on the backend : CRUD DELETE ACTION
-    // },
   },
 };

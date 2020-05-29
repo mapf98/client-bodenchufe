@@ -82,6 +82,7 @@ export default class DashboardHomeCategories extends Vue {
     });
   }
 
+  //Obtiene los productos por categoría y lleva a la pantalla de productos
   productsByCategory(categoryId: number, categoryName: string) {
     const categories = this.$store.getters["category/getCategories"];
     this.$store
@@ -111,6 +112,7 @@ export default class DashboardHomeCategories extends Vue {
       });
   }
 
+  //Limita la cantidad de categorías en el dashboard
   categoriesFilter() {
     const filteredCategories: any[] = [];
     filteredCategories.push();

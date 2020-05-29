@@ -42,13 +42,13 @@ export default class AllDeliveries extends Vue {
   update = false;
   notAddresses = "there is no added address";
 
-  //Propiedad reactiva, cuando ocurre algun cambio en el store vuelve a traer las direcciones actualizadas
+  //Propiedad reactiva, cuando ocurre algún cambio en el store vuelve a traer las direcciones actualizadas
   get addresses() {
     return this.$store.getters["address/getAddresses"];
   }
 
-  //Match para incluir los terminos de poeditor en el modulo
-  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
+  //Match para incluir los terminos de poeditor en el módulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicación
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {

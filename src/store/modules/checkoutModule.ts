@@ -3,17 +3,14 @@ import checkoutService from "@/services/checkoutService";
 
 export default {
   namespaced: true,
-  // -----------------------------------------------------------------
   state: {
     paymentDetail: [],
     urlPaymentGateway: {},
   },
-  // -----------------------------------------------------------------
   getters: {
     getPaymentDetail: (state: any) => state.paymentDetail,
     getUrlPaymentGateway: (state: any) => state.urlPaymentGateway,
   },
-  // -----------------------------------------------------------------
   mutations: {
     setPaymentDetail(state: any, paymentDetail: any) {
       Vue.set(state, "paymentDetail", paymentDetail);
@@ -22,7 +19,6 @@ export default {
       Vue.set(state, "urlPaymentGateway", urlPaymentGateway);
     },
   },
-  // -----------------------------------------------------------------
   actions: {
     createCheckout: async () => {
       await checkoutService.checkoutProducts();
