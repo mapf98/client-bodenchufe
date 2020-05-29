@@ -25,7 +25,7 @@
         ></v-img>
       </v-col>
       <v-col cols="3">
-        <SearchBox />
+        <SearchBox v-bind:clear="clearBox" />
       </v-col>
       <v-col class="d-flex justify-start">
         <v-btn small color="amber darken-4" outlined @click="goToCategories">{{
@@ -72,36 +72,33 @@ export default class Navbar extends Vue {
   navbarLogin = "Log In";
   navbarSingUp = "Sing Up";
   showUser = false;
+  clearBox = false;
+
+  changeBox() {
+    this.clearBox = !this.clearBox;
+  }
 
   goToHome() {
-    this.$store.dispatch("product/setClearKeyword", true);
+    this.changeBox();
     this.$router.currentRoute.path != "/home"
-      ? this.$router.push("/home").then(() => {
-          this.$store.dispatch("product/setClearKeyword", false);
-        })
+      ? this.$router.push("/home")
       : false;
   }
 
   goToLogin() {
-    this.$store.dispatch("product/setClearKeyword", true);
-    this.$router.push("/Login").then(() => {
-      this.$store.dispatch("product/setClearKeyword", false);
-    });
+    this.changeBox();
+    this.$router.push("/Login");
   }
 
   goToSignUp() {
-    this.$store.dispatch("product/setClearKeyword", true);
-    this.$router.push("/user/signUp").then(() => {
-      this.$store.dispatch("product/setClearKeyword", false);
-    });
+    this.changeBox();
+    this.$router.push("/user/signUp");
   }
 
   goToCategories() {
-    this.$store.dispatch("product/setClearKeyword", true);
+    this.changeBox();
     this.$router.currentRoute.path != "/categories"
-      ? this.$router.push("/categories").then(() => {
-          this.$store.dispatch("product/setClearKeyword", false);
-        })
+      ? this.$router.push("/categories")
       : false;
   }
 
