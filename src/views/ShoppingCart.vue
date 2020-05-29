@@ -69,7 +69,7 @@
     </v-snackbar>
     <v-row>
       <v-col>
-        <div v-if="products.length === 0" class="mt-12">
+        <div v-if="loaded == true && products.length === 0" class="mt-12">
           <p class="mb-0 mt-12 indigo--text title text-center">
             {{ noProducts }}
           </p>
@@ -109,6 +109,7 @@ export default class ShoppingCart extends Vue {
   noAddresses = "You need to have a registered address to make the purchase";
   noProducts = "There are no products in the shopping cart";
   addText = "Add";
+  loaded = false;
 
   flexCols() {
     const { xs, sm } = this.$vuetify.breakpoint;
@@ -129,9 +130,8 @@ export default class ShoppingCart extends Vue {
   }
 
   getProducts() {
-    console.log(this.products);
     this.$store.dispatch("shoppingCart/getShoppingCartProducts").then(() => {
-      console.log(this.products);
+      this.loaded = true;
     });
   }
 

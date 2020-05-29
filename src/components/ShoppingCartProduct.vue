@@ -211,14 +211,15 @@ export default class ShoppingCart extends Vue {
   }
 
   updateQuantityProduct(productId: number, quantity: number) {
-    this.$store
-      .dispatch("shoppingCart/updateQuantityProduct", {
-        productId,
-        quantity,
-      })
-      .then(() => {
-        this.$store.dispatch("shoppingCart/getShoppingCartProducts");
-      });
+    if (quantity <= this.product.product_provider_available_quantity)
+      this.$store
+        .dispatch("shoppingCart/updateQuantityProduct", {
+          productId,
+          quantity,
+        })
+        .then(() => {
+          this.$store.dispatch("shoppingCart/getShoppingCartProducts");
+        });
   }
 
   updateStatusProduct(productId: number, status: any) {
