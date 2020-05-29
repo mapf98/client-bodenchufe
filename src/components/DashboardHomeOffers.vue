@@ -76,6 +76,7 @@ export default class DashboardHomeOffers extends Vue {
     });
   }
 
+  //Obtiene los productos por oferta y lleva a la pantalla de productos
   productsByOffer(offerId: number, offerRate: string) {
     this.$store
       .dispatch("product/getProductByOffer", {
@@ -97,6 +98,7 @@ export default class DashboardHomeOffers extends Vue {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
 
+  //Limita la cantidad de ofertas en el home
   OffersFilter() {
     const filteredOrders: any[] = [];
     filteredOrders.push();
