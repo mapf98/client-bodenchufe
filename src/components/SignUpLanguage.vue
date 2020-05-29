@@ -32,6 +32,7 @@ export default class SignUpLanguage extends Vue {
 
   btnLanguage = "Select your preferred language";
 
+  //envia en lenguaje seleccionado al componente padre
   selectLanguage(language: string) {
     this.language = language;
     this.$emit("languageName", this.language);
@@ -46,6 +47,8 @@ export default class SignUpLanguage extends Vue {
     return xs ? 280 : sm ? 320 : 350;
   }
 
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -61,6 +64,7 @@ export default class SignUpLanguage extends Vue {
     });
   }
 
+  //Getter de todos los terminos almacenados en PoEditor
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
