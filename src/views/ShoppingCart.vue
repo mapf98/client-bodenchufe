@@ -10,7 +10,7 @@
               }}</v-card-text>
             </v-col>
           </v-row>
-          <v-row>
+          <v-row class="d-flex justify-center align-center">
             <v-col :class="flexCols()">
               <v-card-text class="white--text title ml-4">Subtotal</v-card-text>
               <v-card-text :class="responsiveDetails()"
@@ -47,14 +47,12 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row class="justify-center mt-10 mb-6">
-      <v-col
-        v-for="product in products"
-        :key="product.product_provider_order_id"
-        cols="10"
-        md="5"
-        lg="10"
-      >
+    <v-row 
+      class="justify-center mt-10 mb-6"
+      v-for="product in products"
+      :key="product.product_provider_order_id"
+    >
+      <v-col>
         <shoppingCartProduct :product="product" />
       </v-col>
     </v-row>
