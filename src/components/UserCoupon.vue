@@ -10,19 +10,20 @@
             <div class="amber--text display-1">
               {{ coupon.coupon_discount_rate }} {{ discountRateText }}
             </div>
-            <div class="white--text">
+            <div class="white--text mb-5">
               {{ canBeUsedInText }}: {{ coupon.coupon_min_use }}$ -
               {{ coupon.coupon_max_use }}$
             </div>
-            <v-chip
-              outlined
-              small
-              :color="setStatusColor(this.coupon.status_name)"
-              :text-color="setStatusColor(this.coupon.status_name)"
-              class="mr-12"
-            >
-              {{ setStatusName(this.coupon.status_name) }}
-            </v-chip>
+            <div class="d-flex justify-center">
+              <v-chip
+                outlined
+                small
+                :color="setStatusColor(this.coupon.status_name)"
+                :text-color="setStatusColor(this.coupon.status_name)"
+              >
+                {{ setStatusName(this.coupon.status_name) }}
+              </v-chip>
+            </div>
           </v-col>
         </v-row>
       </v-card-text>
