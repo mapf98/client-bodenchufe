@@ -3,21 +3,15 @@ import internationalizationService from "../../services/internationalizationServ
 
 export default {
   namespaced: true,
-  // -----------------------------------------------------------------
   state: {
-    // Aqui van los atributos
     languagesTexts: [],
     preferredLanguage: "en-us",
   },
-  // -----------------------------------------------------------------
   getters: {
-    // getters and computed props
     getLanguageTexts: (state: any) => state.languagesTexts,
     getPreferredLanguage: (state: any) => state.preferredLanguage,
   },
-  // -----------------------------------------------------------------
   mutations: {
-    // Aqui se setean los atributos del state
     setLanguageTexts(state: any, languagesTexts: []) {
       Vue.set(state, "languagesTexts", languagesTexts);
     },
@@ -25,11 +19,7 @@ export default {
       Vue.set(state, "preferredLanguage", language);
     },
   },
-  // -----------------------------------------------------------------
   actions: {
-    // create: (context, bankData) => {
-    //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
-    // },
     getTranslate: async (context: any, payload: any) => {
       await internationalizationService
         .getTranslate(payload.lang)
@@ -50,11 +40,5 @@ export default {
         context.commit("setPreferredLanguage", "en-us");
       }
     },
-    // update: (context, bankData) => {
-    //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
-    // },
-    // delete: context => {
-    //   // stuff to erase bank on the backend : CRUD DELETE ACTION
-    // },
   },
 };

@@ -706,6 +706,7 @@ export default class FilterSideProducts extends Vue {
     }
   }
 
+  //Navegación a una categoría presente en el filtro
   categoryNewCall() {
     const categoryPath = this.$store.getters["category/getActualPath"];
     const actualCategory = categoryPath[

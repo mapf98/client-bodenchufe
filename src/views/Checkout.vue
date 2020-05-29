@@ -2,9 +2,20 @@
   <v-container>
     <v-row>
       <v-col class="d-flex justify-center">
-        <router-link to="/home">
-          <v-img src="../assets/logoBodenchufe.png" max-width="300"></v-img
-        ></router-link>
+        <v-img src="../assets/logoBodenchufe.png" max-width="300"></v-img>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col class="d-flex justify-start text-center">
+        <v-btn
+          text
+          color="indigo"
+          class="white--text text-center"
+          @click="goToShoppingCart()"
+          ><v-icon class="mr-2">mdi-backspace-outline</v-icon
+          >{{ comeBack }}</v-btn
+        >
       </v-col>
     </v-row>
 
@@ -31,14 +42,16 @@
             </v-col>
           </v-row>
         </v-card>
-        <v-btn
-          v-if="addressId > -1"
-          color="amber darken-4"
-          class="white--text"
-          @click="getCouponsForOrder"
-        >
-          {{ Continue }}
-        </v-btn>
+        <div class="d-flex justify-center">
+          <v-btn
+            v-if="addressId > -1"
+            color="amber darken-4"
+            class="white--text"
+            @click="getCouponsForOrder"
+          >
+            {{ Continue }}
+          </v-btn>
+        </div>
       </v-stepper-content>
 
       <v-stepper-step :complete="e6 > 2" step="2">
@@ -67,10 +80,17 @@
             </v-col>
           </v-row>
         </v-card>
-        <v-btn color="amber darken-4" class="white--text" @click="e6 = 3">{{
-          Continue
-        }}</v-btn>
-        <v-btn outlined class="ml-4" @click="e6 = 1">{{ Previous }}</v-btn>
+        <div class="d-flex justify-center flex-wrap">
+          <v-btn
+            color="amber darken-4"
+            class="white--text my-1"
+            @click="e6 = 3"
+            >{{ Continue }}</v-btn
+          >
+          <v-btn outlined @click="e6 = 1" class="my-1 mx-3">{{
+            Previous
+          }}</v-btn>
+        </div>
       </v-stepper-content>
 
       <v-stepper-step :complete="e6 > 3" step="3"
@@ -91,7 +111,9 @@
             :couponRate="couponRate"
           />
         </v-card>
-        <v-btn outlined @click="e6 = 2">{{ Previous }}</v-btn>
+        <div class="d-flex justify-center">
+          <v-btn outlined @click="e6 = 2">{{ Previous }}</v-btn>
+        </div>
       </v-stepper-content>
     </v-stepper>
   </v-container>
@@ -118,6 +140,7 @@ export default class Checkout extends Vue {
   Continue = "Continue";
   Previous = "Previous";
   payOrder = "Pay order";
+  comeBack = "Come back to shopping cart";
   noAvailableCoupons =
     "You do not have any availble coupon for this order amount";
   totals = {
@@ -141,11 +164,16 @@ export default class Checkout extends Vue {
     this.couponId = id;
   }
 
+  goToShoppingCart() {
+    this.$router.push("/shoppingCart");
+  }
+
   orderCouponRate(rate: string) {
     this.couponRate = rate;
   }
 
   mounted() {
+    this.translate();
     this.getAddresses();
     this.getPaymentDetail();
   }
@@ -205,6 +233,10 @@ export default class Checkout extends Vue {
         }
         case "noAvailableCoupons": {
           this.noAvailableCoupons = term.termTranslation;
+          break;
+        }
+        case "comeBack": {
+          this.comeBack = term.termTranslation;
           break;
         }
         default: {

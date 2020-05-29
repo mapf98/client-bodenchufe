@@ -3,17 +3,14 @@ import shoppingCartService from "../../services/shoppingCartService";
 
 export default {
   namespaced: true,
-  // -----------------------------------------------------------------
   state: {
     products: [],
     productsBadge: 0,
   },
-  // -----------------------------------------------------------------
   getters: {
     getProducts: (state: any) => state.products,
     getProductsBadge: (state: any) => state.productsBadge,
   },
-  // -----------------------------------------------------------------
   mutations: {
     setShoppingCartProducts(state: any, products: any) {
       Vue.set(state, "products", products);
@@ -22,7 +19,6 @@ export default {
       Vue.set(state, "productsBadge", quantity);
     },
   },
-  // -----------------------------------------------------------------
   actions: {
     getShoppingCartProducts: async (context: any) => {
       const products = await shoppingCartService.getShoppingCart();

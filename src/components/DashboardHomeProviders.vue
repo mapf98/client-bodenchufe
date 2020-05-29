@@ -85,6 +85,7 @@ export default class DashboardHomeProviders extends Vue {
     });
   }
 
+  //Obtiene los productos por proveedor y lleva a la pantalla de productos
   productsByProvider(providerId: number, providerName: string) {
     this.$store
       .dispatch("product/getProductByProvider", {
@@ -102,6 +103,7 @@ export default class DashboardHomeProviders extends Vue {
       });
   }
 
+  //Limita la cantidad de proveedores en el dashboard
   providersFilter() {
     const filteredProviders: any[] = [];
     filteredProviders.push();

@@ -19,4 +19,14 @@ export default {
       }
     );
   },
+  checkProductAlreadyRated(payload: any) {
+    return API_URL.get(
+      `/user/product/${payload.product_id}/checkQualification`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+  },
 };
