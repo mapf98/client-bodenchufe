@@ -1,55 +1,58 @@
 <template>
   <v-container>
     <v-row>
-      <v-card width="100%" color="#3949AB" tile>
-        <v-row>
-          <v-col>
-            <v-card-text class="white--text display-1 ml-5">{{
-              myShoppingCart
-            }}</v-card-text>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col :class="flexCols()">
-            <v-card-text class="white--text title ml-4">Subtotal</v-card-text>
-            <v-card-text :class="responsiveDetails()"
-              >{{ totals.subtotal }}$</v-card-text
-            >
-          </v-col>
-          <v-col :class="flexCols()">
-            <v-card-text class="white--text title ml-4">{{
-              totalWeight
-            }}</v-card-text>
-            <v-card-text :class="responsiveDetails()"
-              >{{ totals.weight }} KG</v-card-text
-            >
-          </v-col>
-          <v-col :class="flexCols()">
-            <v-card-text class="white--text title ml-4">{{
-              productsQuantity
-            }}</v-card-text>
-            <v-card-text :class="responsiveDetails()">{{
-              totals.quantity
-            }}</v-card-text>
-          </v-col>
-          <v-col>
-            <v-col class="d-flex justify-center">
-              <v-btn x-large v-if="totals.quantity > 0" @click="goToCheckout">{{
-                checkout
-              }}</v-btn>
+      <v-col>
+        <v-card color="#3949AB" tile>
+          <v-row>
+            <v-col>
+              <v-card-text class="white--text display-1 ml-5">{{
+                myShoppingCart
+              }}</v-card-text>
             </v-col>
-          </v-col>
-        </v-row>
-      </v-card>
+          </v-row>
+          <v-row class="d-flex justify-center align-center">
+            <v-col :class="flexCols()">
+              <v-card-text class="white--text title ml-4">Subtotal</v-card-text>
+              <v-card-text :class="responsiveDetails()"
+                >{{ totals.subtotal }}$</v-card-text
+              >
+            </v-col>
+            <v-col :class="flexCols()">
+              <v-card-text class="white--text title ml-4">{{
+                totalWeight
+              }}</v-card-text>
+              <v-card-text :class="responsiveDetails()"
+                >{{ totals.weight }} KG</v-card-text
+              >
+            </v-col>
+            <v-col :class="flexCols()">
+              <v-card-text class="white--text title ml-4">{{
+                productsQuantity
+              }}</v-card-text>
+              <v-card-text :class="responsiveDetails()">{{
+                totals.quantity
+              }}</v-card-text>
+            </v-col>
+            <v-col>
+              <v-col class="d-flex justify-center">
+                <v-btn
+                  x-large
+                  v-if="totals.quantity > 0"
+                  @click="goToCheckout"
+                  >{{ checkout }}</v-btn
+                >
+              </v-col>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
     </v-row>
-    <v-row class="justify-center mt-10 mb-6">
-      <v-col
-        v-for="product in products"
-        :key="product.product_provider_order_id"
-        cols="10"
-        md="5"
-        lg="10"
-      >
+    <v-row
+      class="justify-center mt-10 mb-6"
+      v-for="product in products"
+      :key="product.product_provider_order_id"
+    >
+      <v-col>
         <shoppingCartProduct :product="product" />
       </v-col>
     </v-row>
@@ -212,7 +215,7 @@ export default class ShoppingCart extends Vue {
   }
 
   goToAddress() {
-    this.$router.push("/delivery");
+    this.$router.push("/delivery/all");
   }
 }
 </script>

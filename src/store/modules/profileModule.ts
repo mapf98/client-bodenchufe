@@ -2,6 +2,8 @@ import Vue from "vue";
 import profileService from "../../services/profileService";
 import signUpService from "../../services/signUpService";
 import { fs, fb } from "../../firebase";
+import { VueEasyJwt } from "vue-easy-jwt";
+const jwt = new VueEasyJwt();
 
 //Borra la imagen Almacenada en Firebase
 //el storageUrlPath devuelve el path de almacenamiento en firebase
@@ -128,6 +130,17 @@ export default {
           localStorage.setItem("userData", JSON.stringify(userStorage));
         }
       });
+    },
+    checkToken: () => {
+      const yourToken: any = localStorage.getItem("token");
+      const tokenData: any = jwt.decodeToken(yourToken);
+      const tokenExp = new Date(tokenData.exp);
+      const actualDate = new Date();
+      if (tokenExp <= actualDate) {
+        return false;
+      } else {
+        return true;
+      }
     },
   },
 };

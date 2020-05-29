@@ -47,7 +47,6 @@ export default {
     },
   },
   actions: {
-
     //Luego de registrar el usuario, agrega la foto a firebase si es que hay algun archivo y luego inicia sesion.
     notFederatedSignUp: async (context: any, payload: any) => {
       let userId: any;

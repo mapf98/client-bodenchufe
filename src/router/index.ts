@@ -82,8 +82,8 @@ const routes: Array<RouteConfig> = [
         },
       },
       {
-        path: "/detail",
-        name: "Detail",
+        path: "/detail/:productId",
+        name: "detail",
         component: ProductDetail,
         meta: {
           requiresAuth: false,
@@ -217,6 +217,15 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: "/notFound",
+    component: NotFound,
+    meta: {
+      requiresAuth: false,
+      hideBasicComponents: true,
+      applyBackground: true,
+    },
+  },
+  {
     path: "*",
     component: NotFound,
     meta: {
@@ -236,15 +245,20 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   to.matched.some((route) => {
     if (route.meta.requiresAuth) {
-      const yourToken: any = localStorage.getItem("token");
-      const tokenData: any = jwt.decodeToken(yourToken);
-      const tokenExp = new Date(tokenData.exp);
-      const actualDate = Date.now();
-      if (tokenExp.getDate() > actualDate) {
+      if (localStorage.getItem("token") !== null) {
+        const yourToken: any = localStorage.getItem("token");
+        const tokenData: any = jwt.decodeToken(yourToken);
+        const tokenExp = new Date(tokenData.exp);
+        const actualDate = new Date();
+        if (tokenExp <= actualDate) {
+          localStorage.clear();
+          next({ path: "/login" });
+        } else {
+          next();
+        }
+      } else {
         localStorage.clear();
         next({ path: "/login" });
-      } else {
-        next();
       }
     } else {
       next();

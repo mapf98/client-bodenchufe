@@ -34,7 +34,7 @@ export default {
     productsPath: {},
     productDetail: {},
     productsByKeyword: [],
-    clearKeyword: false,
+    lazyPost: 0,
   },
   // -----------------------------------------------------------------
   getters: {
@@ -43,7 +43,7 @@ export default {
     getProductsPath: (state: any) => state.productsPath,
     getProductDetail: (state: any) => state.productDetail,
     getProductByKeyword: (state: any) => state.productsByKeyword,
-    getClearKeyword: (state: any) => state.clearKeyword,
+    getLazyPostId: (state: any) => state.lazyPost,
   },
   // -----------------------------------------------------------------
   mutations: {
@@ -60,8 +60,8 @@ export default {
     setProductByKeyword(state: any, productsByKeyword: any) {
       Vue.set(state, "productsByKeyword", productsByKeyword);
     },
-    setClearKeyword(state: any, clearKeyword: any) {
-      Vue.set(state, "clearKeyword", clearKeyword);
+    setLazyPostId(state: any, lazyPost: any) {
+      Vue.set(state, "lazyPost", lazyPost);
     },
   },
   // -----------------------------------------------------------------
@@ -122,8 +122,15 @@ export default {
           });
       }
     },
-    setClearKeyword: async (context: any, payload: any) => {
-      context.commit("setClearKeyword", payload);
+    setLazyPostId: async (context: any, payload: any) => {
+      context.commit("setLazyPostId", payload);
+    },
+    checkPostId: async (context: any, payload: any) => {
+      let exists = false;
+      await productService.checkPostId(payload).then((response: any) => {
+        exists = response.data.exists;
+      });
+      return exists;
     },
     // update: (context, bankData) => {
     //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
