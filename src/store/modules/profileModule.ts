@@ -3,6 +3,8 @@ import profileService from "../../services/profileService";
 import signUpService from "../../services/signUpService";
 import { fs, fb } from "../../firebase";
 
+//Borra la imagen Almacenada en Firebase
+//el storageUrlPath devuelve el path de almacenamiento en firebase
 async function deleteImage(imageUrl: any) {
   return new Promise(function (resolve, reject) {
     const storage = fs;
@@ -20,6 +22,9 @@ async function deleteImage(imageUrl: any) {
   });
 }
 
+//Se sube la imagen a Firebase
+//El StorageRef crea una carpeta en el servidor con una ruta a partir del id del usuario en la base de datos
+//Cuando termina de subir el archivo se obtiene la url
 async function upImage(userId: any, imageFile: any) {
   return new Promise(function (resolve, reject) {
     const storageRef = fb
@@ -44,19 +49,18 @@ async function upImage(userId: any, imageFile: any) {
 
 export default {
   namespaced: true,
-  // -----------------------------------------------------------------
   state: {
     user: {},
     passwordStatus: {},
     newUserPhoto: false,
   },
-  // -----------------------------------------------------------------
+
   getters: {
     getUserData: (state: any) => state.user,
     getPasswordStatus: (state: any) => state.passwordStatus,
     getNewUserPhoto: (state: any) => state.newUserPhoto,
   },
-  // -----------------------------------------------------------------
+
   mutations: {
     setUserData(state: any, user: any) {
       Vue.set(state, "user", user);
@@ -68,7 +72,7 @@ export default {
       Vue.set(state, "newUserPhoto", newUserPhoto);
     },
   },
-  // -----------------------------------------------------------------
+
   actions: {
     userData: async (context: any) => {
       await profileService.getUserById().then((response: any) => {

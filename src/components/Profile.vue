@@ -119,6 +119,8 @@ export default class Profile extends Vue {
   accountType = "";
   isfederated = false;
 
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -154,6 +156,7 @@ export default class Profile extends Vue {
     });
   }
 
+  //Getter de todos los terminos almacenados en PoEditor
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
@@ -175,6 +178,7 @@ export default class Profile extends Vue {
     const { xs, sm } = this.$vuetify.breakpoint;
     return xs ? 50 : sm ? 90 : 100;
   }
+
   goToShoppingCart() {
     this.$router.push("/shoppingCart");
   }
@@ -193,6 +197,7 @@ export default class Profile extends Vue {
   goToOrders() {
     this.$router.push("/orderHistory");
   }
+
   signOff() {
     localStorage.clear();
     this.$router.push("/home");

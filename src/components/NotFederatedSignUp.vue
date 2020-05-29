@@ -141,7 +141,6 @@ export default class NotFederatedSingUp extends Vue {
   snackbarError = false;
   errors: Array<string> = [];
 
-  //PoEditor Terms
   registerBtnText = "Check In";
   userFirstNameText = "First Name";
   userSecondNameText = "Second Name";
@@ -162,7 +161,6 @@ export default class NotFederatedSingUp extends Vue {
 
   btnLanguage: never | string = "Select your preferred language";
 
-  //userInfo
   user = {
     userFirstName: "",
     userFirstLastname: "",
@@ -173,7 +171,7 @@ export default class NotFederatedSingUp extends Vue {
     languageName: "",
     rolName: "user",
   };
-  imageFile: any; //foto que viene del hijo "aun no en FIREBASE"
+  imageFile: any;
 
   nameRules = [
     (v: any) => !!v || this.userNameRulesRequired,
@@ -212,6 +210,8 @@ export default class NotFederatedSingUp extends Vue {
     this.$refs.menu.save(date);
   }
 
+  //Valida si esta registrado el correo del formulario
+  //Asigna ademas de la informacion principal, la foto y el lenguaje de preferencia
   signUp() {
     this.loading = true;
     this.errors.splice(0);
@@ -261,6 +261,8 @@ export default class NotFederatedSingUp extends Vue {
     return xs || sm ? 12 : 6;
   }
 
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -340,6 +342,7 @@ export default class NotFederatedSingUp extends Vue {
     });
   }
 
+  //Getter de todos los terminos almacenados en PoEditor
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }

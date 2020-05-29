@@ -193,8 +193,6 @@ export default class ProfileInfo extends Vue {
   ];
   languageName = "";
 
-  btnLanguage = "Select your preferred language";
-
   snackbarError = false;
   errors: Array<string> = [];
   valid = true;
@@ -214,22 +212,9 @@ export default class ProfileInfo extends Vue {
 
   userNameRulesLength = "Name must be less than 10 characters";
   userNameRulesRequired = "Name is required";
+  btnLanguage = "Select your preferred language";
 
   user: any = {};
-
-  @Watch("menuRef")
-  menu(val: Date) {
-    val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
-  }
-
-  get translator() {
-    return this.$store.getters["internationalization/getLanguageTexts"];
-  }
-
-  separatorCols() {
-    const { xs, sm } = this.$vuetify.breakpoint;
-    return xs || sm ? 12 : 6;
-  }
 
   $refs!: {
     picker: any;
@@ -238,27 +223,6 @@ export default class ProfileInfo extends Vue {
   };
 
   nameRules = [(v: any) => !!v || this.userNameRulesRequired];
-
-  buttonCols() {
-    const { xs, sm } = this.$vuetify.breakpoint;
-    return xs ? 200 : sm ? 280 : 350;
-  }
-
-  save(date: Date) {
-    this.$refs.menu.save(date);
-  }
-
-  showErrors(errors: any) {
-    this.errors = errors;
-    this.snackbarError = true;
-  }
-
-  mounted() {
-    this.showImageIfExist();
-    this.getUserData();
-    this.translate();
-    this.getUserLanguage();
-  }
 
   @Watch("user.user_first_name")
   @Watch("user.user_first_lastname")
@@ -273,6 +237,16 @@ export default class ProfileInfo extends Vue {
     }
   }
 
+  @Watch("preferredLanguage")
+  translateLanguage() {
+    this.languageName = this.preferredLanguage;
+    this.$store.dispatch("internationalization/getTranslate", {
+      lang: this.languageName,
+    });
+  }
+
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -320,6 +294,11 @@ export default class ProfileInfo extends Vue {
     });
   }
 
+  @Watch("menuRef")
+  menu(val: Date) {
+    val && setTimeout(() => (this.$refs.picker.activePicker = "YEAR"));
+  }
+
   getUserLanguage() {
     const userStorageString: any = localStorage.getItem("userData");
     const userStorage = JSON.parse(userStorageString).userLanguage;
@@ -332,16 +311,17 @@ export default class ProfileInfo extends Vue {
     });
   }
 
-  @Watch("preferredLanguage")
-  translateLanguage() {
-    this.languageName = this.preferredLanguage;
-    this.$store.dispatch("internationalization/getTranslate", {
-      lang: this.languageName,
-    });
-  }
-
   get preferredLanguage() {
     return this.$store.getters["internationalization/getPreferredLanguage"];
+  }
+
+  get getUser() {
+    return this.$store.getters["profile/getUserData"];
+  }
+
+  //Getter de todos los terminos almacenados en PoEditor
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
   }
 
   updateLanguage(language: string) {
@@ -365,6 +345,8 @@ export default class ProfileInfo extends Vue {
       });
   }
 
+  //El parametro event proviene del evento cuando el usuario selecciona la imagen a subir o actualizar
+  //Cambia el estatus de una nueva foto a falsa para prevenir errores y luego la actualiza
   updateImg(event: any) {
     if (event) {
       const files = event.target.files[0] || event.dataTransfer.files;
@@ -388,16 +370,13 @@ export default class ProfileInfo extends Vue {
     }
   }
 
+  //El formato de la fecha viene con Hora, se hace un split para obtener solo la fecha
   getUserData() {
     this.$store.dispatch("profile/userData").then(() => {
       this.user = this.getUser;
       this.getdate = this.user.user_birthdate.split("T");
       this.user.user_birthdate = this.getdate[0];
     });
-  }
-
-  get getUser() {
-    return this.$store.getters["profile/getUserData"];
   }
 
   showImageIfExist() {
@@ -407,6 +386,32 @@ export default class ProfileInfo extends Vue {
     if (this.userUrlPhoto.length > 0) {
       this.agregado = true;
     }
+  }
+
+  separatorCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 6;
+  }
+
+  buttonCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs ? 200 : sm ? 280 : 350;
+  }
+
+  save(date: Date) {
+    this.$refs.menu.save(date);
+  }
+
+  showErrors(errors: any) {
+    this.errors = errors;
+    this.snackbarError = true;
+  }
+
+  mounted() {
+    this.showImageIfExist();
+    this.getUserData();
+    this.translate();
+    this.getUserLanguage();
   }
 }
 </script>

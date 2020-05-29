@@ -42,14 +42,13 @@ export default class AllDeliveries extends Vue {
   update = false;
   notAddresses = "there is no added address";
 
+  //Propiedad reactiva, cuando ocurre algun cambio en el store vuelve a traer las direcciones actualizadas
   get addresses() {
     return this.$store.getters["address/getAddresses"];
   }
 
-  get translator() {
-    return this.$store.getters["internationalization/getLanguageTexts"];
-  }
-
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -65,6 +64,11 @@ export default class AllDeliveries extends Vue {
     });
   }
 
+  //Getter de todos los terminos almacenados en PoEditor
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
   @Watch("update")
   getAllUserAddresses() {
     this.$store.dispatch("address/getUserAddresses").then(() => {
@@ -77,6 +81,8 @@ export default class AllDeliveries extends Vue {
     this.userAddresses = this.addresses;
   }
 
+  //Se cambia el Status de la direccion a INACTIVE
+  //Se elimina de esta manera segun la logica implementada en la base de datos
   deleteAddress(id: number) {
     this.$store
       .dispatch("address/deleteAddress", {

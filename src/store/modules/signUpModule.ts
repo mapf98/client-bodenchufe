@@ -3,6 +3,9 @@ import signUpService from "../../services/signUpService";
 import logInService from "../../services/logInService";
 import { fa, fb, providerGoogle, providerFacebook } from "../../firebase";
 
+//Se sube la imagen a Firebase
+//El StorageRef crea una carpeta en el servidor con una ruta a partir del id del usuario en la base de datos
+//Cuando termina de subir el archivo se obtiene la url
 async function uploadTaskPromise(userId: any, imageFile: any) {
   return new Promise(function (resolve, reject) {
     const storageRef = fb
@@ -27,21 +30,15 @@ async function uploadTaskPromise(userId: any, imageFile: any) {
 
 export default {
   namespaced: true,
-  // -----------------------------------------------------------------
   state: {
-    // Aqui van los
     user: {},
     status: {},
   },
-  // -----------------------------------------------------------------
   getters: {
-    // getters and computed props
     getLoginUserData: (state: any) => state.user,
     getLoginStatus: (state: any) => state.status,
   },
-  // -----------------------------------------------------------------
   mutations: {
-    // Aqui se setean los atributos del state
     setUser(state: any, user: any) {
       Vue.set(state, "user", user);
     },
@@ -49,11 +46,9 @@ export default {
       Vue.set(state, "status", status);
     },
   },
-  // -----------------------------------------------------------------
   actions: {
-    // create: (context, bankData) => {
-    //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
-    // },
+
+    //Luego de registrar el usuario, agrega la foto a firebase si es que hay algun archivo y luego inicia sesion.
     notFederatedSignUp: async (context: any, payload: any) => {
       let userId: any;
       let userEmail: any;
@@ -132,6 +127,10 @@ export default {
       }
     },
 
+    //Sirve tanto para el registro de Google como de Facebook
+    //Se utiliza la autenticacion con firebase para usar los servicios de google
+    //Se registran la informacion de los usuarios en nuestra base de datos
+    //Se inicia sesion si el registro es valido
     federatedSignUp: async (context: any, payload: any) => {
       let isRegistered: any = true;
 
@@ -202,11 +201,5 @@ export default {
           }
         });
     },
-    // update: (context, bankData) => {
-    //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
-    // },
-    // delete: context => {
-    //   // stuff to erase bank on the backend : CRUD DELETE ACTION
-    // },
   },
 };

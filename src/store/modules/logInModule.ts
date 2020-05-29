@@ -4,21 +4,15 @@ import { fa, providerGoogle, providerFacebook } from "../../firebase";
 
 export default {
   namespaced: true,
-  // -----------------------------------------------------------------
   state: {
-    // Aqui van los atributos
     user: {},
     status: {},
   },
-  // -----------------------------------------------------------------
   getters: {
-    // getters and computed props
     getLoginUserData: (state: any) => state.user,
     getLoginStatus: (state: any) => state.status,
   },
-  // -----------------------------------------------------------------
   mutations: {
-    // Aqui se setean los atributos del state
     setUser(state: any, user: any) {
       Vue.set(state, "user", user);
     },
@@ -26,11 +20,7 @@ export default {
       Vue.set(state, "status", status);
     },
   },
-  // -----------------------------------------------------------------
   actions: {
-    // create: (context, bankData) => {
-    //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
-    // },
     notFederatedLogIn: async (context: any, payload: any) => {
       const userData: any = {
         userName: "",
@@ -77,6 +67,10 @@ export default {
         }
       });
     },
+
+    //Se utiliza para iniciar sesion con Google o Facebook
+    //Trae los datos del servicio de autenticacion de google o facebook provistos por firebase
+    //Revisa si esos datos estan registrados en la base de datos
     federatedLogIn: async (context: any, payload: any) => {
       let userEmail: string | null | undefined;
       const userData: any = {
@@ -133,11 +127,5 @@ export default {
           }
         });
     },
-    // update: (context, bankData) => {
-    //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
-    // },
-    // delete: context => {
-    //   // stuff to erase bank on the backend : CRUD DELETE ACTION
-    // },
   },
 };
