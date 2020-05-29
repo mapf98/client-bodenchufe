@@ -43,7 +43,14 @@ export default class DashboardHome extends Vue {
   mounted() {
     window.scrollTo(0, 0);
     if (localStorage.getItem("token") !== null) {
-      this.$store.dispatch("shoppingCart/getShoppingCartProducts");
+      this.$store.dispatch("profile/checkToken").then((res: any) => {
+        if (res == true) {
+          this.$store.dispatch("shoppingCart/getShoppingCartProducts");
+        } else {
+          localStorage.clear();
+          this.$router.push("/login");
+        }
+      });
     }
   }
 }

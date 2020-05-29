@@ -15,7 +15,6 @@
     hide-details
     solo-inverted
     clearable
-    :readonly="inSearch"
   >
     <template v-slot:item="data">
       <template>
@@ -28,7 +27,7 @@
             dark
             v-if="data.item.type == `product`"
           >
-            Product
+            {{ productChip }}
           </v-chip>
           <v-chip
             class="mr-3"
@@ -38,7 +37,7 @@
             dark
             v-if="data.item.type == `category`"
           >
-            Category
+            {{ categoryChip }}
           </v-chip>
           <v-list-item-content>
             <v-list-item-title v-html="data.item.text"></v-list-item-title>
@@ -56,26 +55,28 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
+import { Watch, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class SearchBox extends Vue {
+  @Prop() clear!: boolean;
   searchBoxLabel = "Find the product you want";
   keyword: any = {};
+  categoryChip = "Category";
+  productChip = "Product";
   keywordSearch = "";
   loading = false;
-  inSearch = false;
+
+  @Watch("clear")
+  clearBoxNavbar() {
+    this.keyword = {};
+    this.keywordSearch = "";
+  }
 
   @Watch("keywordSearch")
   findProductsByKeyword(val: any) {
     this.loading = true;
-    if (
-      val !== undefined &&
-      val !== null &&
-      this.clearKeyword == false &&
-      this.inSearch == false
-    ) {
-      this.$store.dispatch("product/setClearKeyword", false);
+    if (val !== undefined && val !== null) {
       this.$store
         .dispatch("product/getProductByKeyword", { keyword: val })
         .then(() => {
@@ -88,30 +89,20 @@ export default class SearchBox extends Vue {
 
   @Watch("keyword")
   goToSearch(val: any) {
-    if (
-      val !== undefined &&
-      this.clearKeyword == false &&
-      this.inSearch == false
-    ) {
-      if (val.type == "product") {
-        this.inSearch = true;
+    if (val !== undefined) {
+      if (val.type == "product" && this.$route.params.productId != val.value) {
         this.$store
           .dispatch("product/getProductDetail", { postId: val.value })
           .then(() => {
-            this.$router.push("/detail");
+            this.$router.push({
+              name: "detail",
+              params: { productId: val.value.toString() },
+            });
           });
       }
 
       if (val.type == "category") {
-        this.inSearch = true;
         this.goToCategory(val.value, val.text);
-      }
-    } else {
-      this.inSearch = false;
-      if (this.clearKeyword == false) {
-        this.$router.currentRoute.path != "/home"
-          ? this.$router.push("/home")
-          : false;
       }
     }
   }
@@ -160,20 +151,19 @@ export default class SearchBox extends Vue {
           this.searchBoxLabel = term.termTranslation;
           break;
         }
+        case "categoryChip": {
+          this.categoryChip = term.termTranslation;
+          break;
+        }
+        case "productChip": {
+          this.productChip = term.termTranslation;
+          break;
+        }
         default: {
           break;
         }
       }
     });
-  }
-
-  @Watch("clearKeyword")
-  clearSearch() {
-    if (this.clearKeyword == true) {
-      this.keyword = {};
-      this.keywordSearch = "";
-      this.inSearch = false;
-    }
   }
 
   get productsByKeyword() {
@@ -206,10 +196,6 @@ export default class SearchBox extends Vue {
     }
 
     return autocompleteProducts;
-  }
-
-  get clearKeyword() {
-    return this.$store.getters["product/getClearKeyword"];
   }
 
   get translator() {

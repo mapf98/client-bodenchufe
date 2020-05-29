@@ -72,7 +72,14 @@ export default class GoogleFederatedSignUp extends Vue {
               .dispatch("internationalization/setUserLanguage")
               .then(() => {
                 if (this.productDetails.details !== undefined) {
-                  this.$router.push("/detail");
+                  this.$router.push({
+                    name: "detail",
+                    params: {
+                      productId: this.$store.getters[
+                        "product/getLazyPostId"
+                      ].toString(),
+                    },
+                  });
                 } else {
                   this.$router.push("/home");
                 }

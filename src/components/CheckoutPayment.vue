@@ -130,8 +130,10 @@ export default class CheckoutPayment extends Vue {
       })
       .then(() => {
         this.loading = false;
-        window.close();
-        window.open(this.$store.getters["checkout/getUrlPaymentGateway"]);
+        window.open(
+          this.$store.getters["checkout/getUrlPaymentGateway"],
+          "_self"
+        );
       });
   }
 

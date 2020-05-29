@@ -57,7 +57,10 @@ export default class Product extends Vue {
       .dispatch("product/getProductDetail", { postId: postId })
       .then(() => {
         this.loading = false;
-        this.$router.push("/detail");
+        this.$router.push({
+          name: "detail",
+          params: { productId: postId.toString() },
+        });
       });
   }
 }
