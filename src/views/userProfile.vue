@@ -12,12 +12,10 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import Profile from "../components/Profile.vue";
-import Navbar from "../components/Navbar.vue";
 
 @Component({
   components: {
     Profile,
-    Navbar,
   },
 })
 export default class UserProfile extends Vue {}
