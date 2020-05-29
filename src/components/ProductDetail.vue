@@ -360,35 +360,17 @@ export default class ProductDetail extends Vue {
   }
 
   created() {
-    if (this.productDetails.post_id != 0) {
-      this.getProductImages(this.productDetails.product_id);
-      const categories = this.$store.getters["category/getCategories"];
-      this.$store
-        .dispatch("category/setActualPath", {
-          categoryId: this.productDetails.category_id,
-          categories: categories,
-        })
-        .then(() => {
-          this.productPath = this.$store.getters["category/getActualPath"];
-        });
-    } else {
-      this.$store
-        .dispatch("product/checkPostId", this.$route.params.productId)
-        .then((res: any) => {
-          if (res == true) {
-            if (
-              this.$store.getters["product/getProductDetail"].details ===
-              undefined
-            ) {
-              this.$store.dispatch("product/getProductDetail", {
-                postId: this.$route.params.productId,
-              });
-            }
-          } else {
-            this.$router.push("/notFound");
-          }
-        });
-    }
+    this.$store
+      .dispatch("product/checkPostId", this.$route.params.productId)
+      .then((res: any) => {
+        if (res == true) {
+          this.$store.dispatch("product/getProductDetail", {
+            postId: this.$route.params.productId,
+          });
+        } else {
+          this.$router.push("/notFound");
+        }
+      });
   }
 
   @Watch("productDetails")
