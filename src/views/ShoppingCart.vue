@@ -130,7 +130,7 @@ export default class ShoppingCart extends Vue {
 
   getProducts() {
     console.log(this.products);
-    this.$store.dispatch("shoppingCart/getShoppingCartProducts").then(()=>{
+    this.$store.dispatch("shoppingCart/getShoppingCartProducts").then(() => {
       console.log(this.products);
     });
   }
