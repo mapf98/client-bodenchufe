@@ -1,6 +1,7 @@
 import Vue from "vue";
 import categoryService from "../../services/categoryService";
 
+//Obtiene el fk_category_id de una categoría tomando de referencia el id de la misma
 function getFKID(id: number, categories: any[]) {
   let FID = -1;
   for (let index = 0; index < categories.length; index++) {
@@ -15,6 +16,7 @@ function getFKID(id: number, categories: any[]) {
   return FID;
 }
 
+//Obtiene un arreglo de categorías que representa el path de la misma.
 function getFKPaths(id: number, categories: any[]) {
   let fk = id;
   const paths = [];
@@ -31,6 +33,7 @@ function getFKPaths(id: number, categories: any[]) {
   return paths;
 }
 
+//Obtiene la información de cada path.
 function getPathInfoID(id: number, categories: any[]) {
   let pathInfo: any = null;
   for (let index = 0; index < categories.length; index++) {
@@ -48,6 +51,7 @@ function getPathInfoID(id: number, categories: any[]) {
   return pathInfo;
 }
 
+//Construye el arreglo de categorías hijo de una categoría.
 function getChildCategories(id: number, categories: any[]) {
   let childCategories: any = [];
   for (let index = 0; index < categories.length; index++) {
@@ -67,6 +71,7 @@ function getChildCategories(id: number, categories: any[]) {
   return childCategories;
 }
 
+//Construye path a partir del id de una categoría.
 function getFinalPaths(id: number, categories: any[]) {
   const fkPaths = getFKPaths(id, categories).reverse();
   const finalPaths: any[] = [];
@@ -86,23 +91,17 @@ function getFinalPaths(id: number, categories: any[]) {
 
 export default {
   namespaced: true,
-  // -----------------------------------------------------------------
   state: {
-    // Aqui van los atributos
     categories: [],
     actualPath: [],
     childCategories: [],
   },
-  // -----------------------------------------------------------------
   getters: {
-    // getters and computed props
     getCategories: (state: any) => state.categories,
     getActualPath: (state: any) => state.actualPath,
     getChildCategories: (state: any) => state.childCategories,
   },
-  // -----------------------------------------------------------------
   mutations: {
-    // Aqui se setean los atributos del state
     setCategories(state: any, categories: []) {
       Vue.set(state, "categories", categories);
     },
@@ -113,11 +112,7 @@ export default {
       Vue.set(state, "childCategories", childCategories);
     },
   },
-  // -----------------------------------------------------------------
   actions: {
-    // create: (context, bankData) => {
-    //   // stuff to create a new bank on the backend : CRUD CREATE ACTION
-    // },
     getCategories: async (context: any) => {
       await categoryService.getCategories().then((response: any) => {
         context.commit("setCategories", response.data.categories);
@@ -138,11 +133,5 @@ export default {
       );
       context.commit("setChildCategories", childCategories);
     },
-    // update: (context, bankData) => {
-    //   // stuff to update bank data to the backend : CRUD UPDATE ACTION
-    // },
-    // delete: context => {
-    //   // stuff to erase bank on the backend : CRUD DELETE ACTION
-    // },
   },
 };
