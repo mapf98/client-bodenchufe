@@ -26,7 +26,12 @@
           >
         </v-col>
         <v-col class="d-flex justify-end align-end">
-          <RateProduct :product="product" />
+          <RateProduct
+            v-if="loadRate"
+            :product="product"
+            :alreadyRated="alreadyRated"
+            @newRate="newRate"
+          />
         </v-col>
       </v-card>
     </v-col>
@@ -50,6 +55,28 @@ export default class OrderHistoryProduct extends Vue {
   @Prop() product!: any;
   quantity = "Quantity";
   loading = false;
+  loadRate = false;
+  alreadyRated = false;
+
+  newRate(status: boolean) {
+    this.loadRate = true;
+
+    this.alreadyRated = status;
+  }
+
+  checkProductAlreadyRated() {
+    //let alreadyRated;
+    this.$store
+      .dispatch("orderHistory/checkProductAlreadyRated", {
+        product_id: this.product.product_provider_id,
+      })
+      .then((res) => {
+        console.log(res);
+        this.loadRate = true;
+        this.alreadyRated = res.data.alreadyRated;
+      });
+    //return alreadyRated;
+  }
 
   getProductPrice() {
     if (this.product.discount != null) {
@@ -84,6 +111,7 @@ export default class OrderHistoryProduct extends Vue {
 
   mounted() {
     this.translate();
+    this.checkProductAlreadyRated();
     window.scrollTo(0, 0);
   }
 

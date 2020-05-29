@@ -2,9 +2,16 @@
   <v-row justify="center">
     <v-dialog v-model="showModal" persistent max-width="490">
       <template v-slot:activator="{ on }">
-        <v-btn color="amber darken-2" class="white--text" v-on="on">{{
-          rateProductText
-        }}</v-btn>
+        <v-btn
+          v-if="!alreadyRated"
+          color="amber darken-2"
+          class="white--text"
+          v-on="on"
+          >{{ rateProductText }}</v-btn
+        >
+        <v-btn v-else color="indigo darken-2" outlined class="white--text">
+          {{ productRatedText }}
+        </v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">{{ product.product_name }}</v-card-title>
@@ -66,6 +73,7 @@ export default class RateProduct extends Vue {
     "You can only make a review when the order has been approved or if you have previously purchased the product";
   closeText = "Close";
   addReviewText = "Add review";
+  productRatedText = "Product already rated";
   showModal = false;
   review = "";
   rating = 0;
@@ -73,8 +81,15 @@ export default class RateProduct extends Vue {
   emptyReview = false;
   emptyRating = false;
   noAvailable = false;
+  loading = true;
 
   @Prop() product!: any;
+  @Prop() alreadyRated!: boolean;
+
+  @Watch("alreadyRated")
+  load() {
+    this.loading = false;
+  }
 
   mounted() {
     this.translate();
@@ -116,6 +131,7 @@ export default class RateProduct extends Vue {
         .then((res) => {
           if (!res.data.rated) this.noAvailable = true;
           else {
+            this.$emit("newRate", true);
             this.showModal = false;
             this.emptyReview = false;
             this.emptyRating = false;
@@ -150,6 +166,10 @@ export default class RateProduct extends Vue {
         }
         case "addReviewText": {
           this.addReviewText = term.termTranslation;
+          break;
+        }
+        case "productRatedText": {
+          this.productRatedText = term.termTranslation;
           break;
         }
         default: {

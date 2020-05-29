@@ -26,5 +26,8 @@ export default {
     createRating: async (contex: any, payload: any) => {
       return await orderHistoryService.rateProduct(payload);
     },
+    checkProductAlreadyRated : async (contex:any, payload: any) => {
+      return await orderHistoryService.checkProductAlreadyRated(payload);
+    },
   },
 };
