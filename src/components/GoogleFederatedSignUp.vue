@@ -1,0 +1,134 @@
+<template>
+  <v-container>
+    <v-btn
+      type="submit"
+      class="white--text"
+      color="blue"
+      rounded
+      :width="buttonCols()"
+      @click="GoogleFederatedSignUp()"
+    >
+      {{ SignUpGoogle }}
+      <v-icon right>mdi-google</v-icon>
+    </v-btn>
+    <v-snackbar
+      v-model="snackbarError"
+      color="indigo darken-4 px-3"
+      class="mb-5 my-5"
+      top
+    >
+      <ul>
+        <li class="body-1" v-for="error in errors" :key="error.id">
+          {{ error }}
+        </li>
+      </ul>
+      <v-btn color="amber" text @click="snackbarError = false" small>
+        Close
+      </v-btn>
+    </v-snackbar>
+  </v-container>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Watch } from "vue-property-decorator";
+
+@Component({})
+export default class GoogleFederatedSignUp extends Vue {
+  user = {
+    userEmail: "",
+    userPassword: "",
+  };
+
+  SignUpGoogle = "Sign up with Google";
+  errors: string[] = [];
+  userEmailRegisteredTrue = "This email is already in use";
+  nflMessageError = "Please correct the following error(s):";
+  snackbarError = false;
+
+  showErrors(errors: any) {
+    this.errors = errors;
+    this.snackbarError = true;
+  }
+
+  buttonCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs ? 280 : sm ? 280 : 350;
+  }
+
+  GoogleFederatedSignUp() {
+    this.errors.splice(0);
+
+    if (this.errors.length == 0) {
+      this.$store
+        .dispatch("signUp/federatedSignUp", { provider: "google" })
+        .then(() => {
+          if (this.getStatus.registered == false) {
+            this.errors.push(this.userEmailRegisteredTrue);
+            this.showErrors(this.errors);
+          } else {
+            this.$store
+              .dispatch("internationalization/setUserLanguage")
+              .then(() => {
+                if (this.productDetails.details !== undefined) {
+                  this.$router.push({
+                    name: "detail",
+                    params: {
+                      productId: this.$store.getters[
+                        "product/getLazyPostId"
+                      ].toString(),
+                    },
+                  });
+                } else {
+                  this.$router.push("/home");
+                }
+              });
+          }
+        });
+    }
+  }
+
+  get productDetails() {
+    return this.$store.getters["product/getProductDetail"];
+  }
+
+  mounted() {
+    this.translate();
+  }
+
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
+  @Watch("translator")
+  translate() {
+    this.translator.forEach((term: any) => {
+      switch (term.termName) {
+        case "userEmailRegisteredTrue": {
+          this.userEmailRegisteredTrue = term.termTranslation;
+          break;
+        }
+        case "nflMessageError": {
+          this.nflMessageError = term.termTranslation;
+          break;
+        }
+        case "SignUpGoogle": {
+          this.SignUpGoogle = term.termTranslation;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  //Getter de todos los terminos almacenados en PoEditor
+  get translator() {
+    return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
+  get getStatus() {
+    return this.$store.getters["signUp/getLoginStatus"];
+  }
+}
+</script>
