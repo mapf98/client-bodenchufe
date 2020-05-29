@@ -1,35 +1,35 @@
 <template>
   <v-container class="mb-12">
     <v-card
-      class="d-flex align-center flex-wrap"
+      class="d-flex align-center flex-wrap pa-2"
       width="100%"
       color="#3949AB"
       tile
     >
-      <v-col>
-        <v-card-text class="white--text display-1">{{ myOrders }}</v-card-text>
-      </v-col>
-      <v-col cols="4">
-        <v-select
-          @change="setYear"
-          v-model="year"
-          dense
-          :items="years"
-          label="Year"
-          solo
-        ></v-select>
-      </v-col>
+      <v-row>
+        <v-col class="d-flex justify-center align-baseline">
+          <v-card-text class="white--text display-1">{{
+            myOrders
+          }}</v-card-text>
+          <v-select
+            @change="setYear"
+            v-model="year"
+            dense
+            :items="years"
+            label="Year"
+            solo
+          ></v-select>
+        </v-col>
+      </v-row>
     </v-card>
-    <v-row class="justify-center">
-      <v-col cols="10">
+    <v-row class="d-flex justify-center">
+      <v-col>
         <v-expansion-panels popout class="mt-12">
           <v-expansion-panel
             v-for="order in selectOrder()"
             :key="order.order_id"
           >
-            <v-expansion-panel-header
-              class="title indigo--text d-flex flex-wrap"
-            >
+            <v-expansion-panel-header class="title indigo--text">
               <v-row class="mb-n6">
                 <v-col :cols="responsiveDetail()" class="d-flex align-center">
                   <p class="font-weight-bold">

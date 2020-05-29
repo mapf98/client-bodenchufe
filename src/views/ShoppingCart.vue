@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
       <v-col>
         <v-card color="#3949AB" tile>
@@ -48,7 +48,7 @@
       </v-col>
     </v-row>
     <v-row
-      class="justify-center mt-10 mb-6"
+      class="justify-center mt-10 mb-6 mx-12"
       v-for="product in products"
       :key="product.product_provider_order_id"
     >
@@ -130,7 +130,7 @@ export default class ShoppingCart extends Vue {
 
   getProducts() {
     console.log(this.products);
-    this.$store.dispatch("shoppingCart/getShoppingCartProducts").then(()=>{
+    this.$store.dispatch("shoppingCart/getShoppingCartProducts").then(() => {
       console.log(this.products);
     });
   }
