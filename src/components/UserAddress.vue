@@ -170,7 +170,9 @@ export default class UserAddress extends Vue {
   addressNotValidText = "Address not valid";
   zipCodeLengthText = "Zip Code must be valid";
 
+  //Valida si existe el valor de la direccion en el capo especificado
   addressRules = [(v: any) => !!v || this.addressRulesRequired];
+  //Valida si el codigo zip existe en el campo y cumple con los 5 numeros
   addressZipRules = [
     (v: any) => !!v || this.addressRulesRequired,
     (v: any) => (v.length <= 5 && v.length >= 5) || this.zipCodeLengthText,
@@ -203,6 +205,46 @@ export default class UserAddress extends Vue {
     }
   }
 
+  deleteAddress() {
+    this.$emit("deleteAddress", this.address.delivery_address_id);
+  }
+
+  showErrors(errors: any) {
+    this.errors = errors;
+    this.snackbarError = true;
+  }
+
+  separatorCols() {
+    const { xs, sm } = this.$vuetify.breakpoint;
+    return xs || sm ? 12 : 6;
+  }
+
+  get statusVerified() {
+    return this.$store.getters["address/getStatusVerified"];
+  }
+
+  editAddress() {
+    this.$store
+      .dispatch("address/editAddress", {
+        userAddress: this.address,
+      })
+      .then(() => {
+        if (this.statusVerified == true) {
+          this.errors.splice(0);
+          this.errors.push(this.saveChangeSuccefullyText);
+          this.showErrors(this.errors);
+          this.update = true;
+          this.$emit("update", this.update);
+        } else {
+          this.errors.splice(0);
+          this.errors.push(this.addressNotValidText);
+          this.showErrors(this.errors);
+        }
+      });
+  }
+
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -274,46 +316,9 @@ export default class UserAddress extends Vue {
     });
   }
 
+  //Getter de todos los terminos almacenados en PoEditor
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
-  }
-
-  deleteAddress() {
-    this.$emit("deleteAddress", this.address.delivery_address_id);
-  }
-
-  showErrors(errors: any) {
-    this.errors = errors;
-    this.snackbarError = true;
-  }
-
-  separatorCols() {
-    const { xs, sm } = this.$vuetify.breakpoint;
-    return xs || sm ? 12 : 6;
-  }
-
-  get statusVerified() {
-    return this.$store.getters["address/getStatusVerified"];
-  }
-
-  editAddress() {
-    this.$store
-      .dispatch("address/editAddress", {
-        userAddress: this.address,
-      })
-      .then(() => {
-        if (this.statusVerified == true) {
-          this.errors.splice(0);
-          this.errors.push(this.saveChangeSuccefullyText);
-          this.showErrors(this.errors);
-          this.update = true;
-          this.$emit("update", this.update);
-        } else {
-          this.errors.splice(0);
-          this.errors.push(this.addressNotValidText);
-          this.showErrors(this.errors);
-        }
-      });
   }
 }
 </script>

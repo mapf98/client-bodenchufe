@@ -40,6 +40,7 @@ export default class SignUpPhoto extends Vue {
   userPhoto: any;
   agregado = false;
 
+  //envia la foto al componente padre
   previewImage(event: any) {
     if (event) {
       const files = event || event.dataTransfer.files;
@@ -51,6 +52,7 @@ export default class SignUpPhoto extends Vue {
     }
   }
 
+  //crea un FileReader para poder mostrar la foto de perfil en la pantalla como preview
   createImg(file: any) {
     const reader = new FileReader();
 
@@ -65,6 +67,8 @@ export default class SignUpPhoto extends Vue {
     this.translate();
   }
 
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -84,6 +88,7 @@ export default class SignUpPhoto extends Vue {
     });
   }
 
+  //Getter de todos los terminos almacenados en PoEditor
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }

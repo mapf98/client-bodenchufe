@@ -47,14 +47,13 @@ import { Watch } from "vue-property-decorator";
 })
 export default class DeliveryAddress extends Vue {
   profileText = "Back to profile";
+
   goToProfile() {
     this.$router.push("/profile");
   }
 
-  mounted() {
-    this.translate();
-  }
-
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -70,8 +69,13 @@ export default class DeliveryAddress extends Vue {
     });
   }
 
+  //Getter de todos los terminos almacenados en PoEditor
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
+  }
+
+  mounted() {
+    this.translate();
   }
 }
 </script>

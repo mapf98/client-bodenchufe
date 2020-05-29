@@ -3,17 +3,14 @@ import addressService from "@/services/addressService";
 
 export default {
   namespaced: true,
-  // -----------------------------------------------------------------
   state: {
     addresses: [],
     verified: Boolean,
   },
-  // -----------------------------------------------------------------
   getters: {
     getAddresses: (state: any) => state.addresses,
     getStatusVerified: (state: any) => state.verified,
   },
-  // -----------------------------------------------------------------
   mutations: {
     setAddresses(state: any, addresses: any) {
       Vue.set(state, "addresses", addresses);
@@ -22,7 +19,6 @@ export default {
       Vue.set(state, "verified", verified);
     },
   },
-  // -----------------------------------------------------------------
   actions: {
     getUserAddresses: async (context: any) => {
       await addressService.getUserAddresses().then((res) => {
@@ -42,9 +38,5 @@ export default {
     deleteAddress: async (context: any, payload: any) => {
       await addressService.deleteUserAddress(payload);
     },
-    /*
-    deleteShoppingCartProducts: async (context: any, payload: any) => {
-      await shoppingCartService.deleteProduct(payload.productId);
-    },*/
   },
 };

@@ -132,6 +132,7 @@ export default class AddDeliveryForm extends Vue {
     }
   }
 
+  //Devuelve un Booleano validando si la direccion esta verificada o no
   get statusVerified() {
     return this.$store.getters["address/getStatusVerified"];
   }
@@ -169,6 +170,8 @@ export default class AddDeliveryForm extends Vue {
     this.translate();
   }
 
+  //Match para incluir los terminos de poeditor en el modulo
+  //En base al lenguaje de preferencia del usuario o el que seleccione en la aplicacion
   @Watch("translator")
   translate() {
     this.translator.forEach((term: any) => {
@@ -220,6 +223,7 @@ export default class AddDeliveryForm extends Vue {
     });
   }
 
+  //Getter de todos los terminos almacenados en PoEditor
   get translator() {
     return this.$store.getters["internationalization/getLanguageTexts"];
   }
